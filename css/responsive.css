@@ -1,0 +1,146 @@
+/* < 1800px — Ultra-wide / Large Desktop */
+@media (max-width: 1800px) {
+    #VideoParamsContent {
+        flex-wrap: wrap;
+    }
+
+    .select-wrapper {
+        margin: 1rem;
+    }
+
+    .btn-futur {
+        margin: 5px;
+    }
+}
+
+@media (max-width: 1330px) {
+    #container_buttons_melodies{
+        left: 0px;
+    }
+
+    #container_buttons_melodies > .btn-futur {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    :root {
+        --thumb-size: 18px;          /* taille du curseur */
+    }
+
+    .btn-futur {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
+    h5 {
+        font-size: 0.9rem;
+    }
+
+    select {
+        padding: 6px 20px 6px 16px;
+    }
+
+    input[type="range"] {
+        margin: calc( 14px / 2) 0;
+    }
+
+    #container_buttons_melodies {
+        display: none;
+    }
+
+    #divSpeedMelodie {
+        display: none;
+    }
+
+    #filterQuality {
+        display: none;
+    }
+
+    #divFiltre {
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
+
+
+@media (max-width: 960px) {
+    #topContainer {
+        flex-direction: column;
+    }
+
+    #partSound {
+        width: 100%;
+        flex-direction: column-reverse;
+    }
+
+    #shaderPixelAnim {
+        margin: 0 auto;
+    }
+
+    #container_input_file {
+        position: absolute;
+        top: 15px;
+    }
+}
+
+@media (max-width: 850px) {
+    #divEgaliseur {
+        min-width: 330px;
+        width: 330px;
+    }
+}
+
+@media (max-width: 760px) {
+    #VideoParamsContent {
+        justify-content: center;
+    }
+
+    #AudioParamsContent {
+        flex-direction: column-reverse;
+    }
+
+    #subLastSoundsParams {
+        flex-direction: column;
+    }
+
+    #divEgaliseur {
+        min-width: 330px;
+        width: 330px;
+        margin: 0 auto;
+        padding-bottom: 35px;
+        position: relative;
+        left: 10px;
+    }
+
+    #subSoundsParams {
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 15px;
+    }
+
+    #divEffectSound {
+        background-color: transparent;
+        color: white;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .btn-futur {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+        margin: 10px;
+    }
+
+}
+
+@media (max-width: 550px) {
+    #shaderPixelAnim {
+        width: 400px;
+        margin: 0;
+    }
+}

@@ -1,0 +1,160 @@
+:root {
+    --primary: #00ffff;
+    --bgpoppin: #0a0a1f;
+    --glass: rgba(20, 20, 50, 0.6);
+}
+
+/* Overlay */
+.popin-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+    display: grid;
+    place-items: center;
+    z-index: 9999;
+}
+.popin-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Popin card – glassmorphism + neon */
+.popin {
+    width: 90%;
+    max-width: 460px;
+    background: var(--glass);
+    border: 1px solid rgba(0,255,255,0.3);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 60px rgba(0,255,255,0.2);
+    transform: translateY(100px) scale(0.9);
+    transition: all 0.5s ease;
+    backdrop-filter: blur(16px);
+}
+.popin.active {
+    transform: translateY(0) scale(1);
+}
+
+.popin h2 {
+    margin: 0 0 20px;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #00ffff, #0088ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.popinParams {
+    width: 90%;
+    max-width: 460px;
+    background: var(--glass);
+    border: 1px solid rgba(0,255,255,0.3);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 60px rgba(0,255,255,0.2);
+    transform: translateY(100px) scale(0.9);
+    transition: all 0.5s ease;
+    backdrop-filter: blur(16px);
+}
+.popinParams.active {
+    transform: translateY(0) scale(1);
+}
+
+.popinParams h2 {
+    margin: 0 0 20px;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #00ffff, #0088ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.popinEffectAnim {
+    width: 90%;
+    max-width: 460px;
+    background: var(--glass);
+    border: 1px solid rgba(0,255,255,0.3);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 60px rgba(0,255,255,0.2);
+    transform: translateY(100px) scale(0.9);
+    transition: all 0.5s ease;
+    backdrop-filter: blur(16px);
+}
+.popinEffectAnim.active {
+    transform: translateY(0) scale(1);
+}
+
+.popinEffectAnim h2 {
+    margin: 0 0 20px;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #00ffff, #0088ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Futuristic file drop zone */
+.file-area {
+    border: 3px dashed var(--primary);
+    border-radius: 20px;
+    padding: 50px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(0,255,255,0.05);
+    margin: 20px 0;
+}
+.file-area:hover, .file-area.dragover {
+    background: rgba(0,255,255,0.15);
+    box-shadow: 0 0 30px rgba(0,255,255,0.4);
+    transform: scale(1.02);
+}
+
+.file-area label {
+    font-size: 1.2rem;
+    color: var(--primary);
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+/* Buttons */
+.btn-group {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #000;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,255,255,0.4); }
+  
+.btn-close {
+    background: transparent;
+    border: 2px solid #ff0066;
+    color: #ff0066;
+}
+
+.btn-close:hover { background: #ff0066; color: white; }

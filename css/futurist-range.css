@@ -1,0 +1,137 @@
+  :root {
+    --track-h: 6px;               /* épaisseur du rail */
+    --thumb-size: 28px;          /* taille du curseur */
+    --glow: 0 0 12px;            /* base du halo */
+    --color-primary: #00ffff;    /* cyan néon */
+    --color-bg: #0d1117;         /* fond sombre */
+    --color-track: #1e293b;      /* rail */
+    --color-fill: #00ffff;       /* remplissage */
+  }
+
+  .range-wrapper {
+    position: relative;
+    width: 320px;
+    margin: 2rem;
+  }
+
+  /* ==== RAIL ==== */
+  input[type="range"] {
+    -webkit-appearance: none;   /* obligatoire */
+    appearance: none;
+    width: 100%;
+    background: transparent;
+    margin: calc(var(--thumb-size) / 2) 0;
+  }
+
+  /* rail (track) */
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: var(--track-h);
+    background: var(--color-track);
+    border-radius: 3px;
+    box-shadow: 
+      inset 0 0 4px rgba(0,0,0,0.6),
+      0 0 8px var(--color-primary);
+    transition: box-shadow .2s;
+  }
+  input[type="range"]::-moz-range-track {
+    height: var(--track-h);
+    background: var(--color-track);
+    border-radius: 3px;
+    border: none;
+    box-shadow: 
+      inset 0 0 4px rgba(0,0,0,0.6),
+      0 0 8px var(--color-primary);
+  }
+
+  /* remplissage avant le curseur */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    background: radial-gradient(circle at 30% 30%, #fff, var(--color-primary));
+    border-radius: 50%;
+    cursor: grab;
+    box-shadow: 
+      var(--glow) var(--color-primary),
+      0 0 20px rgba(0,255,255,0.5),
+      inset 0 0 6px rgba(255,255,255,0.4);
+    transform: translateY(-50%);
+    transition: transform .15s, box-shadow .15s;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    background: radial-gradient(circle at 30% 30%, #fff, var(--color-primary));
+    border-radius: 50%;
+    border: none;
+    cursor: grab;
+    box-shadow: 
+      var(--glow) var(--color-primary),
+      0 0 20px rgba(0,255,255,0.5),
+      inset 0 0 6px rgba(255,255,255,0.4);
+    transform: translateY(-50%);
+  }
+
+  /* remplissage *avant* le curseur */
+  input[type="range"]::-webkit-slider-runnable-track {
+    background: linear-gradient(to right,
+      var(--color-fill) 0%,
+      var(--color-fill) var(--value, 0%),
+      var(--color-track) var(--value, 0%),
+      var(--color-track) 100%);
+  }
+  input[type="range"]::-moz-range-progress {
+    background: var(--color-fill);
+    height: var(--track-h);
+    border-radius: 3px;
+  }
+
+  /* ==== HOVER / FOCUS ==== */
+  input[type="range"]:hover::-webkit-slider-thumb,
+  input[type="range"]:focus::-webkit-slider-thumb {
+    transform: translateY(-50%) scale(1.12);
+    box-shadow: 
+      0 0 20px var(--color-primary),
+      0 0 30px rgba(0,255,255,0.6);
+  }
+  input[type="range"]:active::-webkit-slider-thumb {
+    cursor: grabbing;
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  /* ==== Valeur affichée en temps réel ==== */
+  .range-value {
+    position: absolute;
+    top: -2.2rem;
+    width: 3rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-shadow: 0 0 8px var(--color-primary);
+    pointer-events: none;
+    transition: left .1s;
+    position: relative;
+    left: 5px;
+    top: -2px;
+  }
+
+  /* ==== Animation de fond ==== */
+  .range-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.15), transparent 70%);
+    filter: blur(20px);
+    z-index: -1;
+    animation: pulse 4s infinite alternate;
+  }
+
+  #speedRangeDisplay{
+    width: 6rem;
+  }
+
+  @keyframes pulse {
+    from { opacity: .4; }
+    to   { opacity: .8; }
+  }

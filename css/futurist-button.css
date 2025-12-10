@@ -1,0 +1,154 @@
+  :root {
+    --neon: #00ffff;           /* cyan néon */
+    --neon-alt: #ff00ff;       /* magenta secondaire */
+    --bg: #0a0e17;             /* fond ultra-sombre */
+    --text: #e0f7fa;
+    --radius: 12px;
+    --glow: 0 0 15px;
+    --glow-strong: 0 0 30px;
+  }
+
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  /* === BUTTON BASE === */
+  .btn-futur {
+    position: relative;
+    padding: 12px 26px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text);
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    cursor: pointer;
+    overflow: hidden;
+    transition: all .3s ease;
+    text-shadow: 0 0 8px var(--neon);
+    z-index: 1;
+  }
+
+  /* === BORDURE NÉON GRADIENT === */
+  .btn-futur::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: calc(var(--radius) + 4px);
+    background: conic-gradient(
+      from 0deg,
+      var(--neon), var(--neon-alt), var(--neon), var(--neon-alt), var(--neon)
+    );
+    filter: blur(8px);
+    opacity: 0.7;
+    z-index: -2;
+    animation: rotate 6s linear infinite;
+  }
+
+  @keyframes rotate {
+    to { transform: rotate(360deg); }
+  }
+
+  /* === FOND INTERNE + GLOW === */
+  .btn-futur::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    background: rgba(0, 255, 255, 0.05);
+    border-radius: calc(var(--radius) - 2px);
+    z-index: -1;
+    box-shadow: 
+      inset 0 0 20px rgba(0, 255, 255, 0.2),
+      var(--glow) var(--neon);
+    transition: box-shadow .3s;
+  }
+
+  /* === ÉTAT HOVER === */
+  .btn-futur:hover {
+    color: #fff;
+    text-shadow: 0 0 15px #fff, 0 0 25px var(--neon);
+    transform: translateY(-3px);
+    box-shadow: 
+      var(--glow-strong) var(--neon),
+      0 10px 20px rgba(0, 255, 255, 0.3);
+  }
+
+  .btn-futur:hover::after {
+    box-shadow: 
+      inset 0 0 30px rgba(0, 255, 255, 0.4),
+      var(--glow-strong) var(--neon);
+  }
+
+  /* === ÉTAT ACTIVE (click) === */
+  .btn-futur:active {
+    transform: translateY(1px);
+    filter: brightness(1.3);
+  }
+
+  /* === SCAN LINE ANIMÉE === */
+  .btn-futur > .scan {
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: skewX(-20deg);
+    animation: scan 2s infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes scan {
+    0%   { left: -100%; }
+    50%  { left: 100%; }
+    100% { left: 100%; }
+  }
+
+  /* === GLITCH TEXT (sur hover) === */
+  .btn-futur:hover > .glitch {
+    animation: glitch 0.4s infinite;
+  }
+
+  @keyframes glitch {
+    0%, 100% { 
+      text-shadow: 2px 0 var(--neon), -2px 0 var(--neon-alt); 
+      transform: translate(0);
+    }
+    20% { 
+      text-shadow: -2px 0 var(--neon), 2px 0 var(--neon-alt); 
+      transform: translate(-2px, -1px);
+    }
+    40% { 
+      text-shadow: 1px 0 var(--neon-alt), -1px 0 var(--neon); 
+      transform: translate(2px, 1px);
+    }
+    60% { 
+      text-shadow: -1px 0 var(--neon), 1px 0 var(--neon-alt); 
+      transform: translate(-1px, 2px);
+    }
+  }
+
+  /* === TEXTE === */
+  .btn-futur > span {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* === FOND GLOBAL PULSANT === */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.08), transparent 70%);
+    animation: pulse-bg 8s infinite alternate;
+    z-index: -1;
+  }
+
+  span.glitch {
+    color: black;
+  }
+
+  @keyframes pulse-bg {
+    from { opacity: 0.3; }
+    to   { opacity: 0.6; }
+  }

@@ -1,0 +1,95 @@
+.containerCheckList {
+      background: rgba(10, 15, 40, 0.7);
+      padding: 5px 50px;
+      border-radius: 20px;
+      border: 1px solid rgba(100, 200, 255, 0.3);
+      box-shadow: 
+        0 0 30px rgba(0, 200, 255, 0.2),
+        inset 0 0 20px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+}
+
+.containerCheckList::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(0, 200, 255, 0.03) 10px,
+        rgba(0, 200, 255, 0.03) 20px
+      );
+      pointer-events: none;
+}
+
+.checkbox-list {
+      list-style: none;
+      padding: 0;
+}
+
+.checkbox-item {
+      margin: 18px 0;
+      position: relative;
+      padding-left: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.checkbox-item:hover {
+      color: #00ffea;
+}
+
+/* Hide default checkbox */
+.checkbox-item input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+}
+
+/* Custom checkbox */
+.checkmark {
+      position: absolute;
+      left: 0;
+      top: 0px;
+      height: 28px;
+      width: 28px;
+      background: rgba(0, 255, 200, 0.1);
+      border: 2px solid #00ffea;
+      border-radius: 8px;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 234, 0.4);
+}
+
+.checkmark::after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 8px;
+      top: 4px;
+      width: 6px;
+      height: 12px;
+      border: solid #00ffea;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+      box-shadow: 0 0 10px #00ffea;
+}
+
+/* On check */
+.checkbox-item input:checked ~ .checkmark {
+      background: linear-gradient(135deg, #00ffea, #00a2ff);
+      box-shadow: 0 0 25px #00ffea, 0 0 50px rgba(0, 162, 255, 0.6);
+}
+
+.checkbox-item input:checked ~ .checkmark::after {
+      display: block;
+}

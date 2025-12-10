@@ -1,0 +1,105 @@
+:root {
+    --primary: #00ffff;      /* cyan néon */
+    --bg: #0d1117;           /* fond sombre */
+    --track: #1e293b;        /* rail */
+    --thumb: 28px;           /* taille du bouton */
+    --radius: 8px;
+    --glow: 0 0 12px;
+  }
+
+  * { box-sizing: border-box; }
+
+  /* ---------- WRAPPER ---------- */
+  .select-wrapper {
+    width: 300px;
+    margin: 2rem;
+    margin-bottom: 0;
+  }
+
+  /* ---------- SELECT NATIVE ---------- */
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    font-size: 16px;
+    color: var(--primary);
+    background: transparent;
+    border: 2px solid var(--track);
+    border-radius: var(--radius);
+    cursor: pointer;
+    outline: none;
+    transition: border .2s, box-shadow .2s;
+    background-color: white;
+  }
+
+  /* bordure + glow */
+  .select-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 2px solid var(--primary);
+    border-radius: calc(var(--radius) + 4px);
+    opacity: 0;
+    transition: opacity .2s;
+    pointer-events: none;
+    box-shadow: var(--glow) var(--primary);
+  }
+
+  /* hover / focus */
+  select:hover,
+  select:focus {
+    border-color: var(--primary);
+    box-shadow: var(--glow) var(--primary);
+  }
+  select:focus + .select-wrapper::before {
+    opacity: 1;
+  }
+
+
+  select:hover + .select-wrapper::after,
+  select:focus + .select-wrapper::after {
+    transform: translateY(-50%) rotate(180deg);
+    border-top-color: #fff;
+  }
+
+  /* ---------- OPTIONS (limited) ---------- */
+  select option {
+    background: var(--bg);
+    color: #e2e8f0;
+    padding: 8px;
+  }
+  select option:checked {
+    background: linear-gradient(90deg, var(--primary), transparent);
+    color: #000;
+  }
+
+  /* ---------- VALUE DISPLAY (optional) ---------- */
+  .select-value {
+    position: absolute;
+    top: -2rem;
+    left: 0;
+    font-weight: 600;
+    color: var(--primary);
+    text-shadow: var(--glow) var(--primary);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  select:focus ~ .select-value {
+    opacity: 1;
+  }
+
+  /* ---------- PULSE BACKGROUND ---------- */
+  .select-wrapper > .pulse {
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle at 50% 50%, rgba(0,255,255,.12), transparent 70%);
+    filter: blur(18px);
+    z-index: -1;
+    animation: pulse 3s infinite alternate;
+  }
+  @keyframes pulse {
+    from { opacity: .3; }
+    to   { opacity: .7; }
+  }

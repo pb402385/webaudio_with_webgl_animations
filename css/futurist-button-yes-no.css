@@ -1,0 +1,87 @@
+  .futuristic-toggle {
+    position: relative;
+    top: 0px;
+    width: 150px;
+    height: 60px;
+    cursor: pointer;
+    margin: 0 auto;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  input.inputYesNo { display: none; }
+
+  .trackYesNo {
+    position: absolute;
+    inset: 0;
+    background: #111;
+    border-radius: 60px;
+    overflow: hidden;
+  }
+
+  .trackYesNo::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    background: linear-gradient(145deg, #16213e, #0f0f1e);
+    border-radius: 54px;
+  }
+
+  .knobYesNo {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 35px;
+    height: 35px;
+    background: linear-gradient(145deg, #222, #000);
+    border-radius: 50%;
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.2);
+    box-shadow: 
+      0 12px 30px rgba(0,0,0,0.9),
+      inset 0 -8px 16px rgba(0,0,0,0.7),
+      0 0 50px #ff0044;
+    z-index: 2;
+  }
+
+  .textYesNo {
+    position: absolute;
+    top: 50%;
+    left: 90px;
+    transform: translate(-50%,-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 8px;
+    pointer-events: none;
+    z-index: 1;
+    color: #ff0044;
+    text-shadow: 0 0 30px #ff0044;
+    transition: all 0.5s;
+  }
+
+  /* ÉTAT ON */
+  input:checked + .trackYesNo .knobYesNo {
+    transform: translateX(90px);
+    background: linear-gradient(145deg, #00ff88, #003322);
+    box-shadow: 
+      0 12px 30px rgba(0,255,136,0.7),
+      inset 0 -8px 16px rgba(0,0,0,0.5),
+      0 0 70px #00ff88;
+  }
+
+  input:checked + .trackYesNo .textYesNo {
+    color: #00ff88;
+    text-shadow: 0 0 40px #00ff88;
+    content: 'ON';
+    left: 75px;
+  }
+
+  input:checked + .trackYesNo::before {
+    background: linear-gradient(145deg, #003322, #001122);
+  }
+
+  @keyframes glitch {
+    0%,100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+  }

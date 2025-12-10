@@ -1,0 +1,677 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap');
+
+:root {
+    --font-title: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+}
+
+h5 {
+	text-align: center;
+	font-family: var(--font-title);
+    font-weight: 900;
+    font-size: 1.1rem;
+}
+
+.label_sound_input{
+	text-align: center;
+	font-family: var(--font-title);
+    font-weight: 900;
+    font-size: 1.1rem;
+}
+
+#currentMp3{
+	text-align: center;
+	font-family: var(--font-title);
+    font-weight: 900;
+    font-size: 1.1rem;
+}
+
+#file_sound_input{
+	text-align: center;
+	font-family: var(--font-title);
+    font-weight: 900;
+    font-size: 1.1rem;
+	width: 148px;
+}
+
+#topContainer{
+	width: 100%;
+	display: flex;
+}
+
+.h5Volume {
+	position: relative;
+	left: -10px;
+}
+
+/** CSS DOCUMENT **/
+body{
+	margin: 0;
+	overflow-x:hidden;
+	background-color: black;
+}
+
+#container_main {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+#container_params {
+	color: yellow;
+	width: auto;
+	position: relative;
+    top: -20px;
+}
+
+#AudioParamsTitle {
+	position: relative;
+    top: -30px;
+}
+
+#VideoParamsContent{
+	display: flex;
+	justify-content: space-between;
+}
+
+#AudioParamsContent{
+	display: flex;
+	flex-direction: column;
+	position: relative;
+    top: -12px;
+}
+
+#subSoundsParams{
+	display: flex;
+	justify-content: space-around;
+	margin-top: 20px;
+}
+
+#subLastSoundsParams{
+	display: flex;
+	margin-top: 15px;
+	width: 100%;
+    justify-content: space-around;
+}
+
+#container_params > div {
+	width: auto;
+	position: relative;
+}
+
+/** PARAM ANIM WEB GL CSS **/
+#shaderPixelAnim{
+	width: 500px;
+    height: 500px;
+	cursor: pointer;
+}
+
+#divTypeAnim{
+	color: white;
+}
+
+#divTypeTextureAnim{
+	color: white;
+}
+
+#divFreqAnim{
+	color: white;
+}
+
+#divInfinityAnim{
+	color: white;	
+}
+
+#divEffectAnim{
+	color: white;
+}
+
+#buttonTypeAnim{
+	cursor: pointer;
+	z-index:3;
+}
+
+#buttonTypeTextureAnim{
+	cursor: pointer;
+	z-index:3;
+}
+
+#buttonFreqAnim{
+	cursor: pointer;
+	z-index:3;
+}
+
+#buttonInfinityAnim{
+	cursor: pointer;
+	z-index:3;
+}
+
+#buttonEffectAnim{
+	cursor: pointer;
+	z-index:3;
+}
+
+
+
+
+
+/** CSS SOUND **/
+#partSound{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	height: 500px;
+	align-items: center;
+	width: calc(100% - 500px);
+}
+
+#div_file_upload{
+	position: relative;
+    top: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#sub_div_file_upload{
+	display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 240px;
+}
+
+#divEffectSound{
+    background-color: transparent;
+    color: white;
+	display: flex;
+	flex-direction: row;
+    justify-content: space-around;
+	flex-wrap: wrap;
+}
+
+#divEffectSoundTitle{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+#buttonGenerateSound0{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+#buttonGenerateSound1{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+#buttonGenerateSound2{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+#buttonGenerateSound3{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+#buttonGenerateSound4{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+#buttonGenerateSound5{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+#buttonGenerateSound6{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+#buttonGenerateSound7{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+#buttonGenerateSound8{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	top: 0px;
+	left: 0px;	
+}
+
+.bordered{
+	border: 2px solid;
+}
+
+.centered{
+	text-align: center;
+}
+
+.equalizerInfo{
+	display: flex;
+	flex-direction: column;
+	height: 135px;
+	justify-content: center;
+}
+
+.equalizerBox{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.equalizerRange{
+	transform: rotate(-90deg);
+}
+
+#divTypeSound{
+	z-index: 99;
+	background-color: transparent;
+	color: white;
+	display: flex;
+	align-items: center;
+}
+
+#divTypeSound > div.select-wrapper{
+	margin-top: 0;
+}
+
+#buttonTypeSound{
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+	color: black;
+}
+
+#testNote{
+	z-index: 2;
+	cursor: pointer;
+	
+	position: relative;
+    top: -50px;
+    left: 2px;
+}
+
+#testNoteDiese{
+    background-color: transparent;
+    z-index: 3;
+    cursor: pointer;
+    position: relative;
+    top: 0px;
+    left: 17px;
+}
+
+#divEgaliseur{
+	background-color: transparent;
+    color: white;
+	z-index: 99;
+}
+
+#lGainDiv{
+    position: relative;
+    left: 0px;
+}
+
+#mGainDiv{
+    position: relative;
+    left: 0px;
+}
+
+#hGainDiv{
+    position: relative;
+    left: 0px;
+}
+
+.h5egaliseur{
+    position: relative;
+    left: 4px;
+}
+
+#divFiltre{
+	background-color: transparent;
+	z-index: 99;
+	color: white;
+	padding-left: 10px;	
+    display: flex;
+    justify-content: space-around;
+}
+
+#filterGain{
+	display: none;
+}
+
+.filterRange, .filterQuality {
+	min-width: 250px;
+}
+
+#filterQuality {
+	position: relative;
+    left: 25px;
+	display: none;
+}
+
+#filterPArams{
+	display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+	min-width: 500px;
+}
+
+.label_sound_input {
+	color: white;
+}
+
+#spectreMP3 {
+	border: 2px solid silver;
+	width: 440px;
+    height: 85px;
+	position: relative;
+    left: -50px;
+}
+
+#spectreTimelineMP3 {
+	border: 2px solid silver;
+	width: 440px;
+    height: 85px;
+	position: relative;
+	top: -85px;
+	position: relative;
+    left: -50px;
+}
+
+.actionPlayPauseMute {
+	color: white;
+	cursor: pointer;
+	user-select: none;
+}
+
+#spectreMP3_btns {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: relative;
+    top: 10px;
+    left: -15px;
+}
+
+#spectreMP3_block {
+	display: flex;
+	flex-direction: column;
+	height: 85px;
+}
+
+#container_sub_spectre {
+    display: flex;
+    flex-direction: row;
+	position: relative;
+    left: -30px;
+}
+
+#spectre {
+    background-color: black;
+    z-index: 2;
+    border: 2px solid silver;
+    width: 440px;
+    height: 85px;
+}
+
+#spectreWave{
+    background-color: black;
+    z-index: 2;
+    border: 2px solid silver;
+    width: 440px;
+    height: 85px;
+}
+
+.inputEgal{
+	background-color: black;
+	color: white;
+	font-weight: bold;
+	width: 25px;
+	border: none;
+	padding-bottom:10px;
+}
+
+.testNoteTD{
+	background-color: white;
+	z-index: 2;
+	cursor: pointer;
+	width: 30px;
+	height: 50px;
+	text-align: center;
+	outline: white solid 1px;
+	border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.testNoteDieseTD{
+	background-color: black;
+	z-index: 2;
+	color: white;
+	cursor: pointer;
+	width: 30px;
+	height: 50px;
+	text-align: center;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.testNoteDieseTD.pPiano {
+ 	color: white;	
+}
+
+.testNoteDieseTDBlank{
+	background-color: transparent;
+	z-index: 1;
+	width: 30px;
+	height: 50px;
+}
+
+#divVolume{
+	z-index: 99;
+	background-color: transparent;
+	color: white;
+	display: flex;
+	align-items: center;
+}
+
+#divSpeedMelodie{
+	z-index: 99;
+	background-color: transparent;
+	color: white;
+	display: flex;
+	align-items: center;	
+}
+
+#speedRange{
+	position: relative;
+    left: 3px;
+}
+
+#volumeRange{
+    left: 3px;
+    position: relative;
+}
+
+#container_input_file {
+    width: 340px;
+    height: 60px;
+}
+
+#container_synthe{
+	height: 130px;
+	position: relative;
+    top: 10px;
+}
+
+#container_buttons_melodies{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: auto;
+    width: 500px;
+    max-width: 500px;
+	position: relative;
+    left: 20px;
+}
+
+#runMelodie1{
+	background-color: white;
+    z-index: 2;
+    cursor: pointer;
+}
+
+#runMelodieStarWars{
+	background-color: white;
+    z-index: 2;
+    cursor: pointer;
+}
+
+
+#stopAllSounds{
+	background-color: white;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.pPiano{
+	font-size: 50%;
+	font-weight: bold;
+}
+
+.topPiano{
+	height: 50px;
+	background-color: white;
+	outline: white solid 1px;
+}
+
+input[type=range]{
+    cursor: pointer;
+}
+
+#filterTest{
+	cursor: pointer;
+}
+
+
+.acc {
+    margin-bottom: 10px;
+}
+
+.acc-content {
+    padding: 15px 10px;
+    display: none;
+}
+
+.rainbow-icon {
+  background: linear-gradient(90deg, #ff0066, #ff8c00, #00ff88, #00ffff, #8a2be2);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow 4s ease infinite;
+}
+
+@keyframes rainbow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.resizeIconPlay {
+	font-size: 27px !important;
+}
+
+#paramsEffect {
+	position: relative;
+    top: 5px;
+    left: 5px;
+    cursor: pointer;
+}
+
+#enterFullScreen {
+	position: relative;
+    top: 5px;
+    cursor: pointer;
+}
+
+.h5-select {
+	padding-top: 10px;
+	margin-bottom: 10px;
+}
+
+#randomEffectAnim {
+	position: relative;
+    top: 5px;
+    cursor: pointer;
+	font-size: 18px;
+}
+
+#dropAreaEffectAnim {
+	padding-top: 5px;
+}
+
+#dropAreaEffectAnim {
+	padding: 0px 20px;
+}
+
+#delayRangeTest {
+	width: 60%;
+    position: relative;
+    top: 25px;
+}
+
+#delayRangeTitle {
+	position: relative;
+    top: 10px;
+}
