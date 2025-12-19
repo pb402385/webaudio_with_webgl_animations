@@ -18,8 +18,6 @@ var canvasClicked;
 var dataTex;
 var side = 16;
 
-var $2 = document.querySelector.bind(document);
-
 function generateInitTabFreqSound(size){
 	var array = new Uint8Array(size);
 	for(var i=0; i<size; i++){
@@ -38,9 +36,18 @@ function app() {
 		Detector.addGetWebGLMessage();
 	}
 	
+	loadShaders();
+	setTimeout(() => init(), 1000);
+}
 
-	init();
-	
+let vertexSource;
+let fragmentSource;
+let fragmentSourceUserShader;
+
+async function loadShaders() {
+  vertexSource = await fetch('webgl/vertexSource.glsl').then(res => res.text());
+  fragmentSource = await fetch('webgl/fragmentSource.glsl').then(res => res.text());
+  fragmentSourceUserShader = await fetch('webgl/fragmentSourceUserShader.glsl').then(res => res.text());
 }
 
 function init() {
@@ -84,13 +91,11 @@ function init() {
 		iMouse: 			{ type: 'v4', value: new THREE.Vector2() },
 	}
 	
-	
 	var shaderMaterial = new THREE.RawShaderMaterial( {
 		uniforms: _uniforms,
-		vertexShader: $2('#vs').text,
-		fragmentShader: $2('#shadertoy-boilerplate').text.replace('${usershader}', $2('#fs').text),
+		vertexShader: vertexSource,
+		fragmentShader: fragmentSource.replace('${usershader}', fragmentSourceUserShader),
 	} );
-	
 	
 	mesh = new THREE.Mesh(geometry, shaderMaterial);
 	scene.add(mesh);
