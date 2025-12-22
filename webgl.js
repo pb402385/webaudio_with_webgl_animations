@@ -52,7 +52,6 @@ async function loadShaders() {
 
 function init() {
 	
-	//camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 10 );
 	camera = new THREE.Camera();
 	camera.position.z = 1;
 
@@ -75,9 +74,6 @@ function init() {
 	arrayFreqToOpenGL = generateInitTabFreqSound(1024);
 
 	dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side, side, THREE.RGBAFormat);
-	//lighter effect
-	dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side*side, 1, THREE.RGBAFormat);
-	
 	
 	_uniforms = {
 		iChannel0:			{ type: "t", value: dataTex },
@@ -140,6 +136,8 @@ function init() {
 	
 	//Resize and render
 	resize(true);
+	// On désactive la bounding sphere car inutilisée et cela nous retire l'erreur provoquée par Three.min.js
+	geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(0,0,0), 100);  // Ajustez selon vos besoins
 	render(0);
 
 }
@@ -172,30 +170,6 @@ function render(time) {
   mesh.material.uniforms.uIntTypeTexture.value = typeTextureToOpenGL;
   mesh.material.uniforms.uIntInfinity.value = infinityToOpenGL;
   mesh.material.uniforms.uIntEffect.value = effectToOpenGL;
-
-  /**  FIX mais qui ne fonctionne pas
-   *   Il faut upgrade Three.js pour retirer l'erreur 
-   *   THREE.BufferGeometry.computeBoundingSphere(): Computed radius is NaN. The "position" attribute is likely to have NaN values
-  debugger;
-  const fixNaN = (geometry) => {
-		const pos = geometry.attributes.position.array;
-		let hasNaN = false;
-		for (let i = 0; i < pos.length; i++) {
-			if (!isFinite(pos[i])) {
-				pos[i] = 0;          // remplace NaN ou Infinity par 0
-				hasNaN = true;
-			}
-		}
-		if (hasNaN) {
-			geometry.computeBoundingSphere(); // maintenant ça passe sans erreur
-			geometry.computeBoundingBox();
-			console.warn("NaN corrigé dans la géométrie !");
-		}
-	};
-
-	// Utilisation (à appeler systématiquement)
-	fixNaN(mesh.geometry);
-	**/
 
   renderer.render(scene, camera);
   requestAnimationFrame(render);
