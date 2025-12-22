@@ -76,7 +76,7 @@ function init() {
 
 	dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side, side, THREE.RGBAFormat);
 	//lighter effect
-	//dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side*side, 1, THREE.RGBAFormat);
+	dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side*side, 1, THREE.RGBAFormat);
 	
 	
 	_uniforms = {

@@ -29,8 +29,6 @@ void main( void ){
 	}
 	if(uIntEffect == 5){
 		mainImageGalaxy( color, gl_FragCoord.xy );
-		// vec4 col = texture2D(iChannel0, gl_FragCoord.xy);
-		// mainImageGalaxy( col, gl_FragCoord.xy );
 	}
 	if(uIntEffect == 6){
 		mainImageSpiralGalaxy( color, gl_FragCoord.xy );
@@ -65,6 +63,18 @@ void main( void ){
 	if(uIntEffect == 16){
 		mainImageGridPulse( color, gl_FragCoord.xy );
 	}
-	// color.w = 1.0;
+	if(uIntEffect == 17){
+		mainImageSierpinski( color, gl_FragCoord.xy );
+	}
+	if(uIntEffect == 18){
+		mainImageMobius( color, gl_FragCoord.xy );
+	}
+	if(uIntEffect == 19){
+		mainImageMandelbrot( color, gl_FragCoord.xy );
+	}
+	if(uIntEffect == 20){
+		mainImageMandelbrotDecoration( color, gl_FragCoord.xy );
+	}
+
 	gl_FragColor = color;
 }

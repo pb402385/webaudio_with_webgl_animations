@@ -1,4 +1,3 @@
-			
 #define MAX_STEPS 90
 #define MAX_DIST  60.0
 
@@ -28,8 +27,6 @@ float lengthN(vec2 q, float n){
 	float yP = float(pow(q.y,n));
 	float pP = xP+yP;
 	float len = float(pow(pP,1.0/n));
-	//float len = pow( (pow(q.x,n)+pow(q.y,n)) ,1/n );
-	//float len = float(pow( float((pow(n,q.x)+pow(n,q.y))) ,1/n ));
 	return len;
 }
 
@@ -102,7 +99,6 @@ mat2 rot(in float a){
 
 // main distance function
 float de(vec3 p){
-	
 	//demultiplier la figure
 	if(uIntInfinity == 1) p = mod(p, vec3(20.0)) - vec3(10.0);
 	//if(uIntEffect == 1) p = opCheapBend(p);
@@ -143,10 +139,8 @@ float de(vec3 p){
 		if(i == uIntFreq) break;
 		
 		float f = float(i) / float(FREQ-1);
-		vec4 value = values[i];
-		
-		float theta = f * PI * 1.5;
-		
+		vec4 value = values[i];	
+		float theta = f * PI * 1.5;		
 		//effet displacement
 		vec3 dir = vec3(cos(theta), sin(theta), 0);
 		dir.yz *= rot(f*PI*1.0);
@@ -170,12 +164,15 @@ vec3 normal(vec3 p) {
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){				
 	vec2 uv = fragCoord.xy / iResolution.xy * 2.0 - 1.0;
-	uv.y *= iResolution.y / iResolution.x;				
+	uv.y *= iResolution.y / iResolution.x;
+
 	vec3 from = vec3(-50, 0, 0);
 	vec3 dir = normalize(vec3(uv*0.2, 1.0));
-	dir.xz *= rot(3.1415*.5);				
+	dir.xz *= rot(3.1415*.5);
+
 	vec2 mouse=(iMouse.xy / iResolution.xy - 0.5) * 0.5;
-	if (iMouse.z < 1.0) mouse = vec2(0.0);				
+	if (iMouse.z < 1.0) mouse = vec2(0.0);	
+
 	mat2 rotxz = rot(iGlobalTime*0.0652+mouse.x*5.0);
 	mat2 rotxy = rot(0.3-mouse.y*5.0);				
 	from.xy *= rotxy;
@@ -184,16 +181,19 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 	dir.xz  *= rotxz;
 	float totdist = 0.0;
 	bool set = false;
-	vec3 norm = vec3(0);				
+	vec3 norm = vec3(0);
+
 	if(uIntTypeTexture == 1){
 		fragColor = texture2D(iChannel0, fragCoord.xy/iResolution.xy);
 		return;
-	}				
+	}	
+
 	for (int i = 0 ; i < FREQ ; i++) {
 		if(i == uIntFreq) break;
 		float f = float(i) / float(FREQ-1);		
 		values[i] = texture2D(iChannel0, vec2(f, 0), -16.0);
-	}				
+	}
+
 	for (int steps = 0 ; steps < 200 ; steps++) {
 		if (set) continue;
 		vec3 p = from + totdist * dir;					
@@ -202,7 +202,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 		if (dist < 0.01) {
 			set = true;
 		}
-	}				
+	}
+
 	if (set) {    
 		vec3 p = from + totdist * dir;
 		norm = normal(p);
@@ -212,7 +213,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 		fragColor.rgb = norm*0.5+0.5;
 	} else {
 		fragColor = vec4(0, 0.2, 0, 1);
-	}				
+	}
+
 	if(uIntTypeTexture == 2){
 		vec3 pp = vec3((fragCoord.xy-iResolution.xy*0.5)/iResolution.x, 0.0);
 		pp *= 20.0;					
@@ -224,15 +226,18 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
 		if (dd < 0.0) fragColor.r = 0.0;
 		fragColor.a = 1.0;
 	}
+
 	return;								
 }
 
 // Fonction principale du fragment
 void mainImageGalaxy(out vec4 fragColor, in vec2 fragCoord){
 	vec4 fragColorTexture = texture2D(iChannel0, fragCoord.xy*iResolution.xy);
-	// Coordonnées normalisées (UV) centrées
+	
+    // Coordonnées normalisées (UV) centrées
 	vec2 uv = (fragCoord - 0.5 * iResolution.xy) / iResolution.y;
 	uv *= 1.5; // Zoom pour voir la galaxie
+
 	// Paramètres de la galaxie
 	float formuparam = 12.0 + 100.0; // Densité des étoiles
 	float stepsize = 0.18;   // Pas d'itération
@@ -242,6 +247,7 @@ void mainImageGalaxy(out vec4 fragColor, in vec2 fragCoord){
 	float darkmatter = 0.25;
 	float distfading = 0.7333;
 	float saturation = 0.85;
+
 	if(uIntFreq == 2) {
 		stepsize = stepsize / 10.0;
 	}
@@ -257,6 +263,7 @@ void mainImageGalaxy(out vec4 fragColor, in vec2 fragCoord){
 	if(uIntFreq == 16) {
 		stepsize = stepsize * 16.0;
 	}
+
 	// Initialisation
 	float s = 0.1;
 	float v = 0.0;
@@ -288,16 +295,16 @@ void mainImageGalaxy(out vec4 fragColor, in vec2 fragCoord){
 		// Mise à jour de la distance
 		s += stepsize;
 	}
+
 	// Assombrissement avec la distance
 	v = clamp(v, 0.0, 1.0);
 	v *= (1.0 - (s - 1.5) * distfading); // Fade-out
+
 	// Couleurs galactiques (bleu-violet pour les bras)
 	vec3 color = vec3(v * 0.5, v * 0.8, v); // Teinte basique
 	color = mix(color, vec3(1.0), darkmatter); // Ajout de "matière noire" (étoiles)				
 	// Saturation
 	color = mix(vec3(dot(color, vec3(0.333))), color, saturation);
-	//vec4 fragColorTexture = texture2D(iChannel0, fragCoord.xy*iResolution.xy);
-	//color = vec3(color.x+0.5*fragColorTexture.x, color.y+0.5*fragColorTexture.y, color.z+0.5*fragColorTexture.z);
 	color = smoothstep(color, fragColorTexture.xyz, vec3(0.3, 0.3, 0.3));
 	// Sortie finale
 	fragColor = vec4(color, 1.0);
@@ -306,7 +313,6 @@ void mainImageGalaxy(out vec4 fragColor, in vec2 fragCoord){
 
 // ──────────────────────────────────────────────────────────────
 // Galaxie Spirale Classique avec Matrice de Rotation
-// Auteur : adaptation simple et claire pour vous
 // Date : 2025
 // ──────────────────────────────────────────────────────────────
 void mainImageSpiralGalaxy( out vec4 fragColor, in vec2 fragCoord ){
@@ -368,7 +374,6 @@ void mainImageSpiralGalaxy( out vec4 fragColor, in vec2 fragCoord ){
 	vec3 color = density * galaxyColor;
 	color += core * coreColor * 3.0;
 	color += stars * 4.0;
-	//color = mix(color, dustColor, 1.0 - armPhase * 0.8); // zones sombres entre bras
 	color = mix(color, fragColorTexture.xyz, dustColor); // zones sombres entre bras				
 	// Vignettage doux
 	color *= 1.0 - smoothstep(0.6, 1.2, r);				
@@ -379,14 +384,15 @@ void mainImageSpiralGalaxy( out vec4 fragColor, in vec2 fragCoord ){
 
 // ──────────────────────────────────────────────────────────────
 // Galaxie 3D Elite Dangerous Style - Ray Marching + Matrice Spirale
-// Auteur : adaptation 2025 pour vous
 // ──────────────────────────────────────────────────────────────
+
 // Hash simple pour étoiles procédurales
 float hash(vec3 p) {
 	p = fract(p * vec3(0.1031, 0.1030, 0.0973));
 	p += dot(p, p.yzx + 33.33);
 	return fract((p.x + p.y) * p.z);
 }
+
 // Bruit 3D basique pour densité
 float noise(vec3 p) {
 	vec3 i = floor(p);
@@ -397,6 +403,7 @@ float noise(vec3 p) {
 			mix(mix(hash(i + vec3(0,0,1)), hash(i + vec3(1,0,1)), f.x),
 				mix(hash(i + vec3(0,1,1)), hash(i + vec3(1,1,1)), f.x), f.y), f.z);
 }
+
 // Matrice de rotation 3D (axe Z)
 mat3 rotZ(float a) {
 	float c = cos(a), s = sin(a);
@@ -404,6 +411,7 @@ mat3 rotZ(float a) {
 				s,  c, 0.0,
 				0.0, 0.0, 1.0);
 }
+
 // Fonction de densité galactique 3D
 float density(vec3 p) {
 	float r = length(p.xz);
@@ -440,6 +448,7 @@ vec3 render(vec3 ro, vec3 rd) {
 	float t = 0.0;
 	vec3 color = vec3(0.0);
 	float transmittance = 0.8;
+
 	if(uIntFreq == 2) {
 		transmittance = 0.1;
 	}
@@ -454,7 +463,8 @@ vec3 render(vec3 ro, vec3 rd) {
 	}
 	if(uIntFreq == 16) {
 		transmittance = 2.0;
-	}				
+	}	
+
 	for(int i = 0; i < MAX_STEPS; i++) {
 		vec3 p = ro + rd * t;
 		float d = map(p);					
@@ -470,18 +480,17 @@ vec3 render(vec3 ro, vec3 rd) {
 	// Génération d'étoiles lointaines avec hash et bruit
 	vec3 stars = vec3(0.0);
 	float starDensity = 0.0;
+
 	for(int i = 0; i < 3; i++) {  // Multi-échelles pour plus de variété
 		vec3 starP = rd * (20.0 + float(i) * 15.0);  // Positions lointaines
 		float n = noise(starP * 0.5 + iGlobalTime * 0.1);  // Animation subtile
 		starDensity += n * (0.5 / float(i+1));  // Densité décroissante
-	}				
+	}
+
 	stars = vec3(pow(starDensity, 8.0)) * 30.0 * vec3(1.0, 0.9, 0.8);  // Étoiles blanches/jaunes twinkling
 	color += stars * transmittance; 
 	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
-	color = mix(color, vec3(0.2, 0.2, 0.2), fragColorTexture.xyz);
-	//color = smoothstep(color, vec3(0.5, 0.5, 0.5), fragColorTexture.xyz);
-	//color = vec3(color.x+fragColorTexture.x, color.y+fragColorTexture.y, color.z+fragColorTexture.z);
-	//color = vec3(color.x, color.y, color.z);				
+	color = mix(color, vec3(0.2, 0.2, 0.2), fragColorTexture.xyz);			
 	return color;
 }
 
@@ -507,20 +516,16 @@ void mainImageSpiralGalaxy3D(out vec4 fragColor, in vec2 fragCoord) {
 
 // ──────────────────────────────────────────────────────────────
 // Julia Fractale Animée — Ultra fluide & hypnotique
-// Par Grok, 2025 - 100 % fonctionnel sur ShaderToy
 // ──────────────────────────────────────────────────────────────
 void mainImageFractal(out vec4 fragColor, in vec2 fragCoord){
 	// Coordonnées normalisées centrées
 	vec2 uv = (fragCoord - iResolution.xy * 0.25) / iResolution.y;
-	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);				
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);	
+
 	// Temps pour animation fluide
 	float time = iGlobalTime * 0.2;				
-	// === PARAMÈTRE C ANIMÉ (c’est ça qui fait toute la beauté) ===
-	// Essaie aussi ces classiques en décommentant :
-	// vec2 c = vec2(-0.8, 0.156);           // Avion classique
-	// vec2 c = vec2(-0.7269, 0.1889);      // Spirale
-	// vec2 c = vec2(-0.4, 0.6);            // Dendrite
 	vec2 c = 0.35 * cos(time * 0.7 + vec2(0.0, 1.57)) + vec2(-0.7, 0.0);
+
 	if(uIntFreq == 2) {
 		c = 0.35 * cos(time * 0.7 + vec2(0.0, 1.57)) + vec2(-0.7, 0.0);
 	}
@@ -536,12 +541,14 @@ void mainImageFractal(out vec4 fragColor, in vec2 fragCoord){
 	}
 	if(uIntFreq == 16) {
 		c = vec2(-0.3, 0.8); 
-	}				
+	}
+
 	// Zoom automatique + rotation lente
 	float zoom = pow(0.5, sin(time * 0.3) * 2.0); // va de 1x à 100x environ
 	float angle = time * 0.05;
 	mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
 	vec2 z = rot * uv * zoom + vec2(0.0, 0.0);
+
 	// === Calcul de la fractale Julia ===
 	const int maxIter = 256;
 	int iter = 0;
@@ -553,29 +560,21 @@ void mainImageFractal(out vec4 fragColor, in vec2 fragCoord){
 		if (dot(z, z) > 4.0) break;
 		iter++;
 	}
-	// === Coloration magique (mes préférées) ===
+
+	// === Coloration ===
 	float smoothIter = float(iter) + 1.0 - log(log(length(z))) / log(2.0);
 	float color = smoothIter / float(maxIter);
-	// Palette 1 — Couleurs chaudes psychédéliques (ma préférée)
+	// Couleurs chaudes psychédéliques (ma préférée)
 	vec3 col = 0.5 + 0.5 * cos(6.28318 * (color * 2.0 + vec3(0.0, 0.33, 0.67) + time * 0.1));
+    // Coloration en fonction de la fréquence
 	col = 0.5 + 0.5 * cos(6.28318 * (color * 2.0 + fragColorTexture.xyz + time * 0.1));
-	//col = 0.5 + 0.5 * cos(6.28318 * (color * 2.0 + cos(fragColorTexture.x) + time * 0.1));
-	//col = mix(col, fragColorTexture.xyz, vec3(0.1,0.1,0.1));
-	// Palette 2 — Bleu électrique (décommenter pour changer)
-	// vec3 col = vec3(0.0, 0.3, 0.8) + vec3(1.0, 0.7, 0.0) * pow(color, 0.3);
-	// Palette 3 — Arc-en-ciel infini
-	// vec3 col = 0.5 + 0.5 * sin(10.0 * color + time + vec3(0.0, 2.0, 4.0));
+
 	// Effet de pulsation globale
 	col *= 0.9 + 0.1 * sin(time * 3.0);
 	// Vignettage doux
 	col *= 1.0 - 0.3 * dot(uv, uv);
 	fragColor = vec4(col, 1.0);
 }
-
-
-
-
-
 
 
 
@@ -619,18 +618,19 @@ void mainImageInfiniteTunnel( out vec4 fragColor, in vec2 fragCoord ){
 	float hole = smoothstep(0.12 - kick*0.08, 0.08, dist);				
 	// Particules / plasma aspirées
 	float particles = 0.0;
-	for(int i = 0; i < 16; i++)
-	{
+
+	for(int i = 0; i < 16; i++){
 		float fi = float(i)/16.0;
 		float t = time*0.5 + fi*10.0;
 		vec2 off = vec2(cos(t), sin(t*1.618)) * (0.3 + fi*0.7 + kick);
 		particles += 0.004 / length(uv - off * (1.0 - fi*0.5));
 	}
+
 	particles = pow(particles, 2.0) * (1.0 + spark*20.0);				
 	// Gravitational lensing simple (distorsion autour du trou)
 	vec2 lensUV = uv / (1.0 + dist*2.0);
-	//float stars = texture(iChannel0, lensUV*0.5 + vec2(time*0.01, 0.0)).r; // iChannel0 = bruit ou étoiles
 	float stars = 0.1;
+
 	if(uIntFreq == 2) {
 		stars = 0.1;
 		particles = pow(particles, 1.0) * (1.0 + spark);
@@ -650,7 +650,8 @@ void mainImageInfiniteTunnel( out vec4 fragColor, in vec2 fragCoord ){
 	if(uIntFreq == 16) {
 		stars = 2.0;
 		stars = pow(stars, 50.0) * (1.0 - hole);
-	}				
+	}
+
 	// Couleurs plasma
 	vec3 col = vec3(0.0);
 	col += arms * vec3(1.5, 0.4, 2.0);           // bras violets
@@ -660,8 +661,7 @@ void mainImageInfiniteTunnel( out vec4 fragColor, in vec2 fragCoord ){
 	col = mix(col, vec3(8.0, 2.0, 0.0), kick*0.8); // énorme flash rouge/orange sur kick
 	col = mix(col, vec3(0.9, 0.9, 0.9), fragColorTexture.xyz);				
 	// Vignettage + glow final
-	col *= 1.0 - dist*0.7;
-	// col += pow(1.0 - dist, 10.0) * (1.0 + kick*10.0); // halo blanc au centre			
+	col *= 1.0 - dist*0.7;	
 	// Gamma
 	col = pow(col, vec3(0.4545));				
 	fragColor = vec4(col, 1.0);
@@ -673,8 +673,6 @@ void mainImageInfiniteTunnel( out vec4 fragColor, in vec2 fragCoord ){
 
 // ──────────────────────────────────────────────────────────────
 // RADIAL BASS REACTOR - Ultra violent & magnifique
-// iChannel0 = ta texture FFT / waveform
-// Par Grok - 2025
 // ──────────────────────────────────────────────────────────────
 
 float freqBassReactor(float x) { 
@@ -721,14 +719,17 @@ void mainImageBassReactor( out vec4 fragColor, in vec2 fragCoord ){
 	rings = pow(1.0 - rings, 8.0) * (1.0 + kick*15.0);				
 	// Particules radiales qui fusent sur les kicks
 	float particles = 0.0;
+
 	for(int i=0; i<32; i++) {
 		float fi = float(i);
 		float a = fi/32.0 * 6.28 + time*0.5 + kick*10.0;
 		float r = fract(dist*10.0 + fi*0.1 - time*2.0 - kick*8.0);
 		particles += 0.01 / (abs(r) + 0.01) * exp(-dist*3.0);
-	}				
+	}
+
 	// Rayons qui tournent et s’allongent avec les mids
 	float rays = abs(sin(angle*12.0 + time*2.0 + energy*10.0));
+
 	if(uIntFreq == 2) {
 		rays = pow(1.0 - rays, 1.0) * (1.0 + energy*2.0);
 	}
@@ -743,7 +744,8 @@ void mainImageBassReactor( out vec4 fragColor, in vec2 fragCoord ){
 	}
 	if(uIntFreq == 16) {
 		rays = pow(1.0 - rays, 24.0) * (1.0 + energy*32.0);
-	}				
+	}
+
 	// Scintillements aigus
 	float glitter = pow(spark, 3.0) * 0.03 / (dist + 0.1);			
 	// Couleurs
@@ -756,11 +758,7 @@ void mainImageBassReactor( out vec4 fragColor, in vec2 fragCoord ){
 	col += particles * vec3(0.5, 2.0, 4.0);            // particules bleues
 	col += glitter * vec3(1.0, 1.0, 2.0);				
 	// Flash global blanc total sur les plus gros kicks
-	// col += vec3(8.0, 6.0, 4.0) * pow(kick, 6.0);				
-	// Vignettage + glow final
-	col *= smoothstep(1.4, 0.0, dist);
-	// col += pow(1.0 - dist, 16.0) * (3.0 + kick*30.0);				
-	// col = pow(col, vec3(0.4545)); // gamma				
+	col *= smoothstep(1.4, 0.0, dist);			
 	fragColor = vec4(col, 1.0);
 }
 
@@ -770,7 +768,6 @@ void mainImageBassReactor( out vec4 fragColor, in vec2 fragCoord ){
 
 // ──────────────────────────────────────────────────────────────
 //  FUTURISTIC AUDIO WAVEFORM - Cyberpunk Edition
-//  Mettre iChannel0 = Sound (upload une track ou micro)
 // ──────────────────────────────────────────────────────────────
 void mainImageWaveForm( out vec4 fragColor, in vec2 fragCoord )
 {
@@ -778,7 +775,8 @@ void mainImageWaveForm( out vec4 fragColor, in vec2 fragCoord )
 	vec2 q = uv - 0.5;
 	q.x *= iResolution.x / iResolution.y;       // correction aspect ratio
 	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);			
-	vec3 finalCol = vec3(0.0);		
+	vec3 finalCol = vec3(0.0);
+
 	// ───── 1. Récupération du waveform et du spectre ─────
 	float time = iGlobalTime * 0.8;				
 	float rawWave = texture2D(iChannel0, iResolution.xy).x/10.0;     // waveform brut
@@ -786,7 +784,8 @@ void mainImageWaveForm( out vec4 fragColor, in vec2 fragCoord )
 	float fftLow  = texture2D(iChannel0,  uv.xy*iResolution.xy).x/10.0;    // basses (~60 Hz)
 	float fftMid  = texture2D(iChannel0,  uv.xy*iResolution.xy).y/10.0;    // mids
 	float fftHigh = texture2D(iChannel0,  uv.xy*iResolution.xy).z/10.0;     // aigus
-	float kick    = smoothstep(0.0, 0.7, fftLow);             // détection kick/bass				
+	float kick    = smoothstep(0.0, 0.7, fftLow);             // détection kick/bass
+
 	// ───── 2. Onde principale futuriste ─────
 	float centerY = 0.5 + wave * 0.35 * (1.0 + kick*2.0);      // amplitude boostée sur les kicks				
 	// Distance à l’onde centrale avec effet de "glow épais"
@@ -801,6 +800,7 @@ void mainImageWaveForm( out vec4 fragColor, in vec2 fragCoord )
 	vec3 neon = vec3(0.0, 0.9, 1.0);                           // cyan principal
 	neon = mix(neon, vec3(1.0, 0.0, 1.0), kick*0.7);           // flash magenta sur kick
 	finalCol += glow * neon * (1.0 + kick*4.0);
+
 	// ───── 3. Hologramme / Reflets multiples ─────
 	if(uIntFreq == 2) {
 		neon = vec3(0.0, 0.1, 0.1);
@@ -817,24 +817,27 @@ void mainImageWaveForm( out vec4 fragColor, in vec2 fragCoord )
 	if(uIntFreq == 16) {
 		neon = vec3(0.0, 4.9, 5.0);
 	}
+
 	neon = mix(neon, vec3(1.0, 0.0, 1.0), kick*0.7);           // flash magenta sur kick
 	finalCol += glow * neon * (1.0 + kick*4.0);
+
 	for(float i = 1.0; i < 10.0; i++){
 		float offset = (1.0/i) * 0.07 * (1.0 + fftMid);
 		float refl = abs(uv.y - centerY - offset);
 		float reflGlow = exp(-refl*20.0) * (1.0/i);
 		//finalCol += reflGlow * vec3(0.3, 0.7, 1.0) * 0.8;
 		finalCol += reflGlow * vec3(texture2D(iChannel0, iResolution.xy).x, texture2D(iChannel0, iResolution.xy).y, texture2D(iChannel0, iResolution.xy).z) * 0.8;
-	}				
+	}
+
 	// ───── 4. Glitch rythmique ─────
 	float glitch = step(0.96, sin(time*150.0)*kick);          // glitchs très rapides sur kick
 	if (fract(uv.y*200.0 + time*20.0) < 0.03 && glitch > 0.5)
-		uv.x += sin(uv.y*100.0)*0.1;				
-	// ───── 5. Scanlines + Vignette CRT ─────
-	//float scanline = sin(uv.y * 800.0) * 0.04;
-	//finalCol -= scanline;				
+		uv.x += sin(uv.y*100.0)*0.1;
+
+	// ───── 5. Scanlines + Vignette CRT ─────			
 	float vignette = smoothstep(0.7, 0.0, length(q));
-	finalCol *= vignette;				
+	finalCol *= vignette;
+
 	// ───── 6. Bloom final ─────
 	vec2 uvBloom = fragCoord.xy / iResolution.xy;
 	vec3 bloom = vec3(0.0);
@@ -843,13 +846,12 @@ void mainImageWaveForm( out vec4 fragColor, in vec2 fragCoord )
 	for(float dy=-2.0; dy<=2.0; dy+=1.0){
 		vec2 offset = vec2(dx, dy) * 0.005;
 		bloom += texture2D(iChannel0, uvBloom + offset).xxx;
-		//bloom += texture2D(iChannel0, iResolution.xy).xyz;
 	}
+
 	bloom /= 25.0;
-	//bloom  = vec3(bloom.x*fragColorTexture.x, bloom.y*fragColorTexture.y, bloom.z*fragColorTexture.z);
-	finalCol += bloom * vec3(0.3, 0.7, 1.0) * kick * 2.0;				
+	finalCol += bloom * vec3(0.3, 0.7, 1.0) * kick * 2.0;
+		
 	// Gamma + contraste cyberpunk
-	//finalCol = pow(finalCol, vec3(0.75));
 	finalCol = finalCol * 1.4 - 0.1;
 	finalCol  = vec3(finalCol.x+fragColorTexture.x/3.0, finalCol.y+fragColorTexture.y/3.0, finalCol.z+fragColorTexture.z/3.0);
 	fragColor = vec4(finalCol, 1.0);
@@ -860,13 +862,9 @@ void mainImageWaveForm( out vec4 fragColor, in vec2 fragCoord )
 
 // ──────────────────────────────────────────────────────────────
 // KALEIDOSCOPE AUDIO ANALYZER - Psychédélique & réactif
-// iChannel0 = ta texture FFT
-// Par Grok - 2025
 // ──────────────────────────────────────────────────────────────
 
 float freqKaleidoscope(float f) { 
-	// return texture(iChannel0, vec2(f, 0.25)).r; 
-	// return 0.25;
 	return texture2D(iChannel0, vec2(f, 0.25), 1.0).r;
 }
 
@@ -883,6 +881,7 @@ void mainImageKaleidoscope( out vec4 fragColor, in vec2 fragCoord ){
 	float dist = length(uv);
 	float angle = atan(uv.y, uv.x);
 	float SEGMENTS = 8.0;
+
 	if(uIntFreq == 2) {
 		SEGMENTS = 2.0;
 	}
@@ -897,7 +896,8 @@ void mainImageKaleidoscope( out vec4 fragColor, in vec2 fragCoord ){
 	}
 	if(uIntFreq == 16) {
 		SEGMENTS = 20.0;
-	}			
+	}
+
 	// === Kaleidoscope magique ===
 	float segment = angle / (3.141592*2.0) * SEGMENTS;
 	segment = fract(segment);
@@ -947,13 +947,9 @@ void mainImageKaleidoscope( out vec4 fragColor, in vec2 fragCoord ){
 
 // ──────────────────────────────────────────────────────────────
 // NEON GRID PULSE - Cyber Reactor 2025
-// iChannel0 = ta texture FFT
-// Par Grok
 // ──────────────────────────────────────────────────────────────
 
 float freqGridPulse(float f) { 
-	//return texture(iChannel0, vec2(f, 0.25)).r;
-	// return 0.25;
 	return texture2D(iChannel0, vec2(f, 0.25), 1.0).r;
 }
 
@@ -974,6 +970,7 @@ float volume() {
 void mainImageGridPulse( out vec4 fragColor, in vec2 fragCoord ){
 	vec2 uv = (fragCoord - iResolution.xy*0.5) / iResolution.y;
 	float GRID_SIZE = 20.0;
+
 	if(uIntFreq == 2) {
 		GRID_SIZE = 5.0;
 	}
@@ -989,10 +986,12 @@ void mainImageGridPulse( out vec4 fragColor, in vec2 fragCoord ){
 	if(uIntFreq == 16) {
 		GRID_SIZE = 50.0;
 	}
+
 	vec2 p = uv * GRID_SIZE;				
 	float time = iGlobalTime;
 	float k = kick();
-	float vol = pow(volume(), 1.5);				
+	float vol = pow(volume(), 1.5);
+
 	// Grille 3D infinie vue de dessus
 	vec3 pos = vec3(p.x, 4.0 + vol*25.0 + k*15.0, p.y - time*8.0);				
 	// Lignes horizontales (profondeur)
@@ -1037,490 +1036,872 @@ void mainImageGridPulse( out vec4 fragColor, in vec2 fragCoord ){
 
 
 
-			// ──────────────────────────────────────────────────────────────
-			// Trou Noir avec Disque d'Accrétion + Jets de Matière
-			// Par Grok, inspiré des meilleurs shaders black hole (2025 version)
-			// Clique et déplace la souris pour tourner autour !
-			// ──────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────
+// Trou Noir avec Disque d'Accrétion + Jets de Matière
+// ──────────────────────────────────────────────────────────────
+void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord ){
+	vec2 uv = (fragCoord - iResolution.xy*0.5) / iResolution.y;
+	vec3 rd = normalize(vec3(uv, -1.8));           // direction du rayon
+	vec3 ro = vec3(0.0, 0.0, 12.0);                // position caméra
+	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);				
+	// Rotation souris + animation automatique
+	float time = iGlobalTime * 0.15;
+	float mouseY = iMouse.y == 0.0 ? 0.3 : (iMouse.y / iResolution.y - 0.5)*3.0;
+	float ry = time + (iMouse.x / iResolution.x)*12.0;
+	float rx = mouseY;
+	rx = 0.0;
+	ry = time + (1.0 / iResolution.x)*12.0;				
+	mat3 rotY = mat3(cos(ry),0.0,sin(ry), 0.0,1.0,0.0, -sin(ry),0.0,cos(ry));
+	mat3 rotX = mat3(1.0,0.0,0.0, 0.0,cos(rx),-sin(rx), 0.0,sin(rx),cos(rx));
+	ro = rotY * rotX * ro;
+	rd = rotY * rotX * rd;				
+	// Paramètres du trou noir (Schwarzschild + rotation Kerr simplifiée)
+	float rs = 1.5;                    // rayon de Schwarzschild
+	vec3 bhPos = vec3(0.0);            // centre du trou noir
+	float spin = 0.85;                 // rotation du trou noir (0 = statique, 1 = extrême)				
+	vec3 color = vec3(0.0);
+	float t = 0.0;
+	const int steps = 128;
+	float minDist = 100.0;
 
-			void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
-			{
-				vec2 uv = (fragCoord - iResolution.xy*0.5) / iResolution.y;
-				vec3 rd = normalize(vec3(uv, -1.8));           // direction du rayon
-				vec3 ro = vec3(0.0, 0.0, 12.0);                // position caméra
+	if(uIntFreq == 2) {
+		rs = 1.0;
+		spin = 0.15;
+		minDist = 100.0;
+	}
+	if(uIntFreq == 4) {
+		rs = 1.0;
+		spin = 0.35;
+		minDist = 100.0;
+	}
+	if(uIntFreq == 8) {
+		rs = 1.5;
+		spin = 0.55;
+		minDist = 100.0;
+	}
+	if(uIntFreq == 12) {
+		rs = 2.0;
+		spin = 0.85;
+		minDist = 100.0;
+	}
+	if(uIntFreq == 16) {
+		rs = 2.5;
+		spin = 1.0;
+		minDist = 100.0;
+	}
+			
+	// Raymarching dans le champ gravitationnel
+	for(int i = 0; i < steps; i++)
+	{
+		vec3 p = ro + rd * t;
+		// p = vec3(0.0,p.x,p.y);
+		vec3 r = p - bhPos;
+		// r = vec3(0.0,r.x,r.y);
+		float rlen = length(r);					
+		minDist = min(minDist, rlen);					
+		// Effet de lentille gravitationnelle (approximation)
+		float grav = rs / (rlen*rlen*0.8);
+		rd += grav * normalize(r) * 0.04;
+		rd = normalize(rd);					
+		// Absorption par l'horizon
+		if(rlen < rs*1.01){
+			color = vec3(0.0);
+			break;
+		}				
+		// Disque d'accrétion (plan XZ incliné)
+		float disk = 0.0;
+		float diskDist = abs(p.y);
+		float radial = length(p.xz);
+		if(diskDist < 2.5 && radial > rs*2.0 && radial < 25.0){
+			// Température → couleur (plus chaud près du centre)
+			float heat = 8.0 / (radial - rs*1.5);
+			vec3 hot  = vec3(1.0, 0.3, 0.1);
+			vec3 warm = vec3(1.0, 0.7, 0.2);
+			vec3 cold = vec3(0.3, 0.6, 1.0);
+			vec3 diskCol = mix(mix(hot, warm, heat*0.2), cold, heat*0.05);						
+			// Doppler boosting (effet relativiste)
+			float doppler = dot(normalize(p.xz), vec2(sin(time*2.0), cos(time*2.0)));
+			diskCol *= 1.0 + 3.0 * doppler * spin;					
+			// Épaisseur et densité
+			float density = exp(-diskDist*2.0) * exp(-(radial-10.0)*(radial-10.0)*0.01);
+			color = vec3(0.0, color.y, color.z);
+			color += diskCol * density * 0.18;
+		}					
+		// Jets de matière (cônes le long de Y)
+		float jetRadius = 0.8 + 0.6*sin(time*3.0 + radial*0.5);
+		if(abs(p.y) > 3.0 && length(p.xz) < jetRadius * (abs(p.y)*0.05)){
+			float jetIntensity = exp(-abs(p.y)*0.07) * (0.7 + 0.3*sin(time*10.0 + p.y*3.0));
+			vec3 jetCol = vec3(1.2, 0.8, 2.5); // violet/bleu plasma
+		}					
+		t += 0.15 - 0.09 * grav; // pas adaptatif
+		if(t > 60.0){
+			break;
+		}
+	}
 
-				vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
-				
-				// Rotation souris + animation automatique
-				float time = iGlobalTime * 0.15;
-				float mouseY = iMouse.y == 0.0 ? 0.3 : (iMouse.y / iResolution.y - 0.5)*3.0;
-				float ry = time + (iMouse.x / iResolution.x)*12.0;
-				float rx = mouseY;
-				rx = 0.0;
-				ry = time + (1.0 / iResolution.x)*12.0;
-				
-				mat3 rotY = mat3(cos(ry),0.0,sin(ry), 0.0,1.0,0.0, -sin(ry),0.0,cos(ry));
-				mat3 rotX = mat3(1.0,0.0,0.0, 0.0,cos(rx),-sin(rx), 0.0,sin(rx),cos(rx));
-				ro = rotY * rotX * ro;
-				rd = rotY * rotX * rd;
-				
-				// Paramètres du trou noir (Schwarzschild + rotation Kerr simplifiée)
-				float rs = 1.5;                    // rayon de Schwarzschild
-				vec3 bhPos = vec3(0.0);            // centre du trou noir
-				float spin = 0.85;                 // rotation du trou noir (0 = statique, 1 = extrême)
-				
-				vec3 color = vec3(0.0);
-				float t = 0.0;
-				const int steps = 128;
-				float minDist = 100.0;
+	// Étoile de fond + lueur du disque
+	vec3 stars = vec3(pow(abs(sin(rd.x*123.0)+cos(rd.y*97.0+rd.z*67.0)), 80.0)*0.8);
+	color += stars * 0.3;		
+	// Absoption finale si trop près
+	if(minDist < rs*1.02) color = vec3(0.0);				
+	// Effet de gamma + contraste
+	color = pow(color, vec3(0.75));
+	color *= 1.2;				
+	vec3 newColor = mix(color, fragColorTexture.xyz, vec3(0.5,0.5,0.5));
+	fragColor = vec4(newColor, 1.0);
+}
 
-				if(uIntFreq == 2) {
-					rs = 1.0;
-					spin = 0.15;
-					minDist = 100.0;
-				}
-				if(uIntFreq == 4) {
-					rs = 1.0;
-					spin = 0.35;
-					minDist = 100.0;
-				}
-				if(uIntFreq == 8) {
-					rs = 1.5;
-					spin = 0.55;
-					minDist = 100.0;
-				}
-				if(uIntFreq == 12) {
-					rs = 2.0;
-					spin = 0.85;
-					minDist = 100.0;
-				}
-				if(uIntFreq == 16) {
-					rs = 2.5;
-					spin = 1.0;
-					minDist = 100.0;
-				}
 
-				// color = fragColorTexture.xyz/10.0;
-				
-				// Raymarching dans le champ gravitationnel
-				for(int i = 0; i < steps; i++)
-				{
-					vec3 p = ro + rd * t;
-					// p = vec3(0.0,p.x,p.y);
-					vec3 r = p - bhPos;
-					// r = vec3(0.0,r.x,r.y);
-					float rlen = length(r);
-					
-					minDist = min(minDist, rlen);
-					
-					// Effet de lentille gravitationnelle (approximation)
-					float grav = rs / (rlen*rlen*0.8);
-					//grav = grav + cos( fragColorTexture.x + fragColorTexture.y +fragColorTexture.z );
-					rd += grav * normalize(r) * 0.04;
-					//rd = rd * cos( fragColorTexture.x + fragColorTexture.y +fragColorTexture.z );
-					rd = normalize(rd);
-					
-					// Absorption par l'horizon
-					if(rlen < rs*1.01)
-					{
-						color = vec3(0.0);
-						break;
-					}
 
-					//color = fragColorTexture.xyz;
-					//color = vec3(fragColorTexture.x, fragColorTexture.y, fragColorTexture.z);
-					
-					// Disque d'accrétion (plan XZ incliné)
-					float disk = 0.0;
-					float diskDist = abs(p.y);
-					float radial = length(p.xz);
-					if(diskDist < 2.5 && radial > rs*2.0 && radial < 25.0)
-					{
-						// Température → couleur (plus chaud près du centre)
-						float heat = 8.0 / (radial - rs*1.5);
-						vec3 hot  = vec3(1.0, 0.3, 0.1);
-						vec3 warm = vec3(1.0, 0.7, 0.2);
-						vec3 cold = vec3(0.3, 0.6, 1.0);
 
-						vec3 diskCol = mix(mix(hot, warm, heat*0.2), cold, heat*0.05);
-						
-						// Doppler boosting (effet relativiste)
-						float doppler = dot(normalize(p.xz), vec2(sin(time*2.0), cos(time*2.0)));
-						diskCol *= 1.0 + 3.0 * doppler * spin;
-						// *  cos( fragColorTexture.x + fragColorTexture.y +fragColorTexture.z )*10.0;
-						
-						// Épaisseur et densité
-						float density = exp(-diskDist*2.0) * exp(-(radial-10.0)*(radial-10.0)*0.01);
-						color = vec3(0.0, color.y, color.z);
-						//color = vec3(fragColorTexture.x, fragColorTexture.y, fragColorTexture.z);
-						// diskCol = vec3(0.0);
-						color += diskCol * density * 0.18;
-						//color += diskCol * density * cos( fragColorTexture.x + fragColorTexture.y +fragColorTexture.z );
-					}
-					
-					// Jets de matière (cônes le long de Y)
-					float jetRadius = 0.8 + 0.6*sin(time*3.0 + radial*0.5);
-					//jetRadius = 0.8+(0.1*cos(fragColorTexture.x) + 0.1*cos(fragColorTexture.y) + 0.1*cos(fragColorTexture.z))*25.0;
-					if(abs(p.y) > 3.0 && length(p.xz) < jetRadius * (abs(p.y)*0.05))
-					{
-						float jetIntensity = exp(-abs(p.y)*0.07) * (0.7 + 0.3*sin(time*10.0 + p.y*3.0));
-						vec3 jetCol = vec3(1.2, 0.8, 2.5); // violet/bleu plasma
-						//color += jetCol * jetIntensity * 0.4;
-						//color = vec3(cos(fragColorTexture.x), cos(fragColorTexture.y), cos(fragColorTexture.z));
-						//color = jetCol;
-						
-					}
-					
-					t += 0.15 - 0.09 * grav; // pas adaptatif
-					if(t > 60.0){
-						break;
-					}
-				}
-				
-				// Étoile de fond + lueur du disque
-				vec3 stars = vec3(pow(abs(sin(rd.x*123.0)+cos(rd.y*97.0+rd.z*67.0)), 80.0)*0.8);
-				// stars = vec3(0.5,0.5,0.5);
-				color += stars * 0.3;
-				// color += stars * cos( fragColorTexture.x + fragColorTexture.y +fragColorTexture.z );
-				
-				// Absoption finale si trop près
-				if(minDist < rs*1.02) color = vec3(0.0);
-				
-				// Effet de gamma + contraste
-				color = pow(color, vec3(0.75));
-				color *= 1.2;
+// ──────────────────────────────────────────────────────────────
+// Pleine Lune Animée - 100% procédural - Novembre 2025
+// Fonctions de bruit pour les nuages et les étoiles
+// ──────────────────────────────────────────────────────────────
+float hashMoon(vec2 p) {
+	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
 
-				//float newColorX = color.x + cos(fragColorTexture.x);
-				//float newColorY = color.y + cos(fragColorTexture.y);
-				//float newColorZ = color.z + cos(fragColorTexture.z);
-				//if( newColorX > 1.0 ) {
-				//	newColorX = color.x - cos(fragColorTexture.x);
-				//}
-				//if( newColorY > 1.0 ) {
-				//	newColorY = color.y - cos(fragColorTexture.y);
-				//}
-				//if( newColorZ > 1.0 ) {
-				//	newColorZ = color.z - cos(fragColorTexture.z);
-				//}
-				//color = vec3(newColorX, newColorY, newColorZ);
-				
-				vec3 newColor = mix(color, fragColorTexture.xyz, vec3(0.5,0.5,0.5));
+float noiseMoon(vec2 p) {
+	vec2 i = floor(p);
+	vec2 f = fract(p);
+	f = f * f * (3.0 - 2.0 * f);				
+	float a = hashMoon(i);
+	float b = hashMoon(i + vec2(1.0, 0.0));
+	float c = hashMoon(i + vec2(0.0, 1.0));
+	float d = hashMoon(i + vec2(1.0, 1.0));				
+	return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
 
-				fragColor = vec4(newColor, 1.0);
+float fbm(vec2 p) {
+	float value = 0.0;
+	float amplitude = 0.5;
+	float frequency = 1.0;		
+	value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
+	value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
+	value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
+	value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
+	value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
+	value += amplitude * noiseMoon(p * frequency);				
+	return value;
+}
+
+float starsMoon(vec2 uv) {
+	vec2 starCoord = uv * 250.0;
+	vec2 i = floor(starCoord);
+	vec2 f = fract(starCoord);				
+	float star = 0.0;				
+	for(int y = -1; y <= 1; y++) {
+		for(int x = -1; x <= 1; x++) {
+			vec2 offset = vec2(float(x), float(y));
+			vec2 starPos = i + offset;						
+			float brightness = hashMoon(starPos);						
+			if(brightness > 0.995) {
+				vec2 delta = f - offset - 0.5;
+				float dist = length(delta);							
+				float starMask = 1.0 - smoothstep(0.4, 0.5, dist);
+				starMask *= exp(-dist * 6.0);							
+				float intensity = pow(brightness, 4.0);
+				starMask *= intensity;							
+				star = max(star, starMask);
 			}
+		}
+	}				
+	return star;
+}
+
+float clouds(vec2 uv, float time) {
+	vec2 cloudOffset = vec2(time * 0.04, time * 0.015);				
+	float cloud1 = fbm(uv * 3.5 + cloudOffset * 1.1);
+	float cloud2 = fbm(uv * 5.5 + cloudOffset * 0.7);
+	float cloud3 = fbm(uv * 7.5 + cloudOffset * 1.4);				
+	float cloudDensity = cloud1 * 0.6 + cloud2 * 0.3 + cloud3 * 0.1;
+	return smoothstep(0.25, 0.75, cloudDensity);
+}
+
+float moonDisk(vec2 uv, vec2 center, float radius) {
+	return 1.0 - smoothstep(radius - 0.03, radius, length(uv - center));
+}
+
+void mainImageMoon(out vec4 fragColor, in vec2 fragCoord) {
+	vec2 uv = (fragCoord - 0.5 * iResolution.xy) / iResolution.y;
+	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+	float starField = starsMoon(uv);
+	vec3 skyColor = mix(vec3(0.08, 0.12, 0.22), vec3(0.02, 0.05, 0.14), 
+					smoothstep(-0.4, 0.4, uv.y));				
+	vec3 color = skyColor + vec3(0.95, 0.92, 0.85) * starField * 3.0;				
+	vec2 moonCenter = vec2(-0.15, 0.15);
+	float moonRadius = 0.20;				
+	float moonMask = moonDisk(uv, moonCenter, moonRadius);				
+	vec2 localUV = uv - moonCenter;
+	float surfaceNoise = fbm(localUV * 12.0);
+	float detailNoise = fbm(localUV * 25.0);				
+	float surfaceDetail = surfaceNoise * 0.6 + detailNoise * 0.3;				
+	vec3 moonColor = mix(vec3(0.78, 0.75, 0.78), vec3(0.9, 0.8, 0.9), surfaceDetail);			
+	float cloudCover = clouds(uv, iGlobalTime);				
+	float cloudOcclusion = smoothstep(0.3, 0.8, cloudCover);
+	cloudOcclusion *= moonMask;				
+	vec3 moonWithPhase = moonColor * moonMask * fragColorTexture.xyz;
+	vec3 moonRecolored = smoothstep(fragColorTexture.xyz, moonWithPhase, vec3(1.0,1.0,1.0));				
+	vec3 finalMoonColor = mix(moonRecolored, color, cloudOcclusion);
+	finalMoonColor = mix(finalMoonColor, moonWithPhase, moonMask * (1.0 - cloudOcclusion));				
+	float thinClouds = smoothstep(0.6, 0.8, cloudCover);
+	float halo = thinClouds * moonMask * 0.3;
+	finalMoonColor += vec3(0.95, 0.92, 0.85) * halo;
+	 // === Eau (très visible maintenant) ===
+	float waterLevel = -0.15;                          // ligne d’eau bien plus haute
+	float waterMask = smoothstep(waterLevel+0.05, waterLevel-0.3, uv.y);
+
+	if(uIntFreq == 2) {
+		waterLevel = 0.05;
+	}
+	if(uIntFreq == 4) {
+		waterLevel = -0.05;
+	}
+	if(uIntFreq == 8) {
+		waterLevel = -0.15;
+	}
+	if(uIntFreq == 12) {
+		waterLevel = -0.25;
+	}
+	if(uIntFreq == 16) {
+		waterLevel = -0.35;
+	}
+
+	if(waterMask > 0.01){
+		vec2 wuv = uv;
+		// Animation des vagues
+		wuv.x += sin(uv.y*10.0 + iGlobalTime*2.0)*0.04;
+		wuv.x += sin(uv.y*4.5  + iGlobalTime*1.4)*0.02;					
+		// Reflet de la lune déformé
+		vec2 refl = wuv - moonCenter;
+		refl.y = abs(refl.y + 0.45);                     // miroir parfait sous l’eau
+		float moonRefl = exp(-length(refl)*5.0) * moonMask;
+		moonRefl *= 1.5 + 2.0*sin(wuv.y*30.0 + iGlobalTime*4.0); // ondulation verticale du reflet
+		// Couleur eau + caustics
+		vec3 water = vec3(0.0,0.04,0.12);
+		water += vec3(0.1,0.25,0.4) * fbm(wuv*12.0);
+		water += vec3(0.8,0.9,1.0) * moonRefl * 2.5;
+		water += vec3(0.3,0.6,0.8) * pow(fbm(wuv*30.0 + iGlobalTime*2.0), 5.0) * 0.4;
+		// Bord de mer plus clair
+		water = mix(water, vec3(0.15,0.4,0.5), smoothstep(waterLevel, waterLevel+0.2, uv.y));
+		water = mix(color, water, fragColorTexture.xyz);
+		color = mix(color, water, waterMask);
+	}				
+	color = mix(color, finalMoonColor, moonMask);				
+	color = pow(color, vec3(0.85));
+	color *= 1.05;				
+	fragColor = vec4(color, 1.0);
+}
+
+
+
+// ──────────────────────────────────────────────────────────────
+// Soleil animé + Halo + Éruptions solaires - 4K 60fps
+// ──────────────────────────────────────────────────────────────
+
+void mainImageSun( out vec4 fragColor, in vec2 fragCoord ){
+	vec2 uv = (fragCoord - iResolution.xy) / iResolution.y;
+	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+	vec2 mo =  vec2(0.5, 0.48)/iResolution.xy;				
+	float time = iGlobalTime * 0.3;				
+	// Position du Soleil (légèrement déplacé avec la souris)
+	vec2 sunPos = mo - vec2(0.5, 0.5);
+	sunPos.x *= iResolution.x/iResolution.y;
+	vec3 rd = normalize(vec3(uv - sunPos, -1.2));				
+	float dist = length(uv - sunPos);				
+	vec3 color = vec3(0.0);
+
+	// === 1. Photosphère + taches solaires ===
+	float sunDisk = smoothstep(0.32, 0.30, dist);
+	if(sunDisk > 0.0){
+		vec2 suv = (uv - sunPos) * 18.0;
+		float angle = atan(suv.y, suv.x);
+		float noise = fragColorTexture.x;
+		noise = pow(noise, 2.0);					
+		// Taches solaires sombres
+		float spots = smoothstep(0.6, 0.0, fragColorTexture.x);
+		spots *= smoothstep(0.9, 0.3, length(suv));					
+		vec3 photosphere = mix(vec3(1.0, 0.95, 0.8), vec3(1.0, 0.7, 0.3), noise*0.6);
+		photosphere = mix(photosphere, vec3(0.3, 0.1, 0.0), fragColorTexture.xyz);					
+		color += photosphere * sunDisk;
+	}	
+
+	// === 2. Chromosphère (bord rouge) ===
+	float chromo = smoothstep(0.30, 0.33, dist) * smoothstep(0.40, 0.31, dist);
+	color += vec3(1.0, 0.35, 0.1) * chromo * 2.5;
+	color = mix(color, vec3(0.3, 0.1, 0.0), fragColorTexture.xyz);
+
+	// === 3. Couronne douce ===
+	float corona = exp(-dist*2.5) * 0.8;
+	color += vec3(1.0, 0.9, 0.7) * corona * 0.4;
+
+	// === 4. HALO DE RAYONS CRÉPUSCULARES (God Rays) ===
+	float rays = 0.0;
+	const int samples = 32;
+	float density = 0.94;
+	float weight = 0.12;
+	float decay = 0.96;
+	float exposure = 0.28;
+
+	if(uIntFreq == 2) {
+		density = 0.24;
+		weight = 0.012;
+		decay = 0.46;
+		exposure = 0.1;
+	}
+	if(uIntFreq == 4) {
+		density = 0.54;
+		weight = 0.052;
+		decay = 0.66;
+		exposure = 0.2;
+	}
+	if(uIntFreq == 8) {
+		density = 0.94;
+		weight = 0.12;
+		decay = 0.96;
+		exposure = 0.28;
+	}
+	if(uIntFreq == 12) {
+		density = 1.94;
+		weight = 0.32;
+		decay = 1.26;
+		exposure = 0.5;
+	}
+	if(uIntFreq == 16) {
+		density = 2.94;
+		weight = 0.92;
+		decay = 1.96;
+		exposure = 0.7;
+	}
+
+	vec2 rayUV = uv - sunPos;
+	float illuminationDecay = 1.0;				
+	for(int i = 0; i < samples; i++){
+		float stepDist = float(i) * 0.07;
+		vec2 sampleUV = sunPos + rayUV * stepDist;
+		float sampleDist = length(sampleUV - sunPos);					
+		// Occultation par le disque solaire
+		float occult = 1.0 - smoothstep(0.0, 0.35, sampleDist);					
+		// Motif radial des rayons (avec rotation lente)
+		float angle = atan(sampleUV.y - sunPos.y, sampleUV.x - sunPos.x);
+		float rayPattern = sin(angle*24.0 + time*2.0)*0.5 + 0.5;
+		rayPattern = pow(rayPattern, 3.0);					
+		rays += occult * rayPattern * illuminationDecay * weight;
+		illuminationDecay *= decay;
+	}
+
+	vec3 rayColor = vec3(1.0, 0.85, 0.6);
+	color += rayColor * rays * exposure * 3.0;
+
+	// === 5. Légère lueur globale + vignettage ===
+	color += vec3(1.0, 0.7, 0.4) * pow(sunDisk, 4.0) * 2.0;
+	color *= 1.0 - 0.3*length(uv); // vignettage doux				
+	// Gamma
+	color = pow(color, vec3(0.9));				
+	fragColor = vec4(color, 1.0);
+}
+
+
+
+// ──────────────────────────────────────────────────────────────
+// 3D Sierpinski Triangle
+// source : https://www.shadertoy.com/view/4dl3Wl
+// The MIT License
+// Copyright © 2013 Inigo Quilez
+// ──────────────────────────────────────────────────────────────
+
+// return distance and address
+vec2 mapSierpinski( vec3 p ){
+    const vec3 va = vec3(  0.0,  0.57735,  0.0 );
+    const vec3 vb = vec3(  0.0, -1.0,  1.15470 );
+    const vec3 vc = vec3(  1.0, -1.0, -0.57735 );
+    const vec3 vd = vec3( -1.0, -1.0, -0.57735 );
+    
+	float a = 0.0;
+    float s = 1.0;
+    float r = 1.0;
+    float dm;
+    for( int i=0; i<9; i++ ){
+        vec3 v;
+	    float d, t;
+		d = dot(p-va,p-va);            { v=va; dm=d; t=0.0; }
+        d = dot(p-vb,p-vb); if( d<dm ) { v=vb; dm=d; t=1.0; }
+        d = dot(p-vc,p-vc); if( d<dm ) { v=vc; dm=d; t=2.0; }
+        d = dot(p-vd,p-vd); if( d<dm ) { v=vd; dm=d; t=3.0; }
+		p = v + 2.0*(p - v); r*= 2.0;
+		a = t + 4.0*a; s*= 4.0;
+	}
+	return vec2( (sqrt(dm)-1.0)/r, a/s );
+}
+
+const float precis = 0.0002;
+
+vec3 intersect( in vec3 ro, in vec3 rd ){
+	const float maxd = 5.0;
+	vec3 res = vec3( 1e20, 0.0, 0.0 );
+    float t = 0.5;
+	float m = 0.0;
+    vec2 r;
+	for( int i=0; i<100; i++ ){
+	    r = mapSierpinski( ro+rd*t );
+        if( r.x<precis || t>maxd ) break;
+		m = r.y;
+        t += r.x;
+    }
+
+    if( t<maxd && r.x<precis ) res = vec3( t, 2.0, m );
+
+	return res;
+}
+
+vec3 calcNormal( in vec3 pos ){
+    vec3 eps = vec3(precis,0.0,0.0);
+	return normalize( vec3(
+           mapSierpinski(pos+eps.xyy).x - mapSierpinski(pos-eps.xyy).x,
+           mapSierpinski(pos+eps.yxy).x - mapSierpinski(pos-eps.yxy).x,
+           mapSierpinski(pos+eps.yyx).x - mapSierpinski(pos-eps.yyx).x ) );
+}
+
+float calcOcclusion( in vec3 pos, in vec3 nor ){
+	float ao = 0.0;
+    float sca = 1.0;
+    for( int i=0; i<8; i++ ){
+        float h = 0.001 + 0.5*pow(float(i)/7.0,1.5);
+        float d = mapSierpinski( pos + h*nor ).x;
+        ao += -(d-h)*sca;
+        sca *= 0.95;
+    }
+    return clamp( 1.0 - 0.8*ao, 0.0, 1.0 );
+}
+
+
+vec3 renderSierpinski( in vec3 ro, in vec3 rd ){
+    vec3 col = vec3(0.0);
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+
+	// raymarch
+    vec3 tm = intersect(ro,rd);
+    if( tm.y>0.5 ){
+        // geometry
+        vec3 pos = ro + tm.x*rd;
+		vec3 nor = calcNormal( pos );
+		vec3 maa = vec3( 0.0 );
+		
+        maa = 0.5 + 0.5*cos( 6.2831*tm.z + vec3(0.0,1.0,2.0) );
+
+		float occ = calcOcclusion( pos, nor );
+
+		// lighting
+        const vec3 lig = normalize(vec3(1.0,0.7,0.9));
+		float amb = (0.5 + 0.5*nor.y);
+		float dif = max(dot(nor,lig),0.0);
+
+        // lights
+		vec3 lin = amb*vec3(3.0) * occ;
+		if( fragColorTexture.x>0.0 ) lin = mix(fragColorTexture.xyz, lin, vec3(0.66));	
+		// surface-light interacion
+		col = maa * lin;
+		//if( fragColorTexture.x>0.0 ) col = smoothstep(fragColorTexture.xyz, col, vec3(0.66));	
+	}
+
+    // gamma
+	col = pow( clamp(col,0.0,1.0), vec3(0.45) );
+
+	//col = mix(fragColorTexture.xyz, col, vec3(1.0,1.0,1.0));	
+
+    return col;
+}
+
+void mainImageSierpinski( out vec4 fragColor, in vec2 fragCoord ){
+    vec2 p = (2.0*fragCoord-iResolution.xy)/iResolution.y;;
+    vec2 m = vec2(0.5);
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+
+	if(uIntFreq == 2) {
+		m = vec2(0.1);
+	}
+	if(uIntFreq == 4) {
+		m = vec2(0.2);
+	}
+	if(uIntFreq == 8) {
+		m = vec2(0.5);
+	}
+	if(uIntFreq == 12) {
+		m = vec2(1.0);
+	}
+	if(uIntFreq == 16) {
+		m = vec2(5.0);
+	}	
+
+    // camera
+	float an = 3.2 + 0.5*iGlobalTime - 6.2831*(m.x-0.5);
+	vec3 ro = vec3(2.5*sin(an),0.0,2.5*cos(an));
+    vec3 ta = vec3(0.0,-0.5,0.0);
+    vec3 ww = normalize( ta - ro );
+    vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
+    vec3 vv = normalize( cross(uu,ww));
+	vec3 rd = normalize( p.x*uu + p.y*vv + 5.0*ww*m.y );
+
+    // render
+    vec3 col = renderSierpinski( ro, rd );
+	//col = mix(col, vec3(0.3, 0.1, 0.0), fragColorTexture.xyz);	
+    
+    fragColor = vec4( col, 1.0 );
+}
+
+
+
+// ──────────────────────────────────────────────────────────────
+// 3D Sierpinski Mobius
+// source : https://www.shadertoy.com/view/XsGXDV
+// ──────────────────────────────────────────────────────────────
+
+// Standard Mobius transform: f(z) = (az + b)/(cz + d). Slightly obfuscated.
+vec2 Mobius(vec2 p, vec2 z1, vec2 z2){
+
+	z1 = p - z1; p -= z2;
+	return vec2(dot(z1, p), z1.y*p.x - z1.x*p.y)/dot(p, p);
+}
+
+// Standard spiral zoom.
+vec2 spiralZoom(vec2 p, vec2 offs, float n, float spiral, float zoom, vec2 phase){
+	
+	p -= offs;
+	float a = atan(p.y, p.x)/6.283 - iGlobalTime*.25;
+	float d = log(length(p));
+	return vec2(a*n + d*spiral, a - d*zoom) + phase;
+}
+
+// Mobius, spiral zoomed, Sierpinski Carpet pattern.
+vec3 pattern(vec2 uv){
+
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+    
+    // A subtlely spot-lit background. Performed on uv prior to tranformation,
+    float bg = max(1. - length(uv), 0.)*.025; 
+    
+    // Transform the screen coordinates. Comment out the following two lines and 
+    // you'll be left with a standard Sierpinski pattern.
+    uv = Mobius(uv, vec2(-.75, cos(iGlobalTime)*.25), vec2(.5, sin(iGlobalTime)*.25));
+    uv = spiralZoom(uv, vec2(-.5), 5., 3.14159*.2, .5, vec2(-1, 1)*iGlobalTime*.25);
+    
+     
+    vec3 col = vec3(bg); // Set the canvas to the background.
+    
+    // Sierpinski Carpet - Essentially, space is divided into 3 each iteration, and a 
+    // shape of some kind is rendered. In this case, it's a smooth rectangle
+    // with a bit of shading around the side.
+    //
+    // There's some extra steps in there (the "l" and "mod" bits) due to the 
+    // shading and coloring, but it's pretty simple.
+    //
+    // By the way, there are other combinations you could use.
+    //
+    for(float i=0.; i<4.; i++){
+        
+        uv = fract(uv)*3.; // Subdividing space.
+        
+        vec2 w = .5 - abs(uv - 1.5); // Prepare to make a square. Other shapes are also possible.
+
+		if(uIntFreq == 2) {
+			w = .2 - abs(uv - 0.5); 
+		}
+		if(uIntFreq == 4) {
+			w = .3 - abs(uv - 1.0); 
+		}
+		if(uIntFreq == 8) {
+			w = .5 - abs(uv - 1.5); 
+		}
+		if(uIntFreq == 12) {
+			w = sin(w)*PI; 
+		}
+		if(uIntFreq == 16) {
+			w = sin(w)*2.0*PI; 
+		}	
+
+		if( fragColorTexture.x>0.0 ) w = smoothstep(w, fragColorTexture.xy, vec2(0.0));
+        
+        float l = sqrt(max(16.0*w.x*w.y*(1.0-w.x)*(1.0-w.y), 0.)); // Vignetting (edge shading).
+        
+        if( fragColorTexture.x==0.0 ) w = smoothstep(0., length(fwidth(w)), w); // Smooth edge stepping.
+        
+        vec3 lCol = vec3(1)*w.x*w.y*l; // White shaded square with smooth edges.
+        
+        if(mod(i, 3.)<.5) lCol *= vec3(0.1, 0.8, 1); // Color layers zero and three blue.
+        
+        col = max(col, lCol); // Taking the max of the four layers.
+        
+    } 
+    
+    return col;
+    
+}
+
+
+void mainImageMobius(out vec4 fragColor, in vec2 fragCoord){ // my attempt to code-golf it (137chars)
+
+    // Screen coordinates.
+    vec2 uv = (fragCoord - iResolution.xy*.5)/iResolution.y;
+    
+    // Transformed Sierpinski pattern.
+    vec3 col = pattern(uv);
+    
+    // Rough gamma correction.
+    fragColor = vec4(sqrt(col), 1);
+}
 
 
 
 
-			// ──────────────────────────────────────────────────────────────
-			// Pleine Lune Animée - 100% procédural - Novembre 2025
-			// Par Grok (xAI) - à toi avec plaisir 🌕
-			// Fonctions de bruit pour les nuages et les étoiles
-			// ──────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────
+// 3D Sierpinski Mobius
+// source : https://www.shadertoy.com/view/XsGXDV
+// Shader generated using ChatGPT
+// Original promot > Create code for a shadertoy shader that creates colorful animated fractal patterns.
+// Some code and parameters slightly modified manually.
+// ──────────────────────────────────────────────────────────────
 
-			float hashMoon(vec2 p) {
-				return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-			}
+void mainImageMandelbrot( out vec4 fragColor, in vec2 fragCoord ){
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+    float time = iGlobalTime * 0.5;
+    vec2 z = (fragCoord.xy / iResolution.x) * 1.0 - 0.5;
+    vec2 c = vec2(-0.2 + 0.25*sin(time), 0.6 + 0.03*cos(time));
+    float d = 0.0;
+    float n = 0.0;
 
-			float noiseMoon(vec2 p) {
-				vec2 i = floor(p);
-				vec2 f = fract(p);
-				f = f * f * (3.0 - 2.0 * f);
-				
-				float a = hashMoon(i);
-				float b = hashMoon(i + vec2(1.0, 0.0));
-				float c = hashMoon(i + vec2(0.0, 1.0));
-				float d = hashMoon(i + vec2(1.0, 1.0));
-				
-				return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-			}
+	if(uIntFreq == 2) {
+		n = -1.0;
+	}
+	if(uIntFreq == 4) {
+		n = -0.5;
+	}
+	if(uIntFreq == 8) {
+		n = 0.0;
+	}
+	if(uIntFreq == 12) {
+		n = 0.5;
+	}
+	if(uIntFreq == 16) {
+		n = 1.0;
+	}	
 
-			float fbm(vec2 p) {
-				float value = 0.0;
-				float amplitude = 0.5;
-				float frequency = 1.0;
-				
-				value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
-				value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
-				value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
-				value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
-				value += amplitude * noiseMoon(p * frequency); amplitude *= 0.5; frequency *= 2.0;
-				value += amplitude * noiseMoon(p * frequency);
-				
-				return value;
-			}
+    for (int i = 0; i < 200; i++)  
+    {
+        z = vec2(z.x*z.x - z.y*z.y, 2.0*z.x*z.y) + c; 
+        d = dot(z,z);
+        n += 0.0002/ d; 
+        if (d > 200.0) break;
+    }
+    vec3 color = vec3(abs(sin(n*20.0)), abs(cos(n*10.0)), abs(sin(n*5.0))); //
+	if( fragColorTexture.x>0.0 ) color = smoothstep(color, fragColorTexture.xyz, vec3(0.66));
+    fragColor = vec4(color,1.0);
+}
 
-			float starsMoon(vec2 uv) {
-				vec2 starCoord = uv * 250.0;
-				vec2 i = floor(starCoord);
-				vec2 f = fract(starCoord);
-				
-				float star = 0.0;
-				
-				for(int y = -1; y <= 1; y++) {
-					for(int x = -1; x <= 1; x++) {
-						vec2 offset = vec2(float(x), float(y));
-						vec2 starPos = i + offset;
-						
-						float brightness = hashMoon(starPos);
-						
-						if(brightness > 0.995) {
-							vec2 delta = f - offset - 0.5;
-							float dist = length(delta);
-							
-							float starMask = 1.0 - smoothstep(0.4, 0.5, dist);
-							starMask *= exp(-dist * 6.0);
-							
-							float intensity = pow(brightness, 4.0);
-							starMask *= intensity;
-							
-							star = max(star, starMask);
-						}
-					}
-				}
-				
-				return star;
-			}
-
-			float clouds(vec2 uv, float time) {
-				vec2 cloudOffset = vec2(time * 0.04, time * 0.015);
-				
-				float cloud1 = fbm(uv * 3.5 + cloudOffset * 1.1);
-				float cloud2 = fbm(uv * 5.5 + cloudOffset * 0.7);
-				float cloud3 = fbm(uv * 7.5 + cloudOffset * 1.4);
-				
-				float cloudDensity = cloud1 * 0.6 + cloud2 * 0.3 + cloud3 * 0.1;
-				return smoothstep(0.25, 0.75, cloudDensity);
-			}
-
-			float moonDisk(vec2 uv, vec2 center, float radius) {
-				return 1.0 - smoothstep(radius - 0.03, radius, length(uv - center));
-			}
-
-			void mainImageMoon(out vec4 fragColor, in vec2 fragCoord) {
-				vec2 uv = (fragCoord - 0.5 * iResolution.xy) / iResolution.y;
-				vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
-				float starField = starsMoon(uv);
-				vec3 skyColor = mix(vec3(0.08, 0.12, 0.22), vec3(0.02, 0.05, 0.14), 
-								smoothstep(-0.4, 0.4, uv.y));
-				
-				vec3 color = skyColor + vec3(0.95, 0.92, 0.85) * starField * 3.0;
-				
-				vec2 moonCenter = vec2(-0.15, 0.15);
-				float moonRadius = 0.20;
-				
-				float moonMask = moonDisk(uv, moonCenter, moonRadius);
-				
-				vec2 localUV = uv - moonCenter;
-				float surfaceNoise = fbm(localUV * 12.0);
-				float detailNoise = fbm(localUV * 25.0);
-				
-				float surfaceDetail = surfaceNoise * 0.6 + detailNoise * 0.3;
-				
-				vec3 moonColor = mix(vec3(0.78, 0.75, 0.78), vec3(0.9, 0.8, 0.9), surfaceDetail);
-				//vec3 moonColor = mix(vec3(0.78 + cos(fragColorTexture.x), 0.75 + cos(fragColorTexture.y), 0.78 + cos(fragColorTexture.z)), vec3(1.0, 1.0, 1.0), surfaceDetail);
-				
-				float cloudCover = clouds(uv, iGlobalTime);
-				
-				float cloudOcclusion = smoothstep(0.3, 0.8, cloudCover);
-				cloudOcclusion *= moonMask;
-				
-				vec3 moonWithPhase = moonColor * moonMask * fragColorTexture.xyz;
-
-				// vec3 moonRecolored = mix(moonWithPhase, fragColorTexture.xyz, 1.5);
-				vec3 moonRecolored = smoothstep(fragColorTexture.xyz, moonWithPhase, vec3(1.0,1.0,1.0));
-				
-				vec3 finalMoonColor = mix(moonRecolored, color, cloudOcclusion);
-				finalMoonColor = mix(finalMoonColor, moonWithPhase, moonMask * (1.0 - cloudOcclusion));
-				
-				float thinClouds = smoothstep(0.6, 0.8, cloudCover);
-				float halo = thinClouds * moonMask * 0.3;
-				finalMoonColor += vec3(0.95, 0.92, 0.85) * halo;
-
-				 // === Eau (très visible maintenant) ===
-				float waterLevel = -0.15;                          // ligne d’eau bien plus haute
-				float waterMask = smoothstep(waterLevel+0.05, waterLevel-0.3, uv.y);
-
-				if(uIntFreq == 2) {
-					waterLevel = 0.05;
-				}
-				if(uIntFreq == 4) {
-					waterLevel = -0.05;
-				}
-				if(uIntFreq == 8) {
-					waterLevel = -0.15;
-				}
-				if(uIntFreq == 12) {
-					waterLevel = -0.25;
-				}
-				if(uIntFreq == 16) {
-					waterLevel = -0.35;
-				}
-
-				if(waterMask > 0.01){
-					vec2 wuv = uv;
-					// Animation des vagues
-					wuv.x += sin(uv.y*10.0 + iGlobalTime*2.0)*0.04;
-					wuv.x += sin(uv.y*4.5  + iGlobalTime*1.4)*0.02;
-					
-					// Reflet de la lune déformé
-					vec2 refl = wuv - moonCenter;
-					refl.y = abs(refl.y + 0.45);                     // miroir parfait sous l’eau
-					float moonRefl = exp(-length(refl)*5.0) * moonMask;
-					moonRefl *= 1.5 + 2.0*sin(wuv.y*30.0 + iGlobalTime*4.0); // ondulation verticale du reflet
-
-					// Couleur eau + caustics
-					vec3 water = vec3(0.0,0.04,0.12);
-					water += vec3(0.1,0.25,0.4) * fbm(wuv*12.0);
-					water += vec3(0.8,0.9,1.0) * moonRefl * 2.5;
-					water += vec3(0.3,0.6,0.8) * pow(fbm(wuv*30.0 + iGlobalTime*2.0), 5.0) * 0.4;
-
-					// Bord de mer plus clair
-					water = mix(water, vec3(0.15,0.4,0.5), smoothstep(waterLevel, waterLevel+0.2, uv.y));
-
-					water = mix(color, water, fragColorTexture.xyz);
-					color = mix(color, water, waterMask);
-				}
-
-				
-				color = mix(color, finalMoonColor, moonMask);
-				
-				color = pow(color, vec3(0.85));
-				color *= 1.05;
-				
-				fragColor = vec4(color, 1.0);
-			}
+// ──────────────────────────────────────────────────────────────
+// Mandelbrot Decoration
+// source : https://www.shadertoy.com/view/ttscWn
+// created by Shane
+// ──────────────────────────────────────────────────────────────
+/*
 
 
+	Mandelbrot Pattern Decoration
+	-----------------------------
 
-			// ──────────────────────────────────────────────────────────────
-			// Soleil animé + Halo + Éruptions solaires - 4K 60fps
-			// Grok (xAI) - Novembre 2025
-			// 100% procédural, zéro texture externe
-			// ──────────────────────────────────────────────────────────────
 
-			void mainImageSun( out vec4 fragColor, in vec2 fragCoord )
-			{
-				vec2 uv = (fragCoord - iResolution.xy) / iResolution.y;
+	After looking at Fabrice's Mandelbrot derivative example, it occurred
+	to me that I have a heap of simple Mandelbrot and Julia related 
+    demonstrations that I've never gotten around to posting, so here's one 
+    of them. I put it together a long time ago using the standard base code, 
+    which you'll find in countless examples on the internet. I'm pretty sure 
+    I started with IQ's "Orbit Traps" shader, which is a favorite amongst 
+    many on here, then added a few extra lines to produce the effect you 
+	see. There's not a lot to this at all, so hopefully, it'll be easy to 
+    consume.
 
-				vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+    Producing Mandelbrot and Julia patterns is pretty straight forward. At 
+    it's core, you're simply transforming each point on the screen in a 
+    certain way many times over, then representing the transformed point 
+    in the form of shades and colors.
 
-				vec2 mo =  vec2(0.5, 0.48)/iResolution.xy;
-				
-				float time = iGlobalTime * 0.3;
-				
-				// Position du Soleil (légèrement déplacé avec la souris)
-				vec2 sunPos = mo - vec2(0.5, 0.5);
-				sunPos.x *= iResolution.x/iResolution.y;
-				vec3 rd = normalize(vec3(uv - sunPos, -1.2));
-				
-				float dist = length(uv - sunPos);
-				
-				vec3 color = vec3(0.0);
-				
-				// === 1. Photosphère + taches solaires ===
-				float sunDisk = smoothstep(0.32, 0.30, dist);
-				if(sunDisk > 0.0)
-				{
-					vec2 suv = (uv - sunPos) * 18.0;
-					float angle = atan(suv.y, suv.x);
-					//float noise = texture(iChannel0, vec2(angle*0.2, length(suv)*0.1 + time*0.1)).r;
-					float noise = fragColorTexture.x;
-					noise = pow(noise, 2.0);
-					
-					// Taches solaires sombres
-					//float spots = smoothstep(0.6, 0.0, texture(iChannel0, suv*0.07 + vec2(time*0.05)).r);
-					float spots = smoothstep(0.6, 0.0, fragColorTexture.x);
-					spots *= smoothstep(0.9, 0.3, length(suv));
-					
-					vec3 photosphere = mix(vec3(1.0, 0.95, 0.8), vec3(1.0, 0.7, 0.3), noise*0.6);
-					//photosphere = mix(photosphere, vec3(0.3, 0.1, 0.0), spots*0.8);
-					photosphere = mix(photosphere, vec3(0.3, 0.1, 0.0), fragColorTexture.xyz);
-					
-					color += photosphere * sunDisk;
-				}
-				
-				// === 2. Chromosphère (bord rouge) ===
-				float chromo = smoothstep(0.30, 0.33, dist) * smoothstep(0.40, 0.31, dist);
-				color += vec3(1.0, 0.35, 0.1) * chromo * 2.5;
+    In particular, you treat each point as if it were on a 2D complex plane, 
+    then perform an iterative complex operation -- which, ironically, is not 
+    complex at all. :) In this particular example, the iterative complex 
+    derivative is recorded also, which is used for a bit of shading.
 
-				color = mix(color, vec3(0.3, 0.1, 0.0), fragColorTexture.xyz);
-				
-				// === 3. Couronne douce ===
-				float corona = exp(-dist*2.5) * 0.8;
-				color += vec3(1.0, 0.9, 0.7) * corona * 0.4;
-				
-				// === 4. HALO DE RAYONS CRÉPUSCULARES (God Rays) ===
-				float rays = 0.0;
-				const int samples = 32;
-				float density = 0.94;
-				float weight = 0.12;
-				float decay = 0.96;
-				float exposure = 0.28;
+    In regard to the shading process itself, most people tend to set a 
+    bailout, then provide a color based on the transformed point distance,
+	and leave it at that. However, with barely any extra code, it's 
+    possible to makes things look more interesting.    
 
-				if(uIntFreq == 2) {
-					density = 0.24;
-					weight = 0.012;
-					decay = 0.46;
-					exposure = 0.1;
-				}
-				if(uIntFreq == 4) {
-					density = 0.54;
-					weight = 0.052;
-					decay = 0.66;
-					exposure = 0.2;
-				}
-				if(uIntFreq == 8) {
-					density = 0.94;
-					weight = 0.12;
-					decay = 0.96;
-					exposure = 0.28;
-				}
-				if(uIntFreq == 12) {
-					density = 1.94;
-					weight = 0.32;
-					decay = 1.26;
-					exposure = 0.5;
-				}
-				if(uIntFreq == 16) {
-					density = 2.94;
-					weight = 0.92;
-					decay = 1.96;
-					exposure = 0.7;
-				}
+    The patterns look pretty fancy, but they're nothing more than repeat 
+    circles and grid boundaries applied after transforming the coordinates. 
+    The shading and highlights were made up on the spot, but none of it was
+    complex, nor was it based on reality (no pun intended).
 
-				
-				vec2 rayUV = uv - sunPos;
-				float illuminationDecay = 1.0;
-				
-				for(int i = 0; i < samples; i++)
-				{
-					float stepDist = float(i) * 0.07;
-					vec2 sampleUV = sunPos + rayUV * stepDist;
-					float sampleDist = length(sampleUV - sunPos);
-					
-					// Occultation par le disque solaire
-					float occult = 1.0 - smoothstep(0.0, 0.35, sampleDist);
-					
-					// Motif radial des rayons (avec rotation lente)
-					float angle = atan(sampleUV.y - sunPos.y, sampleUV.x - sunPos.x);
-					float rayPattern = sin(angle*24.0 + time*2.0)*0.5 + 0.5;
-					rayPattern = pow(rayPattern, 3.0);
-					
-					rays += occult * rayPattern * illuminationDecay * weight;
-					illuminationDecay *= decay;
-				}
-				
-				vec3 rayColor = vec3(1.0, 0.85, 0.6);
-				color += rayColor * rays * exposure * 3.0;
-				
-				// === 5. Légère lueur globale + vignettage ===
-				color += vec3(1.0, 0.7, 0.4) * pow(sunDisk, 4.0) * 2.0;
-				color *= 1.0 - 0.3*length(uv); // vignettage doux
-				
-				// Gamma
-				color = pow(color, vec3(0.9));
-				
-				fragColor = vec4(color, 1.0);
+*/
 
-			}
+void mainImageMandelbrotDecoration(out vec4 fragColor, in vec2 fragCoord ){
+
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+    
+    // Base color.
+    vec3 col = vec3(0);
+    
+    // Anitaliasing: Just a 2 by 2 sample. You could almost get away with not using
+    // it at all, but it is necessary.
+    #define AA 2
+    for(int j=0; j<AA; j++){
+        for(int i=0; i<AA; i++){
+
+            // Offset centered coordinate -- Standard AA stuff.
+            vec2 p = (fragCoord + vec2(i, j)/float(AA) - iResolution.xy*.5)/iResolution.y;
+            
+            // Time, rotating back and forth.
+            float ttm = cos(sin(iGlobalTime/8.))*6.2831;
+           
+            // Rotating and translating the canvas... More effort needs to be put in here,
+            // but it does the job.
+            p *= mat2(cos(ttm), sin(ttm), -sin(ttm), cos(ttm));
+            p -= vec2(cos(iGlobalTime/2.)/2., sin(iGlobalTime/3.)/5.);
+                       
+            // Jump off point and zoom... Where and how much you zoom in greatly effects what
+            // you see, so I probably should have put more effort in here as well, but this
+            // shows you enough.
+            float zm = (200. + sin(iGlobalTime/7.)*50.);
+            vec2 cc = vec2(-.57735 + .004, .57735) + p/zm;
+ 
+            // Position and derivative. Initialized to zero.
+            vec2 z = vec2(0), dz = vec2(0);
+
+            // Iterations: Not too many. You could get away with fewer, if need be.
+            const int iter = 128;
+            int ik = 128; // Bail out value. Set to the largest to begin with.
+            vec3 fog = vec3(0); //vec3(.01, .02, .04);
+             
+            for(int k=0; k<iter; k++){
+                // Derivative: z' = z*z'*2. + 1.
+                // Imaginary partial derivatives are similar to real ones.
+                dz = mat2(z, -z.y, z.x)*dz*2. + vec2(1, 0); // A better way. Thanks, Fabrice. :)
+                //dz = vec2(z.x*dz.x - z.y*dz.y, z.x*dz.y + z.y*dz.x)*2. + vec2(1, 0);
+                           
+                // Position: z = z*z + c.
+                // Squaring an imaginary point is slightly different to squaring a real
+                // one, but at the end of the day, it's just a transformation.
+                z =  mat2(z, -z.y, z.x)*z + cc;
+                //z = (vec2(z.x*z.x - z.y*z.y, 2.*z.x*z.y)) + cc;
+                               
+                // Experimental transformation with twisting... It's OK, but I wasn't
+                // feeling it.
+                //float l = (float(k)/500.);
+                //z = mat2(cos(l), sin(l), -sin(l), cos(l))*mat2(z, -z.y, z.x)*z + cc;
+               
+                // If the length (squared to save cycles) of the transformed point goes 
+                // out of bounds, break. In layperson's terms, points that stay within 
+                // the set boundaries longer appear brighter... or darker, depending what
+                // you're trying to achieve.
+                if(dot(z, z) > 1./.005){
+                    ik = k; // Record the break number, or however you say it.
+                    break;
+                }
+                
+            }
+                      
+            // Lines and shading. There'd be a few ways to represent a boundary line, and
+            // I'd imagine there'd be better ways than this, but it works, so it'll do.
+            float ln = step(0., length(z)/15.5  - 1.);
+                     
+            // Distance... shade... It's made up, but there's a bit of logic there. Smooth 
+            // coloring involves the log function. I remember reading through a proof a few 
+            // years back, when I used to like that kind of thing. It made sense at the time. :)
+            float d = sqrt(1./max(length(dz), .0001))*log(dot(z, z));
+            // Mapping the distance from zero to one.
+            d = clamp(d*50., 0., 1.); 
+            
+            // Flagging successive layers. You can use this to reverse directions, alternate
+            // colors, etc.
+            float dir = mod(float(ik), 2.)<.5? -1. : 1.;
+            
+            // Layer coloring and shading. Also made up.
+            float sh = (float(iter - ik))/float(iter); // Shade.
+            vec2 tuv = z/320.; // Transformed UV coordinate.
+            
+            // Rotating the coordinates, based on the global canvas roations and distance
+            // for that parallax effect to aid the depth illusion.
+            float tm = (-ttm*sh*sh*16.);
+            // Rotated, repeat coordinates.
+            tuv *= mat2(cos(tm), sin(tm), -sin(tm), cos(tm));
+            tuv = abs(mod(tuv, 1./8.) - 1./16.); 
+          
+            // Rendering a grid of circles, and showing the grid boundaries. Anything is 
+            // possible here: Truchets, Voronoi, etc.
+            float pat = smoothstep(0., 1./length(dz), length(tuv) - 1./32.);
+            pat = min(pat, smoothstep(0., 1./length(dz), abs(max(tuv.x, tuv.y) - 1./16.) - .04/16.));
+            
+            // Coloring the layer. These are based on the shaded distance value, but you can
+            // choose anything you want.
+            //vec3 lCol = (.55 + .45*cos(6.2831*(d*d)/3. + vec3(0, 1, 2) - 4.))*1.25;
+            vec3 lCol = pow(min(vec3(1.5, 1, 1)*min(d*.85, .96), 1.), vec3(1, 3, 16))*1.15;
+            
+            // Appolying the circular grid pattern to the color, based on successive layer count.
+            // We're also applying a boundary line.
+            lCol = dir<.0? lCol*min(pat, ln) : (sqrt(lCol)*.5 + .7)*max(1. - pat, 1. - ln);
+                  
+            // A fake unit direction vector to provide a fake reflection vector in order
+            // to produce a fake glossy diffuse value for fake highlights. The knowledge
+            // behind all this is also fake. :D
+            vec3 rd = normalize(vec3(p, 1.));
+            rd = reflect(rd, vec3(0, 0, -1));
+            // Synchronizing the gloss movement... It wasn't for me.
+            // rd.xy = mat2(cos(tm), sin(tm), -sin(tm), cos(tm))*rd.xy; 
+            float diff = clamp(dot(z*.5 + .5, rd.xy), 0., 1.)*d;
+                    
+            // Fake reflective pattern, which has been offset slightly, and moved in a 
+            // reflective manner.
+            tuv = z/200.;
+            tm = -tm/1.5 + .5;
+            tuv *= mat2(cos(tm), sin(tm), -sin(tm), cos(tm));
+            tuv = abs(mod(tuv, 1./8.) - 1./16.); 
+            pat = smoothstep(0., 1./length(dz), length(tuv) - 1./32.);
+            pat = min(pat, smoothstep(0., 1./length(dz), abs(max(tuv.x, tuv.y) - 1./16.) - .04/16.));
+        
+            // Adding the fake gloss. The "ln" variable is there to stop the gloss from 
+            // reaching the outer fringe, since I thought that looked a little better.
+            lCol += mix(lCol, vec3(1)*ln, .5)*diff*diff*.5*(pat*.6 + .6);
+
+			if( fragColorTexture.x>0.0 ) lCol = smoothstep(lCol, fragColorTexture.xyz, vec3(0.1));
+            
+            // Swizzling the color on every sixth layer -- I thought it might break up the
+            // orange and red a little.
+            if (mod(float(ik), 6.)<.5) lCol = lCol.yxz;
+            lCol = mix(lCol.xzy, lCol, d/1.2); // Shade based coloring, for something to do.
+            
+            // This was a last minute addition. I put some deep black lined fringes on the layers
+            // to add more illusion of depth. Comment it out to see what it does.
+            lCol = mix(lCol, vec3(0), (1. - step(0., -(length(z)*.05*float(ik)/float(iter)  - 1.)))*.95);
+           
+            // Applying the fog.
+            lCol = mix(fog, lCol, sh*d);
+                       
+            // Used for colored fog.
+            //lCol *= step(0., d - .25/(1. + float(ik)*.5));
+			//if( fragColorTexture.x>0.0 ) lCol = smoothstep(lCol, fragColorTexture.xyz, vec3(0.1));
+            
+            // Applying the color sample.
+            col += min(lCol, 1.);
+        }
+    }
+    
+    // Divide by the sample number.
+	col /= float(AA*AA);
+     
+    // Toning down the highlights... but I'm going to live on the edge and leave it as is. :D
+    //col = (1. - exp(-col))*1.25;
+    
+     // Subtle vignette.
+    vec2 uv = fragCoord/iResolution.xy;
+    col *= pow(16.*(1. - uv.x)*(1. - uv.y)*uv.x*uv.y, 1./8.)*1.15;
+    
+	fragColor = vec4(sqrt(max(col, 0.)), 1.0 );
+}
