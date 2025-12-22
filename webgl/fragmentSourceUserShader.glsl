@@ -582,89 +582,42 @@ void mainImageFractal(out vec4 fragColor, in vec2 fragCoord){
 
 // ──────────────────────────────────────────────────────────────
 // Vortex Black Hole Reactor - Par Grok 2025
-// iChannel0 → ta texture FFT / waveform (1 ligne = spectre, 256 ou 512 px de large)
 // ──────────────────────────────────────────────────────────────
-
-// Récupère l’amplitude à une fréquence normalisée (0.0 → 1.0)
-float freqInfiniteTunnel(float f) {
-	// return f;
-	return texture2D(iChannel0, vec2(f, 0.25), -16.0).r;
-}
-
-// Moyennes utiles
-float bassInfiniteTunnel()     { return (freqInfiniteTunnel(0.0) + freqInfiniteTunnel(0.05) + freqInfiniteTunnel(0.1)) / 3.0; }      // kick
-float lowMidInfiniteTunnel()   { return (freqInfiniteTunnel(0.15) + freqInfiniteTunnel(0.25)) / 2.0; }               // basse/mid
-float trebleInfiniteTunnel()   { return (freqInfiniteTunnel(0.7) + freqInfiniteTunnel(0.85) + freqInfiniteTunnel(0.95)) / 3.0; }   // hats
-
-void mainImageInfiniteTunnel( out vec4 fragColor, in vec2 fragCoord ){
-	vec2 uv = (fragCoord - iResolution.xy*0.5) / iResolution.y;
-	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
-	float time = iGlobalTime * 0.8;				
-	// ——— Réactivité au son ———
-	float kick   = pow(bassInfiniteTunnel(), 3.0);           // très punchy sur le kick
-	float energy = pow(lowMidInfiniteTunnel(), 2.0);         // énergie globale
-	float spark  = pow(trebleInfiniteTunnel(), 4.0);         // scintillements aigus			
-	// Distance et angle polaire
-	float dist = length(uv);
-	float angle = atan(uv.y, uv.x);				
-	// Spirale qui tourne + s’accélère avec l’énergie
-	float spiral = angle + time * (1.0 + energy*6.0) + 1.0/dist * (3.0 + kick*15.0);
-	float arms = smoothstep(0.4, 0.0, abs(fract(spiral*2.0 + 0.5) - 0.5));				
-	// Accretion disk qui pulse
-	float disk = smoothstep(0.7, 0.1, dist);
-	disk *= smoothstep(0.0, 0.4, dist);
-	disk *= 1.0 + kick*8.0; // énorme flash sur chaque kick				
-	// Event horizon (trou noir)
-	float hole = smoothstep(0.12 - kick*0.08, 0.08, dist);				
-	// Particules / plasma aspirées
-	float particles = 0.0;
-
-	for(int i = 0; i < 16; i++){
-		float fi = float(i)/16.0;
-		float t = time*0.5 + fi*10.0;
-		vec2 off = vec2(cos(t), sin(t*1.618)) * (0.3 + fi*0.7 + kick);
-		particles += 0.004 / length(uv - off * (1.0 - fi*0.5));
-	}
-
-	particles = pow(particles, 2.0) * (1.0 + spark*20.0);				
-	// Gravitational lensing simple (distorsion autour du trou)
-	vec2 lensUV = uv / (1.0 + dist*2.0);
-	float stars = 0.1;
-
-	if(uIntFreq == 2) {
-		stars = 0.1;
-		particles = pow(particles, 1.0) * (1.0 + spark);
-	}
-	if(uIntFreq == 4) {
-		stars = 1.0;
-		particles = pow(particles, 1.0) * (1.0 + spark*5.0);
-	}
-	if(uIntFreq == 8) {
-		stars = 0.1;
-		stars = pow(stars, 20.0) * (1.0 - hole);
-	}
-	if(uIntFreq == 12) {
-		stars = 1.0;
-		stars = pow(stars, 50.0) * (1.0 - hole);
-	}
-	if(uIntFreq == 16) {
-		stars = 2.0;
-		stars = pow(stars, 50.0) * (1.0 - hole);
-	}
-
-	// Couleurs plasma
-	vec3 col = vec3(0.0);
-	col += arms * vec3(1.5, 0.4, 2.0);           // bras violets
-	col += disk * vec3(2.0, 0.8, 0.1) * 2.0;     // disque orange incandescent
-	col += particles * vec3(0.6, 1.0, 2.0);     // plasma bleu-cyan
-	col += stars * vec3(1.0, 0.9, 2.0);         // étoiles déformées
-	col = mix(col, vec3(8.0, 2.0, 0.0), kick*0.8); // énorme flash rouge/orange sur kick
-	col = mix(col, vec3(0.9, 0.9, 0.9), fragColorTexture.xyz);				
-	// Vignettage + glow final
-	col *= 1.0 - dist*0.7;	
-	// Gamma
-	col = pow(col, vec3(0.4545));				
-	fragColor = vec4(col, 1.0);
+void mainImageInfiniteTunnel(out vec4 fragColor, in vec2 fragCoord) {
+    vec2 uv = (fragCoord - iResolution.xy * 0.5) / iResolution.y;
+    vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+    float time = iGlobalTime * 0.5;
+    
+    // Vortex spiralé (réacteur tourbillonnant)
+    float angle = atan(uv.y, uv.x) + time * 2.0;
+    float radius = length(uv);
+    float vortex = sin(angle * 8.0 + radius * 20.0 - time * 10.0) * 0.5 + 0.5;
+    
+    // Trou noir central + gravité
+    float blackHole = smoothstep(0.1, 0.05, radius);  // Événement horizon
+    float gravityPull = 1.0 / (radius * 10.0 + 0.1);
+    
+    // Disque d'accrétion pulsant
+    float accretion = pow(vortex * gravityPull, 2.0) * (sin(time * 5.0 + radius * 10.0) * 0.5 + 1.0);
+    
+    // Couleurs reactor psychédéliques (néon plasma)
+    vec3 col = vec3(0.0);
+    col += accretion * vec3(1.0, 0.2, 0.8);  // Violet reactor
+	if(fragColorTexture.x>0.0) col = smoothstep(col, fragColorTexture.xyz, vec3(0.1));
+    col += accretion * 0.5 * vec3(0.0, 1.0, 1.0) * sin(time + angle);  // Cyan pulsation
+    col += pow(accretion, 3.0) * vec3(2.0, 0.5, 0.0);  // Orange glow intense
+    
+    // Effet lensing / distortion
+    uv += uv * gravityPull * 0.2;
+    
+    // Fond étoilé + glow
+    col = mix(col, vec3(0.0), blackHole);
+    col += 0.1 * sin(uv.x * 100.0 + time) * sin(uv.y * 100.0);
+    
+    // Gamma + contraste reactor
+    col = pow(col, vec3(0.8)) * 2.0;
+    
+    fragColor = vec4(col, 1.0);
 }
 
 
@@ -1037,118 +990,201 @@ void mainImageGridPulse( out vec4 fragColor, in vec2 fragCoord ){
 
 
 // ──────────────────────────────────────────────────────────────
-// Trou Noir avec Disque d'Accrétion + Jets de Matière
+// Trou Noir
+// source https://www.shadertoy.com/view/3d2SWK
+// Créé par BigWIngs
 // ──────────────────────────────────────────────────────────────
-void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord ){
-	vec2 uv = (fragCoord - iResolution.xy*0.5) / iResolution.y;
-	vec3 rd = normalize(vec3(uv, -1.8));           // direction du rayon
-	vec3 ro = vec3(0.0, 0.0, 12.0);                // position caméra
-	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);				
-	// Rotation souris + animation automatique
-	float time = iGlobalTime * 0.15;
-	float mouseY = iMouse.y == 0.0 ? 0.3 : (iMouse.y / iResolution.y - 0.5)*3.0;
-	float ry = time + (iMouse.x / iResolution.x)*12.0;
-	float rx = mouseY;
-	rx = 0.0;
-	ry = time + (1.0 / iResolution.x)*12.0;				
-	mat3 rotY = mat3(cos(ry),0.0,sin(ry), 0.0,1.0,0.0, -sin(ry),0.0,cos(ry));
-	mat3 rotX = mat3(1.0,0.0,0.0, 0.0,cos(rx),-sin(rx), 0.0,sin(rx),cos(rx));
-	ro = rotY * rotX * ro;
-	rd = rotY * rotX * rd;				
-	// Paramètres du trou noir (Schwarzschild + rotation Kerr simplifiée)
-	float rs = 1.5;                    // rayon de Schwarzschild
-	vec3 bhPos = vec3(0.0);            // centre du trou noir
-	float spin = 0.85;                 // rotation du trou noir (0 = statique, 1 = extrême)				
-	vec3 color = vec3(0.0);
-	float t = 0.0;
-	const int steps = 128;
-	float minDist = 100.0;
+// "Second Image of a Black Hole" by Martijn Steinrucken aka BigWings - 2019
+// License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+// Email:countfrolic@gmail.com Twitter:@The_ArtOfCode
+//
+// In honor of the amazing achievement of the photographing of a real black hole,
+// behold my 100% fake one. I know next to nothing about black holes other than
+// that it distorts spacetime so much that it visibly affects light.
+//
+// Just marching the light rays and bending them towards the hole bulges the accretion disc
+// over the top when you look at it from the side, similar to the way it looked in
+// interstellar. I didn't specifically code this, it just came out that way
+// so I figure my 'physics' is not completely wrong ;)
+//
+// The jets coming out the top and bottom I just added because lots of black hole 
+// illustrations have them and they look cool :)
+//
+// Code is a bit of a mess. It annoys me that step size has to be super small in order
+// for it to look halfway decent. 
 
-	if(uIntFreq == 2) {
-		rs = 1.0;
-		spin = 0.15;
-		minDist = 100.0;
-	}
-	if(uIntFreq == 4) {
-		rs = 1.0;
-		spin = 0.35;
-		minDist = 100.0;
-	}
-	if(uIntFreq == 8) {
-		rs = 1.5;
-		spin = 0.55;
-		minDist = 100.0;
-	}
-	if(uIntFreq == 12) {
-		rs = 2.0;
-		spin = 0.85;
-		minDist = 100.0;
-	}
-	if(uIntFreq == 16) {
-		rs = 2.5;
-		spin = 1.0;
-		minDist = 100.0;
-	}
-			
-	// Raymarching dans le champ gravitationnel
-	for(int i = 0; i < steps; i++)
-	{
-		vec3 p = ro + rd * t;
-		// p = vec3(0.0,p.x,p.y);
-		vec3 r = p - bhPos;
-		// r = vec3(0.0,r.x,r.y);
-		float rlen = length(r);					
-		minDist = min(minDist, rlen);					
-		// Effet de lentille gravitationnelle (approximation)
-		float grav = rs / (rlen*rlen*0.8);
-		rd += grav * normalize(r) * 0.04;
-		rd = normalize(rd);					
-		// Absorption par l'horizon
-		if(rlen < rs*1.01){
-			color = vec3(0.0);
-			break;
-		}				
-		// Disque d'accrétion (plan XZ incliné)
-		float disk = 0.0;
-		float diskDist = abs(p.y);
-		float radial = length(p.xz);
-		if(diskDist < 2.5 && radial > rs*2.0 && radial < 25.0){
-			// Température → couleur (plus chaud près du centre)
-			float heat = 8.0 / (radial - rs*1.5);
-			vec3 hot  = vec3(1.0, 0.3, 0.1);
-			vec3 warm = vec3(1.0, 0.7, 0.2);
-			vec3 cold = vec3(0.3, 0.6, 1.0);
-			vec3 diskCol = mix(mix(hot, warm, heat*0.2), cold, heat*0.05);						
-			// Doppler boosting (effet relativiste)
-			float doppler = dot(normalize(p.xz), vec2(sin(time*2.0), cos(time*2.0)));
-			diskCol *= 1.0 + 3.0 * doppler * spin;					
-			// Épaisseur et densité
-			float density = exp(-diskDist*2.0) * exp(-(radial-10.0)*(radial-10.0)*0.01);
-			color = vec3(0.0, color.y, color.z);
-			color += diskCol * density * 0.18;
-		}					
-		// Jets de matière (cônes le long de Y)
-		float jetRadius = 0.8 + 0.6*sin(time*3.0 + radial*0.5);
-		if(abs(p.y) > 3.0 && length(p.xz) < jetRadius * (abs(p.y)*0.05)){
-			float jetIntensity = exp(-abs(p.y)*0.07) * (0.7 + 0.3*sin(time*10.0 + p.y*3.0));
-			vec3 jetCol = vec3(1.2, 0.8, 2.5); // violet/bleu plasma
-		}					
-		t += 0.15 - 0.09 * grav; // pas adaptatif
-		if(t > 60.0){
-			break;
-		}
-	}
+#define SURFDIST .001
+#define MAXSTEPS 200
+#define MAXDIST 20.
+#define TAU 6.2832
 
-	// Étoile de fond + lueur du disque
-	vec3 stars = vec3(pow(abs(sin(rd.x*123.0)+cos(rd.y*97.0+rd.z*67.0)), 80.0)*0.8);
-	color += stars * 0.3;		
-	// Absoption finale si trop près
-	if(minDist < rs*1.02) color = vec3(0.0);				
-	// Effet de gamma + contraste
-	color = pow(color, vec3(0.75));
-	color *= 1.2;				
-	vec3 newColor = mix(color, fragColorTexture.xyz, vec3(0.5,0.5,0.5));
-	fragColor = vec4(newColor, 1.0);
+#define USEDISC
+#define USESTREAM
+
+mat2 Rot(float a) {
+	float s = sin(a), c = cos(a);
+    
+    return mat2(c, -s, s, c);
+}
+
+float N21(vec2 p) {
+    p = fract(p*vec2(123.34,345.35));
+    p += dot(p, p+34.53);
+    return fract(p.x*p.y);
+}
+
+float NoiseBH(vec2 p) {
+	vec2 gv = fract(p);
+    vec2 id = floor(p);
+    
+    gv = smoothstep(0.,1.,gv);
+    
+    float b = mix(N21(id+vec2(0,0)), N21(id+vec2(1, 0)), gv.x);
+    float t = mix(N21(id+vec2(0,1)), N21(id+vec2(1, 1)), gv.x);
+    
+    return mix(b, t, gv.y);
+}
+
+float Noise3(vec2 p) {
+    return 
+        (NoiseBH(p) + 
+        .50*NoiseBH(p*2.12*Rot(1.)) +
+        .25*NoiseBH(p*4.54*Rot(2.)))/1.75;
+}
+
+vec3 GetRd(vec2 uv, vec3 ro, vec3 lookat, vec3 up, float zoom, inout vec3 bBend) {
+    vec3 f = normalize(lookat-ro),
+        r = normalize(cross(up, f)),
+        u = cross(f, r),
+        c = ro + zoom * f,
+        i = c + uv.x*r + uv.y*u,
+        rd = normalize(i-ro);
+ 	
+    vec3 offs = normalize(uv.x*r + uv.y*u);
+    bBend = rd-.1*offs/(1.+dot(uv,uv));
+    return rd;   
+}
+
+vec3 GetBg(vec3 rd) {
+	float x = atan(rd.x, rd.z);
+    float y = dot(rd, vec3(0,1,0));
+    
+    float size = 10.;
+    vec2 uv = vec2(x, y)*size;
+    float m = abs(y);
+    
+    float side = Noise3(uv);
+    float stars = pow(NoiseBH(uv*20.)*NoiseBH(uv*23.), 10.);
+    
+    vec2 puv = rd.xz*size;
+    float poles = Noise3(rd.xz*size);
+    float stars2 = pow(NoiseBH(puv*21.)*NoiseBH(puv*13.), 10.);
+    
+    stars = mix(stars, stars2, m*m);
+    float n = mix(side, poles, m*m);
+    n = pow(n, 5.);
+    
+    vec3 nebulae = n * vec3(1., .7, .5);
+    
+    return nebulae + stars*4.;
+}
+
+float GetDist(vec3 p) {
+    float d = length(p)-.15;
+    
+    //d = min(d, max(length(p.xz)-2., abs(p.y)));
+    return d;
+}
+
+float GetDisc(vec3 p, vec3 pp) {
+	
+    float t = iGlobalTime;
+    
+    // calculate plane intersection point
+    vec3 rd = p-pp;			// local ray direction
+    vec3 c = pp + rd*pp.y;	// intersection point
+    rd = normalize(rd)*.5;
+    p = c-rd;
+    rd *= 2.;
+    
+    // myeah this seemed like a good idea at some point... doesn't add as much as it should
+    float m = 0.;
+    const float numSamples = 3.;
+    for(float i=0.; i<1.; i+=1./numSamples) {
+    	c = p + i*rd;
+        
+        float d = length(c.xz);
+    	float l = smoothstep(3.5, .6, d);
+    	l *= smoothstep(.1, .6, d);
+    	
+        float x = atan(c.x, c.z);
+    	l *= sin(x*floor(5.)+d*20.-t)*.3+.7;
+        m += l;
+    }
+    
+    return 1.5*m/numSamples;
+}
+
+void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
+	vec2 m = iMouse.xy/iResolution.xy;
+    
+    vec3 col = vec3(0);
+	
+    vec3 ro = vec3(0, 0, -4.+sin(iGlobalTime*.2));
+    ro.yz *= Rot(m.y*TAU+iGlobalTime*.05);
+    ro.xz *= Rot(-m.x*TAU+iGlobalTime*.1);
+    
+    vec3 lookat = vec3(0);
+    float zoom = .8;
+    vec3 up = normalize(vec3(.5, 1,0));
+    vec3 bBend;
+    vec3 rd = GetRd(uv, ro, lookat, up, zoom, bBend);
+    vec3 eye = rd;
+    
+    float dS, dO;
+    float disc = 0.;
+    vec3 p=ro;
+    p += N21(uv)*rd*.05;
+    vec3 pp;
+    
+    float stream = 0.;
+    
+    for(int i=0; i<MAXSTEPS; i++) {
+        rd -= .01*p/dot(p,p);		// bend ray towards black hole
+        
+        pp = p;
+        p += dS*rd;
+        
+        if(p.y*pp.y<0.)
+            disc += GetDisc(p, pp);
+        
+        float y = abs(p.y)*.2;
+        stream += smoothstep(.1+y, 0., length(p.xz))*
+            smoothstep(0., .2, y)*
+            smoothstep(1., .5, y)*.05;
+        
+        dS = GetDist(p);
+        dS = min(.05, dS);
+        dO += dS;
+        if(dS<SURFDIST || dO>MAXDIST) break;
+    }
+    
+    col = GetBg(bBend);
+    
+    if(dS<SURFDIST) {
+        col = vec3(0);      // its black!
+    }
+    
+    #ifdef USEDISC
+    col += disc*vec3(1,.8,.5)*1.5;
+    #endif
+    #ifdef USESTREAM
+    col += min(.5, stream)*vec3(.7, .7, 1.);
+    #endif
+    
+    fragColor = vec4(col,1.0);
 }
 
 
