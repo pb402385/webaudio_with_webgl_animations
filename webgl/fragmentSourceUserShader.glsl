@@ -911,21 +911,21 @@ void mainImageKaleidoscope( out vec4 fragColor, in vec2 fragCoord ){
 // NEON GRID PULSE - Cyber Reactor 2025
 // ──────────────────────────────────────────────────────────────
 
-float freqGridPulse(float f) { 
+float freqGridPulse() { 
 	return texture2D(iChannel0, iResolution.xy, 1.0).r/2.0;
 }
 
 // Kick ultra-punchy + volume global
 float kick() {
 	float b = 0.0;
-	for(int i = 0; i < 20; i++) b += freqGridPulse(float(i)/256.0);
+	for(int i = 0; i < 20; i++) b += freqGridPulse();
 	return pow(b/20.0, 4.0) * 8.0;
 }
 
 // Volume général (pour la hauteur globale du grid)
 float volume() {
 	float v = 0.0;
-	for(int i = 0; i < 256; i++) v += freqGridPulse(float(i)/256.0);
+	for(int i = 0; i < 256; i++) v += freqGridPulse();
 	return v/256.0;
 }
 
@@ -970,7 +970,7 @@ void mainImageGridPulse( out vec4 fragColor, in vec2 fragCoord ){
 	float barHeight = 0.0;
 	float nearest = floor(pos.x + 0.5);
 	if (abs(nearest - (pos.x + 0.5)) < 8.0) {
-		float f = freqGridPulse(abs(nearest)/40.0);
+		float f = freqGridPulse();
 		barHeight = f * (12.0 + k*20.0);
 	}
 	float bars = smoothstep(0.0, 1.5, barHeight - abs(pos.y - 4.0));				
