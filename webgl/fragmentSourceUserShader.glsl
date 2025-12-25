@@ -912,7 +912,7 @@ void mainImageKaleidoscope( out vec4 fragColor, in vec2 fragCoord ){
 // ──────────────────────────────────────────────────────────────
 
 float freqGridPulse(float f) { 
-	return texture2D(iChannel0, vec2(f, 0.25), 1.0).r;
+	return texture2D(iChannel0, iResolution.xy, 1.0).r/2.0;
 }
 
 // Kick ultra-punchy + volume global
