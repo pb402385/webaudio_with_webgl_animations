@@ -1319,7 +1319,9 @@ void mainImageMoon(out vec4 fragColor, in vec2 fragCoord) {
 	float cloudOcclusion = smoothstep(0.3, 0.8, cloudCover);
 	cloudOcclusion *= moonMask;				
 	vec3 moonWithPhase = moonColor * moonMask * fragColorTexture.xyz;
-	vec3 moonRecolored = smoothstep(fragColorTexture.xyz, moonWithPhase, vec3(1.0,1.0,1.0));				
+	vec3 aa = fwidth(moonWithPhase);
+	vec3 smoothed = mix(-aa, aa, moonWithPhase);
+	vec3 moonRecolored = smoothed;				
 	vec3 finalMoonColor = mix(moonRecolored, color, cloudOcclusion);
 	finalMoonColor = mix(finalMoonColor, moonWithPhase, moonMask * (1.0 - cloudOcclusion));				
 	float thinClouds = smoothstep(0.6, 0.8, cloudCover);
