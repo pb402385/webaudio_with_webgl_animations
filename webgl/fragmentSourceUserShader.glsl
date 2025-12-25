@@ -637,27 +637,25 @@ void mainImageInfiniteTunnel(out vec4 fragColor, in vec2 fragCoord) {
 // RADIAL BASS REACTOR - Ultra violent & magnifique
 // ──────────────────────────────────────────────────────────────
 
-float freqBassReactor(float x) { 
-	// return texture(iChannel0, vec2(x, 0.25)).r;
-	// return 0.5;
-	return texture2D(iChannel0, vec2(x, 0.25), -16.0).r;
+float freqBassReactor() { 
+	return texture2D(iChannel0, iResolution.xy, -16.0).r/2.0;
 }
 
 float bassReactor() {
 	float b = 0.0;
-	for(int i=0; i<16; i++) b += freqBassReactor(float(i)/float(BANDS));
+	for(int i=0; i<16; i++) b += freqBassReactor();
 	return pow(b/16.0, 3.0); // KICK HYPER PUNCHY
 }
 
 float midsReactor() {
 	float m = 0.0;
-	for(int i=20; i<60; i++) m += freqBassReactor(float(i)/float(BANDS));
+	for(int i=20; i<60; i++) m += freqBassReactor();
 	return m/40.0;
 }
 
 float trebleReactor() {
 	float t = 0.0;
-	for(int i=70; i<BANDS; i++) t += freqBassReactor(float(i)/float(BANDS));
+	for(int i=70; i<BANDS; i++) t += freqBassReactor();
 	return pow(t/float(BANDS-70), 4.0);
 }
 
