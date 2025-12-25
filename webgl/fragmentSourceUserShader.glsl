@@ -585,7 +585,7 @@ void mainImageFractal(out vec4 fragColor, in vec2 fragCoord){
 // ──────────────────────────────────────────────────────────────
 void mainImageInfiniteTunnel(out vec4 fragColor, in vec2 fragCoord) {
     vec2 uv = (fragCoord - iResolution.xy * 0.5) / iResolution.y;
-    vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+    vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
     float time = iGlobalTime * 0.5;
     
     // Vortex spiralé (réacteur tourbillonnant)
@@ -604,7 +604,13 @@ void mainImageInfiniteTunnel(out vec4 fragColor, in vec2 fragCoord) {
     vec3 col = vec3(0.0);
 	col += accretion * vec3(1.0, 0.2, 0.8);  // Violet reactor
     if(fragColorTexture.x==0.0) col += accretion * vec3(1.0, 0.2, 0.8);  // Violet reactor
-	if(fragColorTexture.x>0.0) col += accretion * smoothstep(vec3(1.0, 0.2, 0.8),vec3(1.0, 0.2, 0.8),fragColorTexture.xyz);  // Violet reactor
+	if(fragColorTexture.x>0.0){
+		vec3 values = vec3(min(1.0,fragColorTexture.x), min(0.2,fragColorTexture.y), min(0.8,fragColorTexture.z));
+		// Avec anti-aliasing adaptatif
+		vec3 aa = fwidth(values);                         // vec3 avec fwidth par composante
+		vec3 soft = smoothstep(-aa, aa, values);
+		col += accretion * soft;  // Violet reactor
+	}
 	//if(fragColorTexture.x>0.0) col = smoothstep(col, fragColorTexture.xyz, vec3(0.1));
     col += accretion * 0.5 * vec3(0.0, 1.0, 1.0) * sin(time + angle);  // Cyan pulsation
     col += pow(accretion, 3.0) * vec3(2.0, 0.5, 0.0);  // Orange glow intense
@@ -613,8 +619,8 @@ void mainImageInfiniteTunnel(out vec4 fragColor, in vec2 fragCoord) {
     uv += uv * gravityPull * 0.2;
     
     // Fond étoilé + glow
-    if(fragColorTexture.x==0.0) col = mix(col, vec3(0.0), blackHole);
-	if(fragColorTexture.x>0.0) col = mix(col, fragColorTexture.xyz, blackHole);
+    if(fragColorTexture.x==0.0) col = mix(col, vec3(0.0), vec3(blackHole));
+	if(fragColorTexture.x>0.0) col = mix(col, fragColorTexture.xyz, vec3(blackHole));
     col += 0.1 * sin(uv.x * 100.0 + time) * sin(uv.y * 100.0);
     
     // Gamma + contraste reactor
@@ -821,7 +827,7 @@ void mainImageWaveForm( out vec4 fragColor, in vec2 fragCoord )
 // ──────────────────────────────────────────────────────────────
 
 float freqKaleidoscope(float f) { 
-	return texture2D(iChannel0, vec2(f, 0.25), 1.0).r;
+	return texture2D(iChannel0, iResolution.xy, 0.5).r/2.0;
 }
 
 float bassKaleidoscope()   { float s=0.0; for(int i=0;i<20;i++) s+=freqKaleidoscope(float(i)/256.0); return pow(s/20.0,3.0); }
@@ -886,7 +892,7 @@ void mainImageKaleidoscope( out vec4 fragColor, in vec2 fragCoord ){
 	col += shape * vec3(2.0, 0.3, 1.5);                                      // magenta dominant
 	col += shape * 0.5 * vec3(sin(time + dist*10.0), sin(time*1.3 + dist*8.0), sin(time*1.7)) * vibe;				
 	// Flash blanc/violet sur kick
-	col += vec3(4.0, 1.0, 6.0) * pow(kick, 4.0);				
+	//col += vec3(4.0, 1.0, 6.0) * pow(kick, 4.0);				
 	// Bordures irisées
 	col += vec3(0.5, 2.0, 3.0) * pow(shape * exp(-dist*2.0), 3.0);				
 	// Glow externe doux
@@ -1183,6 +1189,8 @@ void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
         
         if(p.y*pp.y<0.)
             disc += GetDisc(p, pp);
+			//if(fragColorTexture.x==0.0) disc += GetDisc(p, pp);
+			//if(fragColorTexture.x>0.0) disc += GetDisc(p, pp)*(1.0 - smoothstep(0.05, 0.20, fragColorTexture.x/255.));
         
         float y = abs(p.y)*.2;
         stream += smoothstep(.1+y, 0., length(p.xz))*
