@@ -1140,7 +1140,7 @@ void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
     vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
 	vec2 m = iMouse.xy/iResolution.xy;
 
-	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy)/2.0;
 
 	if(uIntFreq == 2) {
 		m = vec2(0.0,0.0);
@@ -1213,7 +1213,7 @@ void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
     #ifdef USEDISC
     //col += disc*vec3(1,.8,.5)*1.5;
 	if(fragColorTexture.x>=0.0){
-		vec3 pattern = disc*((0.7+abs(mix(0.01, 0.5,valeurAuCentre.x))))*vec3(1,.8,.5);
+		vec3 pattern = disc*((0.7+abs(mix(0.01, 0.5,fragColorTexture.x))))*vec3(1,.8,.5);
 		vec3 aa = fwidth(pattern);
 		vec3 smoothed = mix(-aa, aa, pattern);
 		col += smoothed;
@@ -1302,7 +1302,7 @@ float moonDisk(vec2 uv, vec2 center, float radius) {
 
 void mainImageMoon(out vec4 fragColor, in vec2 fragCoord) {
 	vec2 uv = (fragCoord - 0.5 * iResolution.xy) / iResolution.y;
-	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy)/2.0;
 	float starField = starsMoon(uv);
 	vec3 skyColor = mix(vec3(0.08, 0.12, 0.22), vec3(0.02, 0.05, 0.14), 
 					smoothstep(-0.4, 0.4, uv.y));				
@@ -1379,7 +1379,7 @@ void mainImageMoon(out vec4 fragColor, in vec2 fragCoord) {
 
 void mainImageSun( out vec4 fragColor, in vec2 fragCoord ){
 	vec2 uv = (fragCoord - iResolution.xy) / iResolution.y;
-	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy)/2.0;
 	vec2 mo =  vec2(0.5, 0.48)/iResolution.xy;				
 	float time = iGlobalTime * 0.3;				
 	// Position du Soleil (légèrement déplacé avec la souris)
