@@ -1263,7 +1263,7 @@ float fbm(vec2 p) {
 	return value;
 }
 
-float starsMoon(vec2 uv) {
+float starsMoon(vec2 uv, vec4 fct) {
 	vec2 starCoord = uv * 250.0;
 	vec2 i = floor(starCoord);
 	vec2 f = fract(starCoord);				
@@ -1279,6 +1279,7 @@ float starsMoon(vec2 uv) {
 				float starMask = 1.0 - smoothstep(0.4, 0.5, dist);
 				starMask *= exp(-dist * 6.0);							
 				float intensity = pow(brightness, 4.0);
+				if( fct.x > 0.0 ) intensity = intensity * (0.75+fbm(fct.xy * 50.0));
 				starMask *= intensity;							
 				star = max(star, starMask);
 			}
@@ -1303,7 +1304,7 @@ float moonDisk(vec2 uv, vec2 center, float radius) {
 void mainImageMoon(out vec4 fragColor, in vec2 fragCoord) {
 	vec2 uv = (fragCoord - 0.5 * iResolution.xy) / iResolution.y;
 	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy)/2.0;
-	float starField = starsMoon(uv);
+	float starField = starsMoon(uv,fragColorTexture);
 	vec3 skyColor = mix(vec3(0.08, 0.12, 0.22), vec3(0.02, 0.05, 0.14), 
 					smoothstep(-0.4, 0.4, uv.y));				
 	vec3 color = skyColor + vec3(0.95, 0.92, 0.85) * starField * 3.0;				
