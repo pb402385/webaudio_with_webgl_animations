@@ -1385,12 +1385,14 @@ void mainImageSun( out vec4 fragColor, in vec2 fragCoord ){
 	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy)/2.0;
 	vec2 mo =  vec2(0.5, 0.48)/iResolution.xy;				
 	float time = iGlobalTime * 0.3;				
-	// Position du Soleil (légèrement déplacé avec la souris)
+	// Position du Soleil 
 	vec2 sunPos = mo - vec2(0.5, 0.5);
 	sunPos.x *= iResolution.x/iResolution.y;
 	vec3 rd = normalize(vec3(uv - sunPos, -1.2));				
 	float dist = length(uv - sunPos);				
 	vec3 color = vec3(0.0);
+
+	if( fragColorTexture.x > 0.0 ) dist = dist * (0.25+fbm(fragColorTexture.xy * 50.0));
 
 	// === 1. Photosphère + taches solaires ===
 	float sunDisk = smoothstep(0.32, 0.30, dist);
