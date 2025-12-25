@@ -602,8 +602,10 @@ void mainImageInfiniteTunnel(out vec4 fragColor, in vec2 fragCoord) {
     
     // Couleurs reactor psychédéliques (néon plasma)
     vec3 col = vec3(0.0);
-    col += accretion * vec3(1.0, 0.2, 0.8);  // Violet reactor
-	if(fragColorTexture.x>0.0) col = smoothstep(col, fragColorTexture.xyz, vec3(0.1));
+	col += accretion * vec3(1.0, 0.2, 0.8);  // Violet reactor
+    if(fragColorTexture.x==0.0) col += accretion * vec3(1.0, 0.2, 0.8);  // Violet reactor
+	if(fragColorTexture.x>0.0) col += accretion * smoothstep(vec3(1.0, 0.2, 0.8),vec3(1.0, 0.2, 0.8),fragColorTexture.xyz);  // Violet reactor
+	//if(fragColorTexture.x>0.0) col = smoothstep(col, fragColorTexture.xyz, vec3(0.1));
     col += accretion * 0.5 * vec3(0.0, 1.0, 1.0) * sin(time + angle);  // Cyan pulsation
     col += pow(accretion, 3.0) * vec3(2.0, 0.5, 0.0);  // Orange glow intense
     
@@ -611,7 +613,8 @@ void mainImageInfiniteTunnel(out vec4 fragColor, in vec2 fragCoord) {
     uv += uv * gravityPull * 0.2;
     
     // Fond étoilé + glow
-    col = mix(col, vec3(0.0), blackHole);
+    if(fragColorTexture.x==0.0) col = mix(col, vec3(0.0), blackHole);
+	if(fragColorTexture.x>0.0) col = mix(col, fragColorTexture.xyz, blackHole);
     col += 0.1 * sin(uv.x * 100.0 + time) * sin(uv.y * 100.0);
     
     // Gamma + contraste reactor
@@ -1065,7 +1068,7 @@ vec3 GetRd(vec2 uv, vec3 ro, vec3 lookat, vec3 up, float zoom, inout vec3 bBend)
     return rd;   
 }
 
-vec3 GetBg(vec3 rd) {
+vec3 GetBg(vec3 rd, vec4 fct) {
 	float x = atan(rd.x, rd.z);
     float y = dot(rd, vec3(0,1,0));
     
@@ -1085,8 +1088,11 @@ vec3 GetBg(vec3 rd) {
     n = pow(n, 5.);
     
     vec3 nebulae = n * vec3(1., .7, .5);
+
+	float starsReturn =  stars*4.;
+	if(fct.x>0.0) starsReturn =  stars*(4.*(1.0+mix(0.1, fct.x, 10.0)));
     
-    return nebulae + stars*4.;
+    return nebulae + starsReturn;
 }
 
 float GetDist(vec3 p) {
@@ -1129,6 +1135,24 @@ void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
 	vec2 m = iMouse.xy/iResolution.xy;
+
+	vec4 fragColorTexture = texture2D(iChannel0, uv.xy*iResolution.xy);
+
+	if(uIntFreq == 2) {
+		m = vec2(0.0,0.0);
+	}
+	if(uIntFreq == 4) {
+		m = vec2(0.5,0.0);
+	}
+	if(uIntFreq == 8) {
+		m = vec2(0.5,0.5);
+	}
+	if(uIntFreq == 12) {
+		m = vec2(0.5,0.1);
+	}
+	if(uIntFreq == 16) {
+		m = vec2(0.25,0.75);
+	}
     
     vec3 col = vec3(0);
 	
@@ -1171,14 +1195,25 @@ void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
         if(dS<SURFDIST || dO>MAXDIST) break;
     }
     
-    col = GetBg(bBend);
+    col = GetBg(bBend,fragColorTexture);
     
     if(dS<SURFDIST) {
         col = vec3(0);      // its black!
     }
+
+	vec2 poss = vec2(0.5, 0.3);  // Centre-bas de l'écran
+	vec4 valeurAuCentre = texture2D(iChannel0, poss);
     
     #ifdef USEDISC
-    col += disc*vec3(1,.8,.5)*1.5;
+    //col += disc*vec3(1,.8,.5)*1.5;
+	if(fragColorTexture.x>=0.0){
+		vec3 pattern = disc*((0.7+abs(mix(0.01, 0.5,valeurAuCentre.x))))*vec3(1,.8,.5);
+		vec3 aa = fwidth(pattern);
+		vec3 smoothed = mix(-aa, aa, pattern);
+		col += smoothed;
+	}
+	//if(fragColorTexture.x>0.0) col += disc*((0.5+abs(mix(0.01, 0.5,valeurAuCentre.x))))*vec3(1,.8,.5);
+	//if(fragColorTexture.x>0.0) col += disc*(vec3(1.0)-smoothstep(vec3(1,.8,.5),vec3(fragColorTexture.xyz),vec3(fragColorTexture.xyz)))*(1.5 - smoothstep(0.01, 1.5, fragColorTexture.x/255.));
     #endif
     #ifdef USESTREAM
     col += min(.5, stream)*vec3(.7, .7, 1.);
