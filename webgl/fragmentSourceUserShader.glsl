@@ -1392,7 +1392,7 @@ void mainImageSun( out vec4 fragColor, in vec2 fragCoord ){
 	float dist = length(uv - sunPos);				
 	vec3 color = vec3(0.0);
 
-	if( fragColorTexture.x > 0.0 ) dist = dist * (0.25+fbm(fragColorTexture.xy * 50.0));
+	if( fragColorTexture.x > 0.0 ) dist = dist * (0.5+fbm(fragColorTexture.xy * 25.0));
 
 	// === 1. Photosphère + taches solaires ===
 	float sunDisk = smoothstep(0.32, 0.30, dist);
@@ -1405,14 +1405,21 @@ void mainImageSun( out vec4 fragColor, in vec2 fragCoord ){
 		float spots = smoothstep(0.6, 0.0, fragColorTexture.x);
 		spots *= smoothstep(0.9, 0.3, length(suv));					
 		vec3 photosphere = mix(vec3(1.0, 0.95, 0.8), vec3(1.0, 0.7, 0.3), noise*0.6);
-		photosphere = mix(photosphere, vec3(0.3, 0.1, 0.0), fragColorTexture.xyz);					
+		photosphere = vec3(max(photosphere.x,fragColorTexture.x), max(photosphere.y,fragColorTexture.y), max(photosphere.z,fragColorTexture.z));
+		// Avec anti-aliasing adaptatif
+		vec3 aa = fwidth(photosphere);
+		photosphere = smoothstep(-aa, aa, photosphere);			
 		color += photosphere * sunDisk;
 	}	
 
 	// === 2. Chromosphère (bord rouge) ===
 	float chromo = smoothstep(0.30, 0.33, dist) * smoothstep(0.40, 0.31, dist);
 	color += vec3(1.0, 0.35, 0.1) * chromo * 2.5;
-	color = mix(color, vec3(0.3, 0.1, 0.0), fragColorTexture.xyz);
+
+	vec3 chromosphere = fragColorTexture.xyz;
+	vec3 aaa = fwidth(chromosphere);
+	chromosphere = (color * smoothstep(-aaa, aaa, chromosphere));			
+	color = chromosphere;
 
 	// === 3. Couronne douce ===
 	float corona = exp(-dist*2.5) * 0.8;
@@ -1477,8 +1484,12 @@ void mainImageSun( out vec4 fragColor, in vec2 fragCoord ){
 	color += rayColor * rays * exposure * 3.0;
 
 	// === 5. Légère lueur globale + vignettage ===
-	color += vec3(1.0, 0.7, 0.4) * pow(sunDisk, 4.0) * 2.0;
-	color *= 1.0 - 0.3*length(uv); // vignettage doux				
+	//color += vec3(1.0, 0.7, 0.4) * pow(sunDisk, 4.0) * 2.0;
+	vec3 values = vec3(1.0, 0.7, 0.4) * pow(sunDisk, 4.0) * 2.0 * (0.75+fbm(fragColorTexture.xy * 25.0));
+	vec3 aaaa = fwidth(values);
+	values = (color * smoothstep(-aaaa, aaaa, values));			
+	color += values;
+	color *= 1.0 - 0.3*length(uv); // vignettage doux		
 	// Gamma
 	color = pow(color, vec3(0.9));				
 	fragColor = vec4(color, 1.0);
