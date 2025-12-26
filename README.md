@@ -17,18 +17,48 @@
   </p>
 </div>
 
-# Pour bypasser les règles de CORS:
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites and install</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-Brave/Chrome/Edge built-in (2024+ have this):
-Open DevTools → Application tab → Service Workers → check “Bypass for network” is off, then just use any of the servers above.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-That’s it. After 6 years of fighting this, the entire web-audio community has settled on “just use localhost”. There is no longer a magic bullet that works from file:// on all browsers.
-Do it once, bookmark localhost:8000, and you’ll never see another AudioWorklet CORS or blob:null error again.
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
+Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`, `project_license`
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Prerequisites
+Installez nodejs
+Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
+* npm
+  ```sh
+  python -m http.server 8000
 
 
-# run server
-- install nodejs
-- run prompt: python -m http.server 8000
 
 
 # todo list
@@ -39,5 +69,4 @@ Do it once, bookmark localhost:8000, and you’ll never see another AudioWorklet
 - video de demo
 - push sur git version full front et la version avec serveur
 
-reouveller ass
 
