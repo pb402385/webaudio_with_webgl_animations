@@ -1691,6 +1691,9 @@ int modi(int x, int y) {
 
 void mainImageSierpinskiInfinite( out vec4 fragColor, in vec2 fragCoord )
 {
+
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+
     vec2 R = iResolution.xy;
     vec2 uv = fragCoord/R.y;
     vec2 tuv = uv;
@@ -1728,7 +1731,7 @@ void mainImageSierpinskiInfinite( out vec4 fragColor, in vec2 fragCoord )
 	}
 	if(uIntFreq == 16) {
 		if ( modi(int(thet),2) == 0) {
-			jt = t/4.0;
+			jt = t/16.0;
 		}
 	}	
 
@@ -1774,13 +1777,16 @@ void mainImageSierpinskiInfinite( out vec4 fragColor, in vec2 fragCoord )
             }
         }
         vec3 addCol = tri*vec3(1.);
+
         if (j==0) {
-            col.r = addCol.r;
+            col.r = addCol.r + fragColorTexture.r;
         } else if (j==1) {
-            col.g = addCol.g;
+            col.g = addCol.g + fragColorTexture.g;
         } else {
-            col.b = addCol.b;
+            col.b = addCol.b+ fragColorTexture.b;
         }
+
+		
     }
 
     // Output to screen
