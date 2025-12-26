@@ -1592,26 +1592,18 @@ vec3 renderSierpinski( in vec3 ro, in vec3 rd ){
 		float amb = (0.5 + 0.5*nor.y);
 		float dif = max(dot(nor,lig),0.0);
 
-        // lights
-		vec3 lin = amb*vec3(3.0) * occ * (1.25+fbm(fragColorTexture.xy * 25.0));
-		if( fragColorTexture.x>0.0 ) lin = mix(fragColorTexture.xyz, lin, vec3(0.66));
-		//vec3 values = amb*vec3(3.0) * occ * (1.25+fbm(fragColorTexture.xy * 25.0));
-		//vec3 aa = fwidth(values);
-		//values =  smoothstep(-aa, aa, values);			
-		//vec3 lin = values;
-		// surface-light interacion
-		col = maa * lin;
-		//if( fragColorTexture.x>0.0 ) col = smoothstep(fragColorTexture.xyz, col, vec3(0.66));	
+		col = maa;
+
+		if( fragColorTexture.x > 0.0 ) {
+			col.r = smoothstep(col.r,fragColorTexture.r,0.35);
+			col.g = smoothstep(col.g,fragColorTexture.g,0.35);
+			col.b = smoothstep(col.b,fragColorTexture.b,0.35);
+		}
+		col = col * amb *vec3(2.0) * (2.25+fbm(fragColorTexture.xy * 55.0)) + 0.01;
 	}
 
     // gamma
 	col = pow( clamp(col,0.0,1.0), vec3(0.45) );
-	//vec3 values = pow( clamp(col,0.0,1.0), fragColorTexture.xyz );
-	//vec3 aa = fwidth(values);
-	//values =  vec3(1.0) - smoothstep(-aa, aa, values);
-	//col = values;
-
-	//col = mix(fragColorTexture.xyz, col, vec3(1.0,1.0,1.0));	
 
     return col;
 }
@@ -1648,16 +1640,15 @@ void mainImageSierpinski( out vec4 fragColor, in vec2 fragCoord ){
 
     // render
     vec3 col = renderSierpinski( ro, rd );
-	//col = mix(col, vec3(0.3, 0.1, 0.0), fragColorTexture.xyz);	
     
     fragColor = vec4( col, 1.0 );
 }
 
 
 // ──────────────────────────────────────────────────────────────
-// 3D Sierpinski Thor
+// 3D Sierpinski Infinite
 // source : https://www.shadertoy.com/view/wc23zR
-//Créé par GarlicGraphix le 2025-02-17
+// Créé par GarlicGraphix le 2025-02-17
 // ──────────────────────────────────────────────────────────────
 bool inTriangle(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
     float div = ((v2.y - v3.y)*(v1.x - v3.x) + (v3.x - v2.x)*(v1.y - v3.y));
@@ -1698,7 +1689,7 @@ void mainImageSierpinskiInfinite( out vec4 fragColor, in vec2 fragCoord )
     vec2 uv = fragCoord/R.y;
     vec2 tuv = uv;
     uv -= R/2./R.y;
-    //uv = abs(uv);
+    // uv = abs(uv);
     
     float t = iGlobalTime;
     uv *= .5;
