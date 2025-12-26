@@ -106,3 +106,15 @@ Voici à quoi ressemble un exemple de cette texture à un instant t
 <br/>
 
 Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer et afficher en 3D et celles-ci varient en fonction de l'intensité du flux audio, il a été rajouté une coupe 2D afin également de déformer ondulairement les formes. On peut également pour le cas 3D, répéter l'affichage de la forme à l'infini
+
+La liste des formes possibles: Square, small Square, Torus, small Torus, Hexagone, Cone et Circle
+
+Par exemple, voici une capture du Square en 3D
+<br/>
+<img src="screenshots/shape_torus_webgl.png" alt="application.png" />
+<br/>
+Et de sa version 2D
+<br/>
+<img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
+<br/>
+
