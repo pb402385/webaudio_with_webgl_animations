@@ -10,27 +10,24 @@
   <p align="center">
     Chargeur MP3/MP4 avec animations (javascript et webGl) et piano en web audio
     <br />
-    <a href="https://github.com/pb402385/webaudio_with_webgl_animations"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/pb402385/webaudio_with_webgl_animations">View Demo</a>
+    <a href="https://github.com/pb402385/webaudio_with_webgl_animations">Voir Demo</a>
   </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents</summary>
+  <summary>Sommaire</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#about-the-project">A propos du projet</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#getting-started">Commencer</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites and install</a></li>
+        <li><a href="#prerequisites">Prérequis et installation</a></li>
       </ul>
     </li>
     <li><a href="#presentation">Presentation de l'application</a></li>
@@ -50,7 +47,7 @@
     </li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#acknowledgments">Remerciements</a></li>
   </ol>
 </details>
 
@@ -76,13 +73,3 @@ Installez nodejs
 Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
   ```sh
   python -m http.server 8000
-
-# todo list
--bon paramètrage web audio
-
-- revue de code
-- documentation
-- video de demo
-- push sur git version full front et la version avec serveur
-
-
