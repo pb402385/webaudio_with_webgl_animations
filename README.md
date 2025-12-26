@@ -91,7 +91,7 @@ L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou
 
 ## Fonctionnalités
 
-### Partie Vidéo 3D
+### Partie Vidéo
 
 Voici les différents paramètres possibles pour la partie vidéo
 <br/>
@@ -150,3 +150,20 @@ Celui-ci nous ouvre une popin listant toutes les animations et nous permettant d
 <img src="screenshots/video_random_animation.png" alt="application.png" />
 <br/>
 Si la fonctionnalité est activé, les animations sélectionnées défileront comme dans la vidéo ci-dessous par exemple: 
+
+//TODO lien video youtube
+
+### Partie Audio
+
+
+## Explication du code
+
+### Partie Vidéo
+
+### Partie Audio
+
+## License
+
+## Contact
+
+## Remerciements
