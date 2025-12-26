@@ -91,7 +91,7 @@ L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou
 
 ## Fonctionnalités
 
-### Partie Vidéo
+### Partie Vidéo 3D
 
 Voici les différents paramètres possibles pour la partie vidéo
 <br/>
@@ -109,12 +109,44 @@ Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer
 
 La liste des formes possibles: Square, small Square, Torus, small Torus, Hexagone, Cone et Circle
 
-Par exemple, voici une capture du Square en 3D
+Par exemple, voici une capture du Torus en 3D
 <br/>
 <img src="screenshots/shape_torus_webgl.png" alt="application.png" />
 <br/>
+
 Et de sa version 2D
 <br/>
 <img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
 <br/>
 
+Si un son est en cours, la figure se fait déformer par la texture2D citée plus haut et voici un exemple de sa déformation en 3D
+<br/>
+<img src="screenshots/shape_square_3d_animated_webgl.png" alt="application.png" />
+<br/>
+
+Et de sa version 2D
+<br/>
+<img src="screenshots/shape_square_2d_animated_webgl.png" alt="application.png" />
+<br/>
+
+On peut également démultiplier la figure à l'infini comme sur la capture ci-dessous:
+<br/>
+<img src="screenshots/shape_infinity_webgl.png" alt="application.png" />
+<br/>
+
+On peut également ajouter un effet de twist sur les formes
+<br/>
+<img src="screenshots/shape_twist_webgl.png" alt="application.png" />
+<br/>
+
+
+
+Sinon il existe d'autres animations entièrement automatisées et ne nécessitant aucun paramétrage qui ne sont pas basées sur des formes et qui seront abordés un peu plus loin, mais on peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
+<br/>
+<img src="screenshots/effect_video_webgl.png" alt="application.png" />
+<br/>
+Celui-ci nous ouvre une popin listant toutes les animations et nous permettant de les sélectionner afin qu'elles soit dans une liste de lecture
+<br/>
+<img src="screenshots/video_random_animation.png" alt="application.png" />
+<br/>
+Si la fonctionnalité est activé, les animations sélectionnées défileront comme dans la vidéo ci-dessous par exemple: 
