@@ -19,15 +19,15 @@
   <summary>Sommaire</summary>
   <ol>
     <li>
-      <a href="#about-the-project">A propos du projet</a>
+      <a href="#a-propos-du-projet">A propos du projet</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#technologies">Technologies</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Commencer</a>
+      <a href="#commencer">Commencer</a>
       <ul>
-        <li><a href="#prerequisites">Prérequis et installation</a></li>
+        <li><a href="#prérequis-et-installation">Prérequis et installation</a></li>
       </ul>
     </li>
     <li><a href="#presentation">Presentation de l'application</a></li>
@@ -52,7 +52,7 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## A propos du projet
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
@@ -60,7 +60,7 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Built With
+### Technologies
 
 * [Three.js](https://threejs.org)
 * [WebAudioAPI] (https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
@@ -68,7 +68,9 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Prerequisites
+## Commencer
+
+### Prérequis et installation
 Installez nodejs
 Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
   ```sh
