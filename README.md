@@ -82,6 +82,27 @@ Ensuite, rendez-vous à l'url suivante: <a href="http://localhost:8000/index.htm
 ### Presentation de l'application
 
 Vous arrivez sur la page de l'application
+<br/>
 <img src="screenshots/application.png" alt="application.png" />
+<br/>
+L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou un son provenant du synthétiseur, le flux permet d'afficher plusieurs informations qui nous sont envoyées par le son qui peut également être altéré via divers paramètres (filtre, equalizer, effet), ce flux est ensuite transformé en une texture qui nous permettra de modifier des fonctions glsl (Web GL) afin de faire varier de très belles animations 2D/3D que l'on peut également paramétrer afin d'altérer le rendu visuel.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Fonctionnalités
+
+### Partie Vidéo
+
+Voici les différents paramètres possibles pour la partie vidéo
+<br/>
+<img src="screenshots/video_params.png" alt="application.png" />
+<br/>
+
+Comme expliqué un peut plus haut, le son est transformé en une texture2D (une image) qui représente l'instant t de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
+
+Voici à quoi ressemble un exemple de cette texture à un instant t
+<br/>
+<img src="screenshots/exemple_texture.png" alt="application.png" />
+<br/>
+
+Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer et afficher en 3D et celles-ci varient en fonction de l'intensité du flux audio, il a été rajouté une coupe 2D afin également de déformer ondulairement les formes. On peut également pour le cas 3D, répéter l'affichage de la forme à l'infini
