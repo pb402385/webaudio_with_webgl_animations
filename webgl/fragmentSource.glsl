@@ -75,6 +75,9 @@ void main( void ){
 	if(uIntEffect == 20){
 		mainImageMandelbrotDecoration( color, gl_FragCoord.xy );
 	}
+	if(uIntEffect == 21){
+		mainImageSierpinskiInfinite( color, gl_FragCoord.xy );
+	}
 
 	gl_FragColor = color;
 }

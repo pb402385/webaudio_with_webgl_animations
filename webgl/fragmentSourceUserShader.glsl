@@ -1511,7 +1511,7 @@ vec2 mapSierpinski( vec3 p ){
     const vec3 vc = vec3(  1.0, -1.0, -0.57735 );
     const vec3 vd = vec3( -1.0, -1.0, -0.57735 );
     
-	float a = 0.0;
+	float a = 1.0;
     float s = 1.0;
     float r = 1.0;
     float dm;
@@ -1559,6 +1559,8 @@ vec3 calcNormal( in vec3 pos ){
 float calcOcclusion( in vec3 pos, in vec3 nor ){
 	float ao = 0.0;
     float sca = 1.0;
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+	sca = sca * (1.25+fbm(fragColorTexture.xy * 50.0));
     for( int i=0; i<8; i++ ){
         float h = 0.001 + 0.5*pow(float(i)/7.0,1.5);
         float d = mapSierpinski( pos + h*nor ).x;
@@ -1591,8 +1593,12 @@ vec3 renderSierpinski( in vec3 ro, in vec3 rd ){
 		float dif = max(dot(nor,lig),0.0);
 
         // lights
-		vec3 lin = amb*vec3(3.0) * occ;
-		if( fragColorTexture.x>0.0 ) lin = mix(fragColorTexture.xyz, lin, vec3(0.66));	
+		vec3 lin = amb*vec3(3.0) * occ * (1.25+fbm(fragColorTexture.xy * 25.0));
+		if( fragColorTexture.x>0.0 ) lin = mix(fragColorTexture.xyz, lin, vec3(0.66));
+		//vec3 values = amb*vec3(3.0) * occ * (1.25+fbm(fragColorTexture.xy * 25.0));
+		//vec3 aa = fwidth(values);
+		//values =  smoothstep(-aa, aa, values);			
+		//vec3 lin = values;
 		// surface-light interacion
 		col = maa * lin;
 		//if( fragColorTexture.x>0.0 ) col = smoothstep(fragColorTexture.xyz, col, vec3(0.66));	
@@ -1600,6 +1606,10 @@ vec3 renderSierpinski( in vec3 ro, in vec3 rd ){
 
     // gamma
 	col = pow( clamp(col,0.0,1.0), vec3(0.45) );
+	//vec3 values = pow( clamp(col,0.0,1.0), fragColorTexture.xyz );
+	//vec3 aa = fwidth(values);
+	//values =  vec3(1.0) - smoothstep(-aa, aa, values);
+	//col = values;
 
 	//col = mix(fragColorTexture.xyz, col, vec3(1.0,1.0,1.0));	
 
@@ -1642,6 +1652,114 @@ void mainImageSierpinski( out vec4 fragColor, in vec2 fragCoord ){
     
     fragColor = vec4( col, 1.0 );
 }
+
+
+// ──────────────────────────────────────────────────────────────
+// 3D Sierpinski Thor
+// source : https://www.shadertoy.com/view/wc23zR
+//Créé par GarlicGraphix le 2025-02-17
+// ──────────────────────────────────────────────────────────────
+bool inTriangle(vec2 p, vec2 v1, vec2 v2, vec2 v3) {
+    float div = ((v2.y - v3.y)*(v1.x - v3.x) + (v3.x - v2.x)*(v1.y - v3.y));
+    float d1 = 
+        ((v2.y - v3.y)*(p.x - v3.x) + (v3.x - v2.x)*(p.y - v3.y))/div;
+        
+    float d2 = 
+        ((v3.y - v1.y)*(p.x - v3.x) + (v1.x - v3.x)*(p.y-v3.y))/div;
+    float d3 = 1. - d1 - d2;
+    return (
+        d1 >= 0. && d1 <= 1. &&
+        d2 >= 0. && d2 <= 1. &&
+        d3 >= 0. && d3 <= 1.
+    );
+}
+
+mat2 rot2D(float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    
+    return mat2(c, -s, s, c);
+}
+
+vec2 lerp(vec2 a, vec2 b, float p){
+    return a*(1.-p)+b*(p);
+}
+
+
+void mainImageSierpinskiInfinite( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 R = iResolution.xy;
+    vec2 uv = fragCoord/R.y;
+    vec2 tuv = uv;
+    uv -= R/2./R.y;
+    //uv = abs(uv);
+    
+    float t = iGlobalTime;
+    uv *= .5;
+    
+    vec3 col = vec3(0.);
+    // Generate Triangle
+    float tri = 1.;
+    float thet = floor(atan(uv.y, uv.x)*3./PI);
+    const int n = 10;
+    float d = 0.8;
+    float jt = t;
+
+    for (int j = 0; j < 3; j++) {
+        jt *= d;
+        float scale = pow(.5, fract(jt+float(j)));
+        vec2 p = uv*scale;
+        vec2 v1, v2, v3;
+        
+        mat2 r = rot2D(thet*PI/3.);
+        v1 = vec2(1., 0.)*r;
+        v2 = vec2(.0)*r;
+        v3 = vec2(0.5, 0.866)*r;
+        for (int i = 0; i < n; i++) {
+            tri = 1.;
+            vec2 midl = lerp(v1, v2, .5);
+            vec2 midr = lerp(v1, v3, .5);
+            vec2 midb = lerp(v2, v3, .5);
+            if (inTriangle(p, v1, midl, midr)) {
+                v1 = v1;
+                v2 = midl;
+                v3 = midr;
+            }
+            else if (inTriangle(p, v2, midl, midb)) {
+                v1 = v2;
+                v2 = midl;
+                v3 = midb;
+            }
+            else if (inTriangle(p, v3, midr, midb)) {
+                v1 = v3;
+                v2 = midr;
+                v3 = midb;
+            }
+            else {
+                if (i == n-1) {
+                    tri = 1.-fract(jt);
+                } else {
+                    tri = 0.;
+                }
+
+                break;
+            }
+        }
+        vec3 addCol = tri*vec3(1.);
+        if (j==0) {
+            col.r = addCol.r;
+        } else if (j==1) {
+            col.g = addCol.g;
+        } else {
+            col.b = addCol.b;
+        }
+    }
+
+    // Output to screen
+    fragColor = vec4(col, 1.);
+}
+
+
 
 
 
