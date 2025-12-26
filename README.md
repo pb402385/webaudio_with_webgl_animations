@@ -51,6 +51,14 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Built With
+
+* [Three.js](https://threejs.org)
+* [WebAudioAPI] (https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### Prerequisites
 Installez nodejs
 Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
