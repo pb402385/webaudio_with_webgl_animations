@@ -33,9 +33,21 @@
         <li><a href="#prerequisites">Prerequisites and install</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#presentation">Presentation de l'application</a></li>
+    <li>
+        <a href="#functionalities">Fonctionnalités</a>
+      <ul>
+        <li><a href="#part-video">Partie Vidéo</a></li>
+        <li><a href="#part-audio">Partie Audio</a></li>
+      </ul>
+    </li>
+    <li>
+        <a href="#codereview">Explication du code</a>
+      <ul>
+        <li><a href="#code-video">Partie Vidéo</a></li>
+        <li><a href="#code-audio">Partie Audio</a></li>
+      </ul>
+    </li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
