@@ -75,3 +75,13 @@ Installez nodejs
 Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
   ```sh
   python -m http.server 8000
+  ```
+
+Ensuite, rendez-vous à l'url suivante: <a href="http://localhost:8000/index.html">http://localhost:8000/index.html</a>
+
+### Presentation de l'application
+
+Vous arrivez sur la page de l'application
+<img src="screenshots/application.png" alt="application.png" />
+
+
