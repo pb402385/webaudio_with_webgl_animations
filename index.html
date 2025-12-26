@@ -703,13 +703,11 @@
 								<span class="checkmark"></span>
 							</li>
 
-							<!--
 							<li class="checkbox-item" onclick="checkElement('cb11')">
 								<input type="checkbox" id="cb11">
 								<label>Black Hole</label>
 								<span class="checkmark"></span>
 							</li>
-							-->
 
 							<li class="checkbox-item" onclick="checkElement('cb12')">
 								<input type="checkbox" id="cb12">
@@ -740,6 +738,36 @@
 								<label>GridPulse</label>
 								<span class="checkmark"></span>
 							</li>
+
+							<li class="checkbox-item" onclick="checkElement('cb17')">
+								<input type="checkbox" id="cb17">
+								<label>Triangle Sierpinski</label>
+								<span class="checkmark"></span>
+							</li>
+
+							<li class="checkbox-item" onclick="checkElement('cb18')">
+								<input type="checkbox" id="cb18">
+								<label>Mobius Sierpinski</label>
+								<span class="checkmark"></span>
+							</li>
+
+							<li class="checkbox-item" onclick="checkElement('cb19')">
+								<input type="checkbox" id="cb19">
+								<label>Mandelbrot</label>
+								<span class="checkmark"></span>
+							</li>
+
+							<li class="checkbox-item" onclick="checkElement('cb20')">
+								<input type="checkbox" id="cb20">
+								<label>Mandelbrot Decoration</label>
+								<span class="checkmark"></span>
+							</li>
+
+							<li class="checkbox-item" onclick="checkElement('cb21')">
+								<input type="checkbox" id="cb21">
+								<label>Infinite Sierpinski</label>
+								<span class="checkmark"></span>
+							</li>
 							
 						</ul>
 					</div>
@@ -759,6 +787,7 @@
 			</div>
 
 			<div class="btn-group">
+				<button class="btn-primary" onclick="selectAll()">Select ALL</button>
 				<button class="btn-close" onclick="closePopinEffectAnim()">Close</button>
 			</div>
 			</div>
@@ -785,6 +814,11 @@
 			arrayRandomAnim['cb14']=[false,14];
 			arrayRandomAnim['cb15']=[false,15];
 			arrayRandomAnim['cb16']=[false,16];
+			arrayRandomAnim['cb17']=[false,17];
+			arrayRandomAnim['cb18']=[false,18];
+			arrayRandomAnim['cb19']=[false,19];
+			arrayRandomAnim['cb20']=[false,20];
+			arrayRandomAnim['cb21']=[false,21];
 
 			var arrayRandomAnimIsRunning = false;
 
@@ -793,13 +827,13 @@
 			function emulateRandomAnimNb(id) {
 				if( arrayRandomAnimIsRunning ) {
 					if( !id ) id = 1;
-					for( let i = id; i < 17; i++) {
+					for( let i = id; i < 22; i++) {
 						// on verifie si l'animation est selectionnée
 						if( arrayRandomAnim['cb'+i][0] == true ) {
 							//on lance l'animation et la prochaine itération
 							setEffectToOpenGL(''+i);
 							setTimeout(() => {
-								if( i < 16 ) {
+								if( i < 21 ) {
 									emulateRandomAnimNb(i+1);
 								} else {
 									//on recommence a 0
@@ -817,6 +851,23 @@
 
 			const checkboxYesNo = document.getElementById('power');
 			const text = document.querySelector('.textYesNo');
+
+			var selectionAll = false;
+
+			function selectAll(){
+				for (let i = 1; i < 22; i++){
+					if( i !== 2 && i !==3 && i!==4 ) {
+						let el = document.getElementById('cb'+i);
+						if( selectionAll == false ) {
+							el.checked = true;
+						} else {
+							el.checked = false;
+						}
+						arrayRandomAnim['cb'+i]=[el.checked,arrayRandomAnim['cb'+i][1]];
+					}
+				}
+				selectionAll = !selectionAll;
+			}
 
 			function checkElement(id){
 				let el = document.getElementById(id);
