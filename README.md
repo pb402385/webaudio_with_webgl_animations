@@ -54,12 +54,8 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 ### Prerequisites
 Installez nodejs
 Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
-* npm
   ```sh
   python -m http.server 8000
-
-
-
 
 # todo list
 -bon paramètrage web audio
