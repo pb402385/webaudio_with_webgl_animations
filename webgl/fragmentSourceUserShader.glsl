@@ -1685,6 +1685,9 @@ vec2 lerp(vec2 a, vec2 b, float p){
     return a*(1.-p)+b*(p);
 }
 
+int modi(int x, int y) {
+    return x - y * int(floor(float(x) / float(y)));
+}
 
 void mainImageSierpinskiInfinite( out vec4 fragColor, in vec2 fragCoord )
 {
@@ -1704,6 +1707,31 @@ void mainImageSierpinskiInfinite( out vec4 fragColor, in vec2 fragCoord )
     const int n = 10;
     float d = 0.8;
     float jt = t;
+
+	if(uIntFreq == 2) {
+		if ( modi(int(thet),2) == 0) {
+			jt = -t;
+		}
+	}
+	if(uIntFreq == 4) {
+		if ( modi(int(thet),2) == 0) {
+			jt = -t/2.0;
+		}
+	}
+	if(uIntFreq == 8) {
+		// do nothing
+	}
+	if(uIntFreq == 12) {
+		if ( modi(int(thet),2) == 0) {
+			jt = t/2.0;
+		}
+	}
+	if(uIntFreq == 16) {
+		if ( modi(int(thet),2) == 0) {
+			jt = t/4.0;
+		}
+	}	
+
 
     for (int j = 0; j < 3; j++) {
         jt *= d;
