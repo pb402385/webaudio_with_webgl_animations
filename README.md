@@ -1,3 +1,4 @@
+<a id="readme-top"></a>
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -155,6 +156,31 @@ Si la fonctionnalité est activé, les animations sélectionnées défileront co
 
 ### Partie Audio
 
+#### Le synthé
+Le synthé permet de générer notre flux audio, il fonctionne à l'aide d'oscillateur que l'API web audio nous founit et avec ceux ci nous pouvons jouer toutes les notes. On peut changer le type de l'onde afin d'en modifier sensiblement la tonalité ( Triangle, Sine, Square, Sawtooth )
+
+Voici une petite vidéo afin de le présenter:
+//TODO vidéo demo synthé
+
+#### Les mélodies ou l'upload audio
+Pour générer notre flux audio, nous pouvons soit utiliser un les mélodies, soit charger directement un fichier son qui peut être au format mp3,mp4 ou m4a1. Corcernant les mélodie (les mélodies sont la simulation d'une partition lue et jouée automatiquement au synthé sans qu'il n'y ait besoin que l'humain joue vraiment). Deux melodies sont disponibles, la marche impériale de Star wars et la marche de sacco et vanzetti
+<br/>
+<img src="screenshots/melodies_boutons.png" alt="application.png" />
+<br/>
+Sinon on peut upload un son
+<br/>
+<img src="screenshots/upload.png" alt="application.png" />
+<br/>
+Une fois le son uploadé, les  canvas s'animent, les deux premier concernent le son en temps réel et représentent l'amplitude. le graphe du bas représente le spectre du fichier uploadé
+<br/>
+<img src="screenshots/canvas_audio.png" alt="application.png" />
+<br/>
+
+#### Les paramètres audio
+<br/>
+<img src="screenshots/audio_params.png" alt="application.png" />
+<br/>
+Concernant les paramètres audio
 
 ## Explication du code
 
