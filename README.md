@@ -182,10 +182,10 @@ Une fois le son uploadé, les  canvas s'animent, les deux premier concernent le 
 <br/>
 Concernant les paramètres audio, les paramètres suivants sont disponibles:
 
-Volume: permet de monter ou diminuer le son (valeur comprise entre 0 et 100%)
-Equalizer: permet de paramétrer manuellement la valeur des fréquences autorisées (high,mid et low) (valeur comprise entre 0 et 100% pour chaque type)
-Filtre: permet de choisir le filtre utilisé, il est associé à une fréquence qui peut être modifiée (les différents filtres sont: Low Pass (120hz), High Pass (120hz), Band Pass (800hz), Low Shelf (180hz), High Shelf (6000hz), Peaking (1000hz), Notch (500hz) et All Pass (500hz))
-Effects: permet d'activer 1 effet sur le son parmi la liste suivante: ( ceux ayant un astérisque peuvent être paramétrés )
+1. Volume: permet de monter ou diminuer le son (valeur comprise entre 0 et 100%)
+2. Equalizer: permet de paramétrer manuellement la valeur des fréquences autorisées (high,mid et low) (valeur comprise entre 0 et 100% pour chaque type)
+3. Filtre: permet de choisir le filtre utilisé, il est associé à une fréquence qui peut être modifiée (les différents filtres sont: Low Pass (120hz), High Pass (120hz), Band Pass (800hz), Low Shelf (180hz), High Shelf (6000hz), Peaking (1000hz), Notch (500hz) et All Pass (500hz))
+4. Effects: permet d'activer 1 effet sur le son parmi la liste suivante: ( ceux ayant un astérisque peuvent être paramétrés )
 
  - MOOG: le filtre produit un son "crémeux" (creamy), gras et musical (utile avec le synthé ou certaines musique utilisant des synthés).
 
@@ -207,8 +207,8 @@ Effects: permet d'activer 1 effet sur le son parmi la liste suivante: ( ceux aya
 
 
 
-Speed Melody: permet d'ajuster la vitesse des 2 mélodies pré enregistrée
-Type: type de l'onde jouée par l'oscillateur ( Triangle, Sine, Square, Sawtooth ) ne concerne que les melodies et le synthé
+5. Speed Melody: permet d'ajuster la vitesse des 2 mélodies pré enregistrée
+6. Type: type de l'onde jouée par l'oscillateur ( Triangle, Sine, Square, Sawtooth ) ne concerne que les melodies et le synthé
 
 
 ## Explication du code
