@@ -158,7 +158,9 @@ Les paramètres suivants sont disponibles:
 
 Voici une petite vidéo qui vous montre tous les types d'animations possibles à leur état de basesans texture2D qui modifient le rendu visuel. 
 <div align="center">
-[![Watch the video](https://img.youtube.com/vi/5eaCHoJFUhc/hqdefault.jpg)](https://www.youtube.com/shorts/5eaCHoJFUhc) 
+[![Watch the video](https://img.youtube.com/vi/5eaCHoJFUhc/hqdefault.jpg)](https://www.youtube.com/shorts/5eaCHoJFUhc)
+</div>
+<div align="center">
 (cliquer sur l'image pour lancer la vidéo)
 </div>
 
