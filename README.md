@@ -166,9 +166,9 @@ Les paramètres suivants sont disponibles:
 
 
 Voici une petite vidéo qui vous montre tous les types d'animations possibles à leur état de base sans texture2D qui modifient le rendu visuel. 
-<div align="center">
+
 https://github.com/user-attachments/assets/ea8c63dd-818e-44c1-a017-e59964816623
-</div>
+
 
 On peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
 
