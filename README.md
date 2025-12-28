@@ -394,6 +394,38 @@ Concernant les interractions de la souris avec le canvas d'animation 3D, les fon
 	});
 ```
 
+
+Maintenant je vais expliquer comment en pratique prendre une animation GLSL et comment dans le code GLSL récupérer la texture2D qui va nous permettre de créer des modification de vecteurs qui nous permettront de réaliser nos animations en fonction du son
+
+Tout d'abord il faut récupérer la texture2D qui est générée en temps réel en fonction du tableau de fréquences:
+
+vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+
+Ensuite il faut trouver l'endroit de l'animation qui nous interesse et à l'aide des informations que la texture nous envoit, réaliser des opérations qui altèrent notre animation ( de préférence de manière harmonieuse )
+
+On peut par exemple utiliser la fonction mix est une des fonctions les plus utiles et utilisées en GLSL (le langage des shaders dans WebGL, Three.js, OpenGL, etc.). Elle permet de faire une interpolation linéaire entre deux valeurs.
+
+```glsl
+    fragColor = mix(color, vec3(0.5), fragColorTexture.xyz);
+```
+
+On peut également utiliser la fonction smoothstep en GLSL (utilisée dans Three.js, WebGL, shaders en général) qui permet de créer des transitions douces (smooth transitions) entre deux valeurs. Elle est parfaite pour les animations fluides, les masques progressifs, les effets de fondu, etc.
+
+```glsl
+    fragColor = smoothstep(color, vec3(0.5), fragColorTexture.xyz);
+```
+
+Mais attention au problème d'antialising qui peut faire buguer la partie gauche de l'animation ou créer des bords en escalier très visibles et peu esthétiques après un smoothstep, mais pas d'inquiétude, on peut le solutionner ainsi!
+
+```glsl
+    // l'operation que l'on souhaite réaliser
+    vec3 values = vec3(min(1.0,fragColorTexture.x), min(0.2,fragColorTexture.y), min(0.8,fragColorTexture.z));
+    // Avec anti-aliasing adaptatif
+    vec3 aa = fwidth(values);                         // vec3 avec fwidth par composante
+    vec3 smooth = smoothstep(-aa, aa, values);
+    col *=  smooth; 
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Partie Audio
