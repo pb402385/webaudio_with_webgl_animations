@@ -35,8 +35,21 @@
     <li>
         <a href="#functionalities">Fonctionnalités</a>
       <ul>
-        <li><a href="#part-video">Partie Vidéo</a></li>
-        <li><a href="#part-audio">Partie Audio</a></li>
+        <li>
+            <a href="#part-video">Partie Vidéo</a>
+            <ul>
+                <li><a href="#fonctionnement">Fonctionnement général</a></li>
+                <li><a href="#video_params">Les paramètres vidéo</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#part-audio">Partie Audio</a>
+            <ul>
+                <li><a href="#synthe">Le synthé</a></li>
+                <li><a href="#melody">Les mélodies ou l'upload audio</a></li>
+                <li><a href="#audio_params">Les paramètres audio</a></li>
+            </ul>
+        </li>
       </ul>
     </li>
     <li>
@@ -103,6 +116,9 @@ L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou
 
 Comme expliqué un peut plus haut, le son est transformé en une texture2D (une image) qui représente l'instant t de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
 
+#### Fonctionnement général
+<a id="fonctionnement"></a>
+
 <div align="center">
 Voici à quoi ressemble un exemple de cette texture à un instant t
 </div>
@@ -164,6 +180,8 @@ On peut également ajouter un effet de twist sur les formes
     <img src="screenshots/shape_twist_webgl.png" alt="application.png" />
 </div>
 
+#### Les paramètres vidéo
+<a id="video_params"></a>
 Voici les différents paramètres possibles pour la partie vidéo
 
 <div align="center">
@@ -205,12 +223,14 @@ Si la fonctionnalité est activé, les animations sélectionnées défileront co
 <a id="part-audio"></a>
 
 #### Le synthé
+<a id="synthe"></a>
 Le synthé permet de générer notre flux audio, il fonctionne à l'aide d'oscillateur que l'API web audio nous founit et avec ceux ci nous pouvons jouer toutes les notes. On peut changer le type de l'onde afin d'en modifier sensiblement la tonalité ( Triangle, Sine, Square, Sawtooth )
 
 Voici une petite vidéo afin de le présenter:
 //TODO vidéo demo synthé
 
 #### Les mélodies ou l'upload audio
+<a id="melody"></a>
 Pour générer notre flux audio, nous pouvons soit utiliser un les mélodies, soit charger directement un fichier son qui peut être au format mp3, mp4 ou m4a1. Corcernant les mélodie (les mélodies sont la simulation d'une partition lue et jouée automatiquement au synthé sans qu'il n'y ait besoin que l'humain joue vraiment). Deux melodies sont disponibles, la marche impériale de Star wars et la marche de sacco et vanzetti
 
 <img src="screenshots/melodies_boutons.png" alt="application.png" />
@@ -227,6 +247,7 @@ Une fois le son uploadé, les  canvas s'animent, les deux premier concernent le 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Les paramètres audio
+<a id="audio_params"></a>
 
 <img src="screenshots/audio_params.png" alt="application.png" />
 
