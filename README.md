@@ -95,64 +95,66 @@ L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou
 ### Partie Vidéo
 
 Voici les différents paramètres possibles pour la partie vidéo
-<br/>
+
 <img src="screenshots/video_params.png" alt="application.png" />
-<br/>
+
 
 Comme expliqué un peut plus haut, le son est transformé en une texture2D (une image) qui représente l'instant t de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
 
 Voici à quoi ressemble un exemple de cette texture à un instant t
-<br/>
+
 <img src="screenshots/exemple_texture.png" alt="application.png" />
-<br/>
+
 
 Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer et afficher en 3D et celles-ci varient en fonction de l'intensité du flux audio, il a été rajouté une coupe 2D afin également de déformer ondulairement les formes. On peut également pour le cas 3D, répéter l'affichage de la forme à l'infini
 
 La liste des formes possibles: Square, small Square, Torus, small Torus, Hexagone, Cone et Circle
 
 Par exemple, voici une capture du Torus en 3D
-<br/>
+
 <img src="screenshots/shape_torus_webgl.png" alt="application.png" />
-<br/>
+
 
 Et de sa version 2D
-<br/>
+
 <img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
-<br/>
+
 
 Si un son est en cours, la figure se fait déformer par la texture2D citée plus haut et voici un exemple de sa déformation en 3D
-<br/>
+
 <img src="screenshots/shape_square_3d_animated_webgl.png" alt="application.png" />
-<br/>
+
 
 Et de sa version 2D
-<br/>
+
 <img src="screenshots/shape_square_2d_animated_webgl.png" alt="application.png" />
-<br/>
+
 
 On peut également démultiplier la figure à l'infini comme sur la capture ci-dessous:
-<br/>
+
 <img src="screenshots/shape_infinity_webgl.png" alt="application.png" />
-<br/>
+
 
 On peut également ajouter un effet de twist sur les formes
-<br/>
+
 <img src="screenshots/shape_twist_webgl.png" alt="application.png" />
-<br/>
+
 
 
 
 Sinon il existe d'autres animations entièrement automatisées et ne nécessitant aucun paramétrage qui ne sont pas basées sur des formes et qui seront abordés un peu plus loin, mais on peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
-<br/>
+
 <img src="screenshots/effect_video_webgl.png" alt="application.png" />
-<br/>
+
 Celui-ci nous ouvre une popin listant toutes les animations et nous permettant de les sélectionner afin qu'elles soit dans une liste de lecture
-<br/>
+
 <img src="screenshots/video_random_animation.png" alt="application.png" />
-<br/>
+
 Si la fonctionnalité est activé, les animations sélectionnées défileront comme dans la vidéo ci-dessous par exemple: 
 
 //TODO lien video youtube
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Partie Audio
 
@@ -164,22 +166,24 @@ Voici une petite vidéo afin de le présenter:
 
 #### Les mélodies ou l'upload audio
 Pour générer notre flux audio, nous pouvons soit utiliser un les mélodies, soit charger directement un fichier son qui peut être au format mp3,mp4 ou m4a1. Corcernant les mélodie (les mélodies sont la simulation d'une partition lue et jouée automatiquement au synthé sans qu'il n'y ait besoin que l'humain joue vraiment). Deux melodies sont disponibles, la marche impériale de Star wars et la marche de sacco et vanzetti
-<br/>
+
 <img src="screenshots/melodies_boutons.png" alt="application.png" />
-<br/>
+
 Sinon on peut upload un son
-<br/>
+
 <img src="screenshots/upload.png" alt="application.png" />
-<br/>
+
 Une fois le son uploadé, les  canvas s'animent, les deux premier concernent le son en temps réel et représentent l'amplitude. le graphe du bas représente le spectre du fichier uploadé
-<br/>
+
 <img src="screenshots/canvas_audio.png" alt="application.png" />
-<br/>
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Les paramètres audio
-<br/>
+
 <img src="screenshots/audio_params.png" alt="application.png" />
-<br/>
+
 Concernant les paramètres audio, les paramètres suivants sont disponibles:
 
 1. **Volume**: permet de monter ou diminuer le son (valeur comprise entre 0 et 100%)
@@ -249,14 +253,26 @@ Détails des paramètrages disponibles par effet:
     * Scintillement / Flou spectral
     * Modificateur de hauteur ±2 octaves préservant les formants
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Explication du code
 
 ### Partie Vidéo
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### Partie Audio
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Contact
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Remerciements
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
