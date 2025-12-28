@@ -137,14 +137,20 @@ Et de sa version 2D
     <img src="screenshots/shape_square_2d_animated_webgl.png" alt="application.png" />
 </div>
 
-On peut également démultiplier la figure à l'infini comme sur la capture ci-dessous:
 
+<div align="center">
+On peut également démultiplier la figure à l'infini comme sur la capture ci-dessous:
+</div>
+<br/>
 <div align="center">
     <img src="screenshots/shape_infinity_webgl.png" alt="application.png" />
 </div>
 
-On peut également ajouter un effet de twist sur les formes
 
+<div align="center">
+On peut également ajouter un effet de twist sur les formes
+</div>
+<br/>
 <div align="center">
     <img src="screenshots/shape_twist_webgl.png" alt="application.png" />
 </div>
