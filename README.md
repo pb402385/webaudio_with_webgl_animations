@@ -794,11 +794,11 @@ C’est open source ET gratuit. Pas de piège, pas de version premium cachée, p
 <a id="contact"></a>
 Informations de contact:
 
-Nom: Porta
-Prénom: Benjamin
-Pays: FRANCE
-Ville: Nice
-Mail: pb402385@gmail.com
+Nom: Porta <br/>
+Prénom: Benjamin <br/>
+Pays: FRANCE <br/>
+Ville: Nice <br/>
+Mail: pb402385@gmail.com <br/>
 Github: https://github.com/pb402385
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
