@@ -96,8 +96,10 @@ L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou
 
 Comme expliqué un peut plus haut, le son est transformé en une texture2D (une image) qui représente l'instant t de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
 
+<div align="center">
 Voici à quoi ressemble un exemple de cette texture à un instant t
-
+</div>
+<br/>
 <div align="center">
     <img src="screenshots/exemple_texture.png" alt="application.png" />
 </div>
