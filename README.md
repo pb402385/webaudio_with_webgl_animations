@@ -644,7 +644,7 @@ function initAudioContext2(){
 }
 ```
 
-On construit enfin notre graphe audio, en paramétrant nos noeuds de l'égaliseur, le noeud de gain qui gère le volume, notre noeud de filtre ainsi qu'a notre noeud d'analyse. On dessine à ce moment nos deux courbes!
+On construit enfin notre graphe audio, en paramétrant nos noeuds de l'égaliseur, le noeud de gain qui gère le volume, notre noeud de filtre ainsi qu'a notre noeud d'analyse. On dessine à ce moment nos deux courbes et enfin on se connect au noeud de destination afin de finaliser ce build
 
 ```javascript
 function buidGraph(){

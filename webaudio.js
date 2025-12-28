@@ -646,11 +646,13 @@ function buidGraph(){
 
 		let frontCanvasTimeline = document.getElementById("spectreTimelineMP3");
 		frontCanvasTimeline.addEventListener("mousedown", function(event) {
-			console.log("mouse click on canvas, let's jump to another position in the song")
-			var mousePos = getMousePos(frontCanvasTimeline, event);
-			// will compute time from mouse pos and start playing from there...
-			jumpTo(mousePos);
-		})
+			if( mp3Buffer !== undefined ){
+				console.log("mouse click on canvas, let's jump to another position in the song")
+				var mousePos = getMousePos(frontCanvasTimeline, event);
+				// will compute time from mouse pos and start playing from there...
+				jumpTo(mousePos);
+			}
+		});
 }
 
 function play2(i){
