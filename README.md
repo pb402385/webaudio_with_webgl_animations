@@ -98,43 +98,53 @@ Comme expliqué un peut plus haut, le son est transformé en une texture2D (une 
 
 Voici à quoi ressemble un exemple de cette texture à un instant t
 
-<img src="screenshots/exemple_texture.png" alt="application.png" />
-
+<div align="center">
+    <img src="screenshots/exemple_texture.png" alt="application.png" />
+</div>
 
 Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer et afficher en 3D et celles-ci varient en fonction de l'intensité du flux audio, il a été rajouté une coupe 2D afin également de déformer ondulairement les formes. On peut également pour le cas 3D, répéter l'affichage de la forme à l'infini
 
 Par exemple, voici une capture du Torus en 3D
 
-<img src="screenshots/shape_torus_webgl.png" alt="application.png" />
-
+<div align="center">
+    <img src="screenshots/shape_torus_webgl.png" alt="application.png" />
+</div>
 
 Et de sa version 2D
 
-<img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
-
+<div align="center">
+    <img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
+</div>
 
 Si un son est en cours, la figure se fait déformer par la texture2D citée plus haut et voici un exemple de sa déformation en 3D
 
-<img src="screenshots/shape_square_3d_animated_webgl.png" alt="application.png" />
-
+<div align="center">
+    <img src="screenshots/shape_square_3d_animated_webgl.png" alt="application.png" />
+</div>
 
 Et de sa version 2D
 
-<img src="screenshots/shape_square_2d_animated_webgl.png" alt="application.png" />
-
+<div align="center">
+    <img src="screenshots/shape_square_2d_animated_webgl.png" alt="application.png" />
+</div>
 
 On peut également démultiplier la figure à l'infini comme sur la capture ci-dessous:
 
-<img src="screenshots/shape_infinity_webgl.png" alt="application.png" />
-
+<div align="center">
+    <img src="screenshots/shape_infinity_webgl.png" alt="application.png" />
+</div>
 
 On peut également ajouter un effet de twist sur les formes
 
-<img src="screenshots/shape_twist_webgl.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/shape_twist_webgl.png" alt="application.png" />
+</div>
 
 Voici les différents paramètres possibles pour la partie vidéo
 
-<img src="screenshots/video_params.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/video_params.png" alt="application.png" />
+</div>
 
 Les paramètres suivants sont disponibles:
 
@@ -145,10 +155,11 @@ Les paramètres suivants sont disponibles:
 4. **Effect**: les 4 premiers effets de ce paramètre sont des effets qui influent sur les formes (*), pour les reconnaitre, il est écrit (SHAPE) devant, ils permettent notament de déformer légèrement la forme géométrique. Les autres effets génèrent des animations qui ne sont plus basées sur les formes mais dont le visuel varie en fonction de la texture2D pour enjoliver le visuel graphique
 5. **Type**: Ce paramètre remplace le paramètre Ondulation lorsque l'on n'est pas dans le cas d'une forme, il permet de modifier l'animation 3D ce qui la rend un peu paramétrable dans le but de produire des rendus visuels légèrement différents
 
-
+<div align="center">
 Voici une petite vidéo qui vous montre tous les types d'animations possibles à leur état de basesans texture2D qui modifient le rendu visuel. 
 [![Watch the video](https://img.youtube.com/vi/5eaCHoJFUhc/hqdefault.jpg)](https://www.youtube.com/shorts/5eaCHoJFUhc)   
 (cliquer sur l'image pour lancer la vidéo)
+</div>
 
 
 
