@@ -54,6 +54,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## A propos du projet
+<a id="a-propos-du-projet"></a>
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
@@ -62,6 +63,7 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Technologies
+<a id="technologies"></a>
 
 * [Three.js](https://threejs.org)
 * [WebAudioAPI] (https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
@@ -70,8 +72,10 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Commencer
+<a id="commencer"></a>
 
 ### Prérequis et installation
+<a id="prérequis-et-installation"></a>
 Installez nodejs
 Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
   ```sh
@@ -81,6 +85,7 @@ Téléchargez le projet, puis depuis la racine du projet, tapez la commande suiv
 Ensuite, rendez-vous à l'url suivante: <a href="http://localhost:8000/index.html">http://localhost:8000/index.html</a>
 
 ### Presentation de l'application
+<a id="presentation"></a>
 
 Vous arrivez sur la page de l'application
 
@@ -91,8 +96,10 @@ L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Fonctionnalités
+<a id="functionalities"></a>
 
 ### Partie Vidéo
+<a id="part-video"></a>
 
 Comme expliqué un peut plus haut, le son est transformé en une texture2D (une image) qui représente l'instant t de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
 
@@ -195,6 +202,7 @@ Si la fonctionnalité est activé, les animations sélectionnées défileront co
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Partie Audio
+<a id="part-audio"></a>
 
 #### Le synthé
 Le synthé permet de générer notre flux audio, il fonctionne à l'aide d'oscillateur que l'API web audio nous founit et avec ceux ci nous pouvons jouer toutes les notes. On peut changer le type de l'onde afin d'en modifier sensiblement la tonalité ( Triangle, Sine, Square, Sawtooth )
@@ -203,7 +211,7 @@ Voici une petite vidéo afin de le présenter:
 //TODO vidéo demo synthé
 
 #### Les mélodies ou l'upload audio
-Pour générer notre flux audio, nous pouvons soit utiliser un les mélodies, soit charger directement un fichier son qui peut être au format mp3,mp4 ou m4a1. Corcernant les mélodie (les mélodies sont la simulation d'une partition lue et jouée automatiquement au synthé sans qu'il n'y ait besoin que l'humain joue vraiment). Deux melodies sont disponibles, la marche impériale de Star wars et la marche de sacco et vanzetti
+Pour générer notre flux audio, nous pouvons soit utiliser un les mélodies, soit charger directement un fichier son qui peut être au format mp3, mp4 ou m4a1. Corcernant les mélodie (les mélodies sont la simulation d'une partition lue et jouée automatiquement au synthé sans qu'il n'y ait besoin que l'humain joue vraiment). Deux melodies sont disponibles, la marche impériale de Star wars et la marche de sacco et vanzetti
 
 <img src="screenshots/melodies_boutons.png" alt="application.png" />
 
