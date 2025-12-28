@@ -344,5 +344,10 @@ Détails des paramètrages disponibles par effet:
 ## Remerciements
 <a id="acknowledgments"></a>
 
+Tout d'abord, je souhaite remercier mon pote Klem qui m'a initié au web GL il y à plusieurs années et sans qui il ne me serait jamais venu à l'idée de combiner du web GL à du web audio.
+Concernant la partie web audio, je remercie mon professeur de Master Michel Buffa qui m'a fait connaitre le web audio durant mes études.
+
+Maintenant je souhaiterai remercier les développeurs a qui j'ai pu emprunter du code web GL sur Shadertoy (https://www.shadertoy.com/)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
