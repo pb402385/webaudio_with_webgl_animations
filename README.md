@@ -104,16 +104,17 @@ Voici à quoi ressemble un exemple de cette texture à un instant t
 
 Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer et afficher en 3D et celles-ci varient en fonction de l'intensité du flux audio, il a été rajouté une coupe 2D afin également de déformer ondulairement les formes. On peut également pour le cas 3D, répéter l'affichage de la forme à l'infini
 
+<div align="center">
 Par exemple, voici une capture du Torus en 3D
 
-<div align="center">
-    <img src="screenshots/shape_torus_webgl.png" alt="application.png" />
-</div>
+
+<img src="screenshots/shape_torus_webgl.png" alt="application.png" />
+
 
 Et de sa version 2D
 
-<div align="center">
-    <img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
+
+<img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
 </div>
 
 Si un son est en cours, la figure se fait déformer par la texture2D citée plus haut et voici un exemple de sa déformation en 3D
@@ -156,18 +157,16 @@ Les paramètres suivants sont disponibles:
 5. **Type**: Ce paramètre remplace le paramètre Ondulation lorsque l'on n'est pas dans le cas d'une forme, il permet de modifier l'animation 3D ce qui la rend un peu paramétrable dans le but de produire des rendus visuels légèrement différents
 
 
-Voici une petite vidéo qui vous montre tous les types d'animations possibles à leur état de basesans texture2D qui modifient le rendu visuel. 
+Voici une petite vidéo qui vous montre tous les types d'animations possibles à leur état de base sans texture2D qui modifient le rendu visuel. 
 
 https://github.com/user-attachments/assets/ea8c63dd-818e-44c1-a017-e59964816623
 
 
+On peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
 
-
-
-
-Sinon il existe d'autres animations entièrement automatisées et ne nécessitant aucun paramétrage qui ne sont pas basées sur des formes et qui seront abordés un peu plus loin, mais on peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
-
-<img src="screenshots/effect_video_webgl.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/effect_video_webgl.png" alt="application.png" />
+</div>
 
 Celui-ci nous ouvre une popin listant toutes les animations et nous permettant de les sélectionner afin qu'elles soit dans une liste de lecture
 
