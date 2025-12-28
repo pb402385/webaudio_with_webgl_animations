@@ -210,6 +210,24 @@ Concernant les paramètres audio, les paramètres suivants sont disponibles:
 5. Speed Melody: permet d'ajuster la vitesse des 2 mélodies pré enregistrée
 6. Type: type de l'onde jouée par l'oscillateur ( Triangle, Sine, Square, Sawtooth ) ne concerne que les melodies et le synthé
 
+Paramétrage avancé des effets:
+<br/>
+<img src="screenshots/audio_effets_params.png" alt="application.png" />
+<br/>
+Détails des paramètrages disponibles par effet:
+
+- NOISE: 4 types de bruit ajoutés
+* Bruit blanc - fortes pluies, télévision brouillée
+* Bruit rose - vent, cascade, méditation
+* Bruit brun - tonnerre lointain, mer agitée
+* Bruit bleu - un jet d'air, un sifflement
+
+- PITCH: 4 effets possibles:
+* Octave supérieure
+* Octave inférieure
+* Démon / robot
+* Choeur léger
+
 
 ## Explication du code
 
