@@ -158,7 +158,7 @@ Les paramètres suivants sont disponibles:
 
 Voici une petite vidéo qui vous montre tous les types d'animations possibles à leur état de basesans texture2D qui modifient le rendu visuel. 
 <div align="center">
-    <video src="https://github.com/pb402385/webaudio_with_webgl_animations/blob/main/screenshots/EnregistrementTypeAnimations.mp4?raw=true"></video>
+    <video src="/screenshots/EnregistrementTypeAnimations.mp4?raw=true"></video>
 </div>
 
 # This repo has a video on its readme :p
