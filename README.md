@@ -213,10 +213,6 @@ Celui-ci nous ouvre une popin listant toutes les animations et nous permettant d
 
 <img src="screenshots/video_random_animation.png" alt="application.png" />
 
-Si la fonctionnalité est activé, les animations sélectionnées défileront comme dans la vidéo ci-dessous par exemple: 
-
-//TODO lien video youtube
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Partie Audio
@@ -323,24 +319,30 @@ Détails des paramètrages disponibles par effet:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Explication du code
+<a id="codereview"></a>
 
 ### Partie Vidéo
+<a id="code-video"></a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Partie Audio
+<a id="code-audio"></a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License
+<a id="license"></a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
+<a id="contact"></a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Remerciements
+<a id="acknowledgments"></a>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
