@@ -164,13 +164,6 @@ https://github.com/user-attachments/assets/ea8c63dd-818e-44c1-a017-e59964816623
 
 
 
-<div align="center">
-    (cliquer sur l'image pour lancer la vidéo)
-</div>
-
-
-
-
 
 Sinon il existe d'autres animations entièrement automatisées et ne nécessitant aucun paramétrage qui ne sont pas basées sur des formes et qui seront abordés un peu plus loin, mais on peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
 
