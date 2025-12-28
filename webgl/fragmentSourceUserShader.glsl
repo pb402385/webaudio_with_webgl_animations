@@ -1791,6 +1791,7 @@ void mainImageSierpinskiInfinite( out vec4 fragColor, in vec2 fragCoord )
 // ──────────────────────────────────────────────────────────────
 // 3D Sierpinski Mobius
 // source : https://www.shadertoy.com/view/XsGXDV
+// Créé par Shane
 // ──────────────────────────────────────────────────────────────
 
 // Standard Mobius transform: f(z) = (az + b)/(cz + d). Slightly obfuscated.
