@@ -444,6 +444,222 @@ On peut également modifier l'application simplement en modifiant un nombre flot
 ### Partie Audio
 <a id="code-audio"></a>
 
+Le fonctionnement principal se situe dans le fichier webaudio.js
+
+Tout d'abord il nous faut initialiser le context webaudio, car depuis plusieurs années (Chrome 66+, puis tous les navigateurs), les politiques autoplay des navigateurs bloquent la lecture audio automatique pour éviter les pubs sonores intrusives, l’AudioContext est souvent créé en état suspended (suspendu) si pas initié directement par une interaction utilisateur (comme un clic ou touch)
+
+```javascript
+// Fonction à appeler sur le premier clic/touch de l’utilisateur
+async function unlockAudio() {
+    if (isUnlocked) return;
+
+    // Crée ou reprend l’AudioContext
+    audioCtx = new AudioContext();
+
+	// Start when user clicks or after resume (required on most browsers)
+	document.documentElement.addEventListener('click', () => {
+		if (audioCtx.state === 'suspended') audioCtx.resume();
+		initAudio().then(() => {
+			console.log("AudioContext débloqué et prêt !");
+			isUnlocked = true;
+
+			// Mets ici tout ce qui a besoin du son
+			initAudioContext2();
+		});
+
+	}, { once: true });
+
+    // Nettoyage : on ne veut appeler ça qu’une seule fois
+    document.removeEventListener('click', unlockAudio);
+    document.removeEventListener('touchstart', unlockAudio);
+    document.removeEventListener('keydown', unlockAudio);
+}
+```
+
+Une fois notre audioContext actif, on peut charger tous les modules qui nous seront nécessaires lors de la future création de notre graphe audio,
+ces audioWorklet Processor nous permettent de remplacer les javascriptNodes obsolètes et d'avoir un code spécifique par effet audio que l'on pourra utiliser dans nos modifications du flux audio
+
+```javascript
+async function initAudio() {
+    try {
+      // This MUST be awaited and inside try/catch
+      console.log("Loading processor...");
+      await audioCtx.audioWorklet.addModule('./audio-worklet-processor.js');
+      console.log("Processor (my-audio-processor) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/simple-lowpass.js');
+	  console.log("Processor (simple-lowpass-effect) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/bit-crusher.js');
+	  console.log("Processor (bit-crusher-effect) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/pink.js');
+	  console.log("Processor (pink-effect) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/noise.js');
+	  console.log("Processor (noise-effect) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/pitch.js');
+	  console.log("Processor (pitch) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/compressor.js');
+	  console.log("Processor (compressor) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/reverb.js');
+	  console.log("Processor (reverb) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/tremolo.js');
+	  console.log("Processor (tremolo) loaded successfully");
+
+	  await audioCtx.audioWorklet.addModule('./effect/fft-fx.js');
+	  console.log("Processor (fft-fx) loaded successfully");
+
+      // Only now is it safe to create the node
+      analyserNode = new AudioWorkletNode(audioCtx, 'my-audio-processor');
+      console.log("AudioWorkletNode created and connected (my-audio-processor)");
+
+
+	  // effects
+	  simplePassEffectNode = new AudioWorkletNode(audioCtx, 'simple-lowpass', {
+		parameterData: { cutoff: 800 }
+	  });
+	  console.log("AudioWorkletNode created and connected (simple-lowpass-effect-processor)");
+
+	  bitCrusherEffectNode = new AudioWorkletNode(audioCtx, 'bitcrusher', {
+		outputChannelCount: [2]
+	  });
+
+	  bitCrusherEffectNode.parameters.get('bitDepth').setValueAtTime(16, audioCtx.currentTime);
+	  bitCrusherEffectNode.parameters.get('bitDepth').linearRampToValueAtTime(4, audioCtx.currentTime + 2);
+	  console.log("AudioWorkletNode created and connected (bit-crusher-effect-processor)");
+
+	  pinkEffectNode = new AudioWorkletNode(audioCtx, 'pink-noise-filtered');
+	  pinkEffectNode.parameters.get('cutoff').linearRampToValueAtTime(200, audioCtx.currentTime + 5);
+	  console.log("AudioWorkletNode created and connected (pink-effect-processor)");
+
+	  pitchEffectNode = new AudioWorkletNode(audioCtx, 'pitch');
+	  pitchEffectNode.parameters.get('pitch').setValueAtTime(2, audioCtx.currentTime);
+
+	  console.log("AudioWorkletNode created and connected (pitch-effect-processor)");
+
+	  noiseEffectNode = new AudioWorkletNode(audioCtx, 'noise');
+	  noiseEffectNode.parameters.get('type').setValueAtTime(1, 0);        // pink
+	  console.log("AudioWorkletNode created and connected (noise-effect-processor)");
+
+	  compressorEffectNode = new AudioWorkletNode(audioCtx, 'compressor', {
+		processorOptions: { channelCount: 2 }
+	  });
+
+	  compressorEffectNode.parameters.get('threshold').value = -24;
+	  compressorEffectNode.parameters.get('ratio').value = 4;
+	  compressorEffectNode.parameters.get('attack').value = 8;
+	  compressorEffectNode.parameters.get('release').value = 120;
+	  compressorEffectNode.parameters.get('makeup').value = 6;
+	  compressorEffectNode.parameters.get('mix').value = 100;
+	  console.log("AudioWorkletNode created and connected (compressor-effect-processor)");
+
+	  reverbEffectNode = new AudioWorkletNode(audioCtx, 'reverb', {
+		outputChannelCount: [2]
+	  });
+
+	  // Exemple de contrôle
+  	  reverbEffectNode.parameters.get('roomSize').setValueAtTime(0.85, audioCtx.currentTime);
+  	  reverbEffectNode.parameters.get('damping').setValueAtTime(0.3, audioCtx.currentTime);
+  	  reverbEffectNode.parameters.get('wet').setValueAtTime(0.4, audioCtx.currentTime);
+  	  reverbEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 5); // freeze après 5s
+	  console.log("AudioWorkletNode created and connected (reverb-effect-processor)");
+
+	  tremoloEffectNode = new AudioWorkletNode(audioCtx, 'tremolo', {
+		  outputChannelCount: [2],           // indispensable
+		  channelCount: 2,                   // force 2 canaux en sortie
+		  channelCountMode: 'explicit',
+		  channelInterpretation: 'speakers'
+	  });
+
+	  // 3. Carré 8 Hz ultra-nerveux (style dub/techno)
+	  tremoloEffectNode.parameters.get('rate').setValueAtTime(8, audioCtx.currentTime);
+	  tremoloEffectNode.parameters.get('shape').setValueAtTime(2, audioCtx.currentTime);
+	  tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.7, audioCtx.currentTime); // adoucit le carré
+	  console.log("AudioWorkletNode created and connected (tremolo-effect-processor)");
+
+	fftFxEffectNode = new AudioWorkletNode(audioCtx, 'fft-fx');
+	fftFxEffectNode.parameters.get('mode').setValueAtTime(0, audioCtx.currentTime);
+	fftFxEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 2); // pad infini !
+
+console.log("AudioWorkletNode created and connected (fft-fx-effect-processor)");
+    } catch (err) {
+      console.error("Failed to load AudioWorklet module:", err);
+      // This is where you’ll see the real error (syntax, 404, CORS, etc.)
+    }
+}
+```
+
+On peut enfin créer notre graphe audio
+
+```javascript
+function initAudioContext2(){
+	try{
+		
+		//We connect the sound's node
+		gainNode = audioCtx.createGain();
+		gainNode.gain.value = (20/100) * (20/100);
+		
+		//sound equalizer
+		hBand = audioCtx.createBiquadFilter();
+		lBand = audioCtx.createBiquadFilter();	
+		lGain = audioCtx.createGain();
+		mGain = audioCtx.createGain();
+		hGain = audioCtx.createGain();
+		
+		//filter
+		filter = audioCtx.createBiquadFilter();
+		
+		//We create a node to analyze as well as a javascript node
+		analyser = audioCtx.createAnalyser();
+		
+		/**  OBSOLETE
+		javascriptNode = audioCtx.createScriptProcessor(1024, 1, 1);
+		javascriptNode.onaudioprocess = function () {
+					//retrieve sound information here!!!!!!
+					//alert('audioProcess');
+					draw(analyser);
+					drawWave(analyser);
+		};
+		**/
+			
+		//Creation of oscillators
+		oscillator = audioCtx.createOscillator();
+		oscillator1 = audioCtx.createOscillator();
+		oscillator2 = audioCtx.createOscillator();
+		oscillator0 = audioCtx.createOscillator();
+		
+		oscillator.start(0);
+		oscillator1.start(0);
+		oscillator2.start(0);
+		oscillator0.start(0);
+		
+		var cpt = 0;
+		for (key in tabKeyNotes) {
+			oscillatorTab[cpt] = audioCtx.createOscillator();
+			oscillatorTab[cpt].start(0);
+			cpt++;
+		}
+
+		buidGraph();
+		setDefaultValues();
+		
+	}catch(e){
+		alert('Web Audio API is not supported in this browser');
+	}
+}
+```
+
+Voici la capture de notre graphe webAudio déssiné mais simplifié (je n'ai pas mis tous les AudioWorkletNode car il y a énormément d'effets ainsi que pas affiché tous les oscillatorNode car il en existe 1 par touche présente sur le synthé et cela prendrai beaucoup trop d'espace sur le graphe )
+
+<div align="center">
+    <img src="screenshots/graphe_audio.png" alt="application.png" />
+</div>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License
