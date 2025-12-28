@@ -640,25 +640,7 @@ function buidGraph(){
 			drawWave(analyser);
 			requestAnimationFrame(draw2);
 		}
-		draw2();
-
-		/**
-		analyserNode.port.onmessage = (event) => {
-			if (event.data.type === 'audio') {
-				const samples = event.data.samples;
-			}
-    	};
-		**/
-
-		//We check if an effect is activated
-		var effectActive = false;
-		for(var j=0; j<oscillatorEffectTab.length; j++){
-			if(oscillatorEffectTab[j] == true){
-				effectActive = true;
-				break;
-			}
-		}
-		
+		draw2();	
 		
 		analyserNode.connect(audioCtx.destination);	
 

@@ -644,7 +644,7 @@ function initAudioContext2(){
 }
 ```
 
-On construit enfin notre graphe audio
+On construit enfin notre graphe audio, en paramétrant nos noeuds de l'égaliseur, le noeud de gain qui gère le volume, notre noeud de filtre ainsi qu'a notre noeud d'analyse. On dessine à ce moment nos deux courbes!
 
 ```javascript
 function buidGraph(){
@@ -658,7 +658,6 @@ function buidGraph(){
 		lBand.gain.value = gainDb;
 		lBand.connect(lGain);
 		hBand.connect(hGain);
-
 
 		// Connect the sound sample to its volume node
 		lGain.connect(gainNode);
@@ -682,16 +681,6 @@ function buidGraph(){
 			requestAnimationFrame(draw2);
 		}
 		draw2();
-
-		//We check if an effect is activated
-		var effectActive = false;
-		for(var j=0; j<oscillatorEffectTab.length; j++){
-			if(oscillatorEffectTab[j] == true){
-				effectActive = true;
-				break;
-			}
-		}
-		
 		
 		analyserNode.connect(audioCtx.destination);	
 
@@ -705,7 +694,7 @@ function buidGraph(){
 }
 ```
 
-Voici la capture de notre graphe webAudio déssiné mais simplifié (je n'ai pas mis tous les AudioWorkletNode car il y a énormément d'effets ainsi que pas affiché tous les oscillatorNode car il en existe 1 par touche présente sur le synthé et cela prendrai beaucoup trop d'espace sur le graphe )
+Voici la capture de notre graphe webAudio déssiné mais simplifié (je n'ai pas mis tous les AudioWorkletNode car il y a énormément d'effets ainsi que pas affiché tous les oscillatorNode car il en existe 1 par touche présente sur le synthé et cela prendrai beaucoup trop d'espace sur le graphe)
 
 <div align="center">
     <img src="screenshots/graphe_audio.png" alt="application.png" />
@@ -724,6 +713,74 @@ Notre graphe étant enfin terminé, notre application est opérationnelle! On re
 	arrayFreqToOpenGL = frequencyData;
 ```
 
+
+Le code du process utilisé afin de charger un fichier audio (mp3, mp4, m4a1) via un champs input type file. Une fois le fichier envoyé vie le champs input, on decode le contexte audio et on crée le noeud source, ensuite on connecte ce noeud source à notre graphe audio, on dessine son spectre puis on lance la musique en faisant source.start()
+
+```javascript
+function loadInputSound(element) {
+	
+	loadAudio(element.files[0]);
+	if(isUnlocked) document.getElementById("currentMp3").innerHTML = element.files[0].name;
+
+	// Method 1: Create a completely new input (recommended)
+	element.type = 'text';  // temporary change
+	element.type = 'file';  // back to file – this clears it
+
+}
+
+async function loadAudio(file) {
+	try {
+	  // Load an audio file
+	  // Decode it
+	  audioCtx.decodeAudioData(await file.arrayBuffer(), playBuffer);
+	} catch (err) {
+	  console.error(`Unable to fetch the audio file. Error: ${err.message}`);
+	}
+}
+
+soundMP3_is_loaded = false;
+
+var mp3Buffer;
+var source;
+
+function playBuffer(buffer) {
+
+	if(!isUnlocked) {
+		openPopin();
+		return;
+	}
+	
+	safeDisconnect(source);
+	source = audioCtx.createBufferSource();
+	source.buffer = buffer;
+	mp3Buffer = buffer;
+	drawTrack(buffer,1,0);
+	source.connect(lBand);
+	source.connect(hBand);
+	source.connect(mGain);
+	source.connect(gainNode);
+
+	source.loop = true;
+	source.start();
+	paused = false;
+	restartMp3IconColor();
+
+	lastTime = audioCtx.currentTime;
+
+	soundMP3_is_loaded = true;
+	elapsedTimeSinceStart = 0;
+	animateTime();
+
+	// Optional: configure
+	source.loop = true;
+
+	// Add ended handler (optional but recommended)
+	source.onended = () => {
+		source.disconnect(); // clean up
+		source.buffer = null; // aide le garbage collector
+	};
+}
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
