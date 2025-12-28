@@ -333,11 +333,20 @@ Détails des paramètrages disponibles par effet:
 
 ## License
 <a id="license"></a>
+C’est open source ET gratuit. Pas de piège, pas de version premium cachée, pas d’abonnement surprise. Juste du code libre pour des humains libres. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
 <a id="contact"></a>
+Informations de contact:
+
+Nom: Porta
+Prénom: Benjamin
+Pays: FRANCE
+Ville: Nice
+Mail: pb402385@gmail.com
+Github: https://github.com/pb402385
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
