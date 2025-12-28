@@ -356,6 +356,44 @@ le chargement des paramètres ainsi que du tableau de frequences du son audio qu
 	}
 ```
 
+Concernant les interractions de la souris avec le canvas d'animation 3D, les fonctions qui gèrent ces évènement se situent également dans le fichier webgl.js (utile si l'on veut en ajouter ou réaliser des modifications sur celles-ci)
+
+```javascript
+    //mouse effect management
+	document.getElementById("shaderPixelAnim").appendChild(renderer.domElement);
+	canvasClicked = false;
+	renderer.domElement.addEventListener('mousemove', function(e) {
+		if(canvasClicked == true){
+			var canvas = renderer.domElement;
+			var rect = canvas.getBoundingClientRect();
+			mesh.material.uniforms.iMouse.value.x = -parseFloat((e.clientX - rect.left));
+			mesh.material.uniforms.iMouse.value.y = -parseFloat((e.clientY - rect.top));
+		}
+	});
+	renderer.domElement.addEventListener('mousedown', function(e) {
+			var canvas = renderer.domElement;
+			var rect = canvas.getBoundingClientRect();
+			mesh.material.uniforms.iMouse.value.x = -parseFloat((e.clientX - rect.left));
+			mesh.material.uniforms.iMouse.value.y = -parseFloat((e.clientY - rect.top));
+			canvasClicked = true;
+	});
+	renderer.domElement.addEventListener('mouseup', function(e) {
+		canvasClicked = false;
+		var canvas = renderer.domElement;
+		var rect = canvas.getBoundingClientRect();
+		mesh.material.uniforms.iMouse.value.z = parseFloat((e.clientX - rect.left));
+		mesh.material.uniforms.iMouse.value.w = parseFloat((e.clientY - rect.top));
+	});
+	renderer.domElement.addEventListener('wheel', function(e) {
+		canvasClicked = false;
+		if(e.wheelDelta > 0) {
+			mesh.material.uniforms.iResolution.value.x = mesh.material.uniforms.iResolution.value.x + 50;
+		} else {
+			mesh.material.uniforms.iResolution.value.x = mesh.material.uniforms.iResolution.value.x - 50;
+		}
+	});
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Partie Audio
