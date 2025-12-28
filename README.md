@@ -83,9 +83,9 @@ Ensuite, rendez-vous à l'url suivante: <a href="http://localhost:8000/index.htm
 ### Presentation de l'application
 
 Vous arrivez sur la page de l'application
-<br/>
+
 <img src="screenshots/application.png" alt="application.png" />
-<br/>
+
 L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou un son provenant du synthétiseur, le flux permet d'afficher plusieurs informations qui nous sont envoyées par le son qui peut également être altéré via divers paramètres (filtre, equalizer, effet), ce flux est ensuite transformé en une texture qui nous permettra de modifier des fonctions glsl (Web GL) afin de faire varier de très belles animations 2D/3D que l'on peut également paramétrer afin d'altérer le rendu visuel.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -195,7 +195,7 @@ Concernant les paramètres audio, les paramètres suivants sont disponibles:
 
     - **BIT CRUSHER** (*): le filtre produit un effet audio numérique qui simule la dégradation sonore d’un signal audio en réduisant volontairement sa qualité, comme le faisaient les vieux équipements numériques à faible résolution (consoles 8-bit, samplers anciens, etc.).
 
-    - SIMPLE LOWPASS: le filtre produit un effet audio qui laisse passer les basses fréquences (les graves) tout en atténuant ou en coupant les hautes fréquences (les aigus).
+    - **SIMPLE LOWPASS**: le filtre produit un effet audio qui laisse passer les basses fréquences (les graves) tout en atténuant ou en coupant les hautes fréquences (les aigus).
 
     - **COMPRESSOR** (*): le filtre produit un effet audio qui réduit automatiquement la dynamique d’un signal audio, c’est-à-dire l’écart entre les parties les plus faibles et les plus fortes.
 
