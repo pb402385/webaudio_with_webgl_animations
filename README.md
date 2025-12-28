@@ -223,11 +223,20 @@ Détails des paramètrages disponibles par effet:
     * Bruit bleu - un jet d'air, un sifflement
 
 - PITCH: 4 effets possibles:
-+ * Octave supérieure
-+ * Octave inférieure
-+ * Démon / robot
-+ * Choeur léger
+    * Octave supérieure
+    * Octave inférieure
+    * Démon / robot
+    * Choeur léger
 
+- BIT CRUSHER: 2 effets possibles:
+    * Super lisse sans fermeture
+    * Effet lo-fi extrême
+
+- COMPRESSOR: 5 effets possibles:
+    * Défaut
+    * Nivellement doux
+    * Effet de glue bus de groupe
+    * Drum squash
 
 ## Explication du code
 
