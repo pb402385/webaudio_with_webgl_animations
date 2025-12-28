@@ -94,11 +94,6 @@ L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou
 
 ### Partie Vidéo
 
-Voici les différents paramètres possibles pour la partie vidéo
-
-<img src="screenshots/video_params.png" alt="application.png" />
-
-
 Comme expliqué un peut plus haut, le son est transformé en une texture2D (une image) qui représente l'instant t de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
 
 Voici à quoi ressemble un exemple de cette texture à un instant t
@@ -107,8 +102,6 @@ Voici à quoi ressemble un exemple de cette texture à un instant t
 
 
 Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer et afficher en 3D et celles-ci varient en fonction de l'intensité du flux audio, il a été rajouté une coupe 2D afin également de déformer ondulairement les formes. On peut également pour le cas 3D, répéter l'affichage de la forme à l'infini
-
-La liste des formes possibles: Square, small Square, Torus, small Torus, Hexagone, Cone et Circle
 
 Par exemple, voici une capture du Torus en 3D
 
@@ -139,6 +132,18 @@ On peut également ajouter un effet de twist sur les formes
 
 <img src="screenshots/shape_twist_webgl.png" alt="application.png" />
 
+Voici les différents paramètres possibles pour la partie vidéo
+
+<img src="screenshots/video_params.png" alt="application.png" />
+
+Les paramètres suivants sont disponibles:
+
+1. **Base Shape** (*): permet de choisir une forme géométrique (formes possibles: Carré, Petit carré, Tore, Petit tore, Hexagone, Cone et Cercle)
+2. **Animation** (*): permet de choisir si la forme est modélisée en 3D ou en 2D. Si l'option NONE est choisie, cela affiche la texture2D (image) générée par le son en temps réel qui permet d'altérer visuellement les animations.
+3. **Ondulation** (*): ce paramètre permet d'influer le niveau d'altération des formes en fonction du son, il a pour but de pouvoir déformer plus ou moins la forme géométrique
+3. **Single/infinity** (*): ce paramètre permet d'afficher une seule forme ou d'afficher une infinité de formes en copiant la matrice et la démultipliant à l'infini
+4. **Effect"**: les 4 premiers effets sont des effets qui influent sur les formes (*), pour les reconnaitre, il est écrit (SHAPE) devant. Les autres effets génèrent des animations qui ne sont plus basées sur les formes mais dont le visuel varie en fonction de la texture2D pour enjoliver le visuel graphique
+5. **Type**: Ce paramètre remplace le paramètre Ondulation lorsque l'on n'est pas dans le cas d'une forme, il permet de modifier l'animation 3D ce qui la rend un peu paramétrable dans le but de produire des rendus visuels légèrement différents
 
 
 
