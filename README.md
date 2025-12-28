@@ -324,6 +324,17 @@ Détails des paramètrages disponibles par effet:
 ### Partie Vidéo
 <a id="code-video"></a>
 
+Le fonctionnement principal se situe dans le fichier **webgl.js**
+Le code est initialisé en chargeant la partie glsl au début
+
+```javascript
+async function loadShaders() {
+  vertexSource = await fetch('webgl/vertexSource.glsl').then(res => res.text());
+  fragmentSource = await fetch('webgl/fragmentSource.glsl').then(res => res.text());
+  fragmentSourceUserShader = await fetch('webgl/fragmentSourceUserShader.glsl').then(res => res.text());
+}
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Partie Audio
