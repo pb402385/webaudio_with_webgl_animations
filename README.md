@@ -217,16 +217,16 @@ Paramétrage avancé des effets:
 Détails des paramètrages disponibles par effet:
 
 - NOISE: 4 types de bruit ajoutés
-* Bruit blanc - fortes pluies, télévision brouillée
-* Bruit rose - vent, cascade, méditation
-* Bruit brun - tonnerre lointain, mer agitée
-* Bruit bleu - un jet d'air, un sifflement
++ * Bruit blanc - fortes pluies, télévision brouillée
++ * Bruit rose - vent, cascade, méditation
++ * Bruit brun - tonnerre lointain, mer agitée
++ * Bruit bleu - un jet d'air, un sifflement
 
 - PITCH: 4 effets possibles:
-* Octave supérieure
-* Octave inférieure
-* Démon / robot
-* Choeur léger
++ * Octave supérieure
++ * Octave inférieure
++ * Démon / robot
++ * Choeur léger
 
 
 ## Explication du code
