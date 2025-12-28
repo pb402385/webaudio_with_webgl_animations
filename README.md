@@ -107,7 +107,7 @@ Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer
 <div align="center">
 Par exemple, voici une capture du Torus en 3D
 </div>
-
+<br/>
 <div align="center">
     <img src="screenshots/shape_torus_webgl.png" alt="application.png" />
 </div>
