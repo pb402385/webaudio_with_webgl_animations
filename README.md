@@ -399,7 +399,11 @@ Maintenant je vais expliquer comment en pratique prendre une animation GLSL et c
 
 Tout d'abord il faut récupérer la texture2D qui est générée en temps réel en fonction du tableau de fréquences:
 
+```glsl
 vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+```
+
+A titre informatif, on peut accéder soit à la position du vecteur de texture généré via les champs x, y et z (exemple: fragColorTexture.xy), soit également à leur couleur RGB via les champs r, g et b (exemple: fragColorTexture.rgb)
 
 Ensuite il faut trouver l'endroit de l'animation qui nous interesse et à l'aide des informations que la texture nous envoit, réaliser des opérations qui altèrent notre animation ( de préférence de manière harmonieuse )
 
@@ -424,6 +428,15 @@ Mais attention au problème d'antialising qui peut faire buguer la partie gauche
     vec3 aa = fwidth(values);                         // vec3 avec fwidth par composante
     vec3 smooth = smoothstep(-aa, aa, values);
     col *=  smooth; 
+```
+
+On peut également modifier l'application simplement en modifiant un nombre flottant, ou en faisant une multiplication de vecteurs, par exemple:
+
+```glsl
+    // modifier un flottant
+    float dist = 0.5 + (fragColorTexture.x * 25.0);
+    //multiplication de vecteurs
+    vec3 fragColor = color * fragColorTexture.xyz;
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
