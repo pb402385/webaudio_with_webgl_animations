@@ -594,7 +594,7 @@ console.log("AudioWorkletNode created and connected (fft-fx-effect-processor)");
 }
 ```
 
-On peut enfin créer notre graphe audio
+On peut enfin initialiser tous les composants nécéssaires à la construction de notre graphe audio
 
 ```javascript
 function initAudioContext2(){
@@ -616,16 +616,6 @@ function initAudioContext2(){
 		
 		//We create a node to analyze as well as a javascript node
 		analyser = audioCtx.createAnalyser();
-		
-		/**  OBSOLETE
-		javascriptNode = audioCtx.createScriptProcessor(1024, 1, 1);
-		javascriptNode.onaudioprocess = function () {
-					//retrieve sound information here!!!!!!
-					//alert('audioProcess');
-					draw(analyser);
-					drawWave(analyser);
-		};
-		**/
 			
 		//Creation of oscillators
 		oscillator = audioCtx.createOscillator();
@@ -654,11 +644,86 @@ function initAudioContext2(){
 }
 ```
 
+On construit enfin notre graphe audio
+
+```javascript
+function buidGraph(){
+		/** PARAM EGALISEUR **/
+		hBand.type = "lowshelf";
+		hBand.frequency.value = bandSplit[0];
+		hBand.gain.value = gainDb;
+
+		lBand.type = "highshelf";
+		lBand.frequency.value = bandSplit[1];
+		lBand.gain.value = gainDb;
+		lBand.connect(lGain);
+		hBand.connect(hGain);
+
+
+		// Connect the sound sample to its volume node
+		lGain.connect(gainNode);
+		mGain.connect(gainNode);
+		hGain.connect(gainNode);
+
+		/** END PARAM EGALISEUR **/
+		gainNode.connect(filter);
+		
+		filter.connect(analyserNode);	
+		analyserNode.connect(analyser);
+
+		function draw1() {
+			draw(analyser);
+			requestAnimationFrame(draw1);
+		}
+		draw1();
+
+		function draw2() {
+			drawWave(analyser);
+			requestAnimationFrame(draw2);
+		}
+		draw2();
+
+		//We check if an effect is activated
+		var effectActive = false;
+		for(var j=0; j<oscillatorEffectTab.length; j++){
+			if(oscillatorEffectTab[j] == true){
+				effectActive = true;
+				break;
+			}
+		}
+		
+		
+		analyserNode.connect(audioCtx.destination);	
+
+		let frontCanvasTimeline = document.getElementById("spectreTimelineMP3");
+		frontCanvasTimeline.addEventListener("mousedown", function(event) {
+			console.log("mouse click on canvas, let's jump to another position in the song")
+			var mousePos = getMousePos(frontCanvasTimeline, event);
+			// will compute time from mouse pos and start playing from there...
+			jumpTo(mousePos);
+		})
+}
+```
+
 Voici la capture de notre graphe webAudio déssiné mais simplifié (je n'ai pas mis tous les AudioWorkletNode car il y a énormément d'effets ainsi que pas affiché tous les oscillatorNode car il en existe 1 par touche présente sur le synthé et cela prendrai beaucoup trop d'espace sur le graphe )
 
 <div align="center">
     <img src="screenshots/graphe_audio.png" alt="application.png" />
 </div>
+
+Notre graphe étant enfin terminé, notre application est opérationnelle! On remarque que l'on a deux fonctions draw qui se sont exécutées permettant de dessiner nos courbes en temps réel. Il est  à noter un point important, c'est dans la méthode **draw** que nous obtenons le tableau de fréquence que nous envoyons en temps réel à la partie vidéo 3D
+
+```javascript
+    if(analyser.frequencyBinCount){
+		frequencyData = new Uint8Array(analyser.frequencyBinCount);
+		analyser.getByteFrequencyData(frequencyData);
+	} 
+
+	..........
+
+	arrayFreqToOpenGL = frequencyData;
+```
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
