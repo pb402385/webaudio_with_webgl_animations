@@ -325,7 +325,8 @@ Détails des paramètrages disponibles par effet:
 <a id="code-video"></a>
 
 Le fonctionnement principal se situe dans le fichier **webgl.js**
-Le code est initialisé en chargeant la partie glsl au début
+
+Le code est initialisé en chargeant la partie GLSL au début, tout objet 3D est traité en deux grandes étapes principales pour les shaders : les vertex shaders et les fragment shaders. Ce sont les deux programmes écrits en GLSL qui tournent directement sur la carte graphique (GPU).
 
 ```javascript
 async function loadShaders() {
@@ -333,6 +334,26 @@ async function loadShaders() {
   fragmentSource = await fetch('webgl/fragmentSource.glsl').then(res => res.text());
   fragmentSourceUserShader = await fetch('webgl/fragmentSourceUserShader.glsl').then(res => res.text());
 }
+```
+
+Le fichier **fragmentSource.glsl** contient la fonction mainImage qui sera éxécutée pour afficher notre animation 3D. Celui importera en son sein le fichier  **fragmentSourceUserShader** qui contient le code de toutes les animations, celles que l'on aura sélectionné viendra surcharger le code de la fonction mainImage
+
+le chargement des paramètres ainsi que du tableau de frequences du son audio que l'on transforme en temps réel se situe à ce niveau dans le code
+
+```javascript
+    dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side, side, THREE.RGBAFormat);
+	
+	_uniforms = {
+		iChannel0:			{ type: "t", value: dataTex },
+		uIntEffect:			{ type: "i", value: effectToOpenGL},
+		uIntInfinity:		{ type: "i", value: infinityToOpenGL},
+		uIntFreq:			{ type: "i", value: freqToOpenGL },
+		uIntType:			{ type: "i", value: typeToOpenGL },
+		uIntTypeTexture:	{ type: "i", value: typeTextureToOpenGL },
+		iGlobalTime:    	{ type: "f", value: 1.0 },
+		iResolution: 		{ type: "v3", value: new THREE.Vector3() },
+		iMouse: 			{ type: 'v4', value: new THREE.Vector2() },
+	}
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
