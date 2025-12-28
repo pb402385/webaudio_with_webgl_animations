@@ -106,15 +106,18 @@ Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer
 
 <div align="center">
 Par exemple, voici une capture du Torus en 3D
+</div>
 
+<div align="center">
+    <img src="screenshots/shape_torus_webgl.png" alt="application.png" />
+</div>
 
-<img src="screenshots/shape_torus_webgl.png" alt="application.png" />
-
-
+<div align="center">
 Et de sa version 2D
+</div>
 
-
-<img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
 </div>
 
 Si un son est en cours, la figure se fait déformer par la texture2D citée plus haut et voici un exemple de sa déformation en 3D
