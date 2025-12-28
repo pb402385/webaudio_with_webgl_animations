@@ -157,13 +157,18 @@ Les paramètres suivants sont disponibles:
 
 
 Voici une petite vidéo qui vous montre tous les types d'animations possibles à leur état de basesans texture2D qui modifient le rendu visuel. 
-
+<div align="center">
+    <video src="https://github.com/pb402385/webaudio_with_webgl_animations/blob/main/screenshots/EnregistrementTypeAnimations.mp4?raw=true"></video>
+</div>
 
 # This repo has a video on its readme :p
 
+https://github.com/pb402385/webaudio_with_webgl_animations/blob/main/screenshots/EnregistrementTypeAnimations.mp4?raw=true
 
-https://vscode-vfs%2Bgithub-002b7b2276223a312c22726566223a7b2274797065223a352c226964223a226d61696e227d7d.vscode-resource.vscode-cdn.net/pb402385/webaudio_with_webgl_animations/screenshots/EnregistrementTypeAnimations.mp4?version%3D1766940895962
 
+<div align="center">
+    (cliquer sur l'image pour lancer la vidéo)
+</div>
 
 
 
