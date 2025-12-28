@@ -237,6 +237,17 @@ Détails des paramètrages disponibles par effet:
     * Nivellement doux
     * Effet de glue bus de groupe
     * Drum squash
+    * Limiteur transparent
+
+- TREMOLO: 3 effets possibles:
+    * Défaut
+    * Panoramique automatique large et lent (0,33 Hz)
+    * Onde carrée ultra-nerveuse de 8 Hz (style dub/techno)
+
+- FFT FX: 3 effets possibles:
+    * Gel spectral
+    * Scintillement / Flou spectral
+    * Modificateur de hauteur ±2 octaves préservant les formants
 
 ## Explication du code
 
