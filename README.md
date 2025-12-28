@@ -115,19 +115,24 @@ Par exemple, voici une capture du Torus en 3D
 <div align="center">
 Et de sa version 2D
 </div>
-
+<br/>
 <div align="center">
     <img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
 </div>
 
+<div align="center">
 Si un son est en cours, la figure se fait déformer par la texture2D citée plus haut et voici un exemple de sa déformation en 3D
-
+</div>
+<br/>
 <div align="center">
     <img src="screenshots/shape_square_3d_animated_webgl.png" alt="application.png" />
 </div>
 
-Et de sa version 2D
 
+<div align="center">
+Et de sa version 2D
+</div>
+<br/>
 <div align="center">
     <img src="screenshots/shape_square_2d_animated_webgl.png" alt="application.png" />
 </div>
