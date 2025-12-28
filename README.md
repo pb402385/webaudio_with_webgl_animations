@@ -162,7 +162,7 @@ Voici une petite vidéo qui vous montre tous les types d'animations possibles à
 # This repo has a video on its readme :p
 
 
-https://github.com/pb402385/webaudio_with_webgl_animations/blob/main/.github/images/EnregistrementTypeAnimations.mp4
+https://github.dev/pb402385/webaudio_with_webgl_animations/blob/main/screenshots/EnregistrementTypeAnimations.mp4
 
 
 
