@@ -145,6 +145,9 @@ Les paramètres suivants sont disponibles:
 4. **Effect**: les 4 premiers effets de ce paramètre sont des effets qui influent sur les formes (*), pour les reconnaitre, il est écrit (SHAPE) devant, ils permettent notament de déformer légèrement la forme géométrique. Les autres effets génèrent des animations qui ne sont plus basées sur les formes mais dont le visuel varie en fonction de la texture2D pour enjoliver le visuel graphique
 5. **Type**: Ce paramètre remplace le paramètre Ondulation lorsque l'on n'est pas dans le cas d'une forme, il permet de modifier l'animation 3D ce qui la rend un peu paramétrable dans le but de produire des rendus visuels légèrement différents
 
+Voici une petite vidéo qui vous montre tous les types d'animations possibles à leur état de base(sans texture2D qui modifient le rendu visuel)
+[![Watch the video](https://img.youtube.com/vi/5eaCHoJFUhc/hqdefault.jpg)](https://www.youtube.com/shorts/5eaCHoJFUhc)   
+
 
 
 Sinon il existe d'autres animations entièrement automatisées et ne nécessitant aucun paramétrage qui ne sont pas basées sur des formes et qui seront abordés un peu plus loin, mais on peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
