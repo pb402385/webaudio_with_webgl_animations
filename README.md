@@ -105,7 +105,7 @@ Voici une démonstration du rendu final de l'application (Cliquez sur l'image po
 
 * [WebGL](https://fr.wikipedia.org/wiki/WebGL)
 * [Three.js](https://threejs.org)
-* [WebAudioAPI] (https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+* [WebAudioAPI](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 * [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
 * [HTML](https://en.wikipedia.org/wiki/HTML)
 * [CSS](https://en.wikipedia.org/wiki/CSS)
