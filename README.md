@@ -83,7 +83,7 @@ Ce projet est un **lecteur audio MP3/MP4** avec des **visualisations animées** 
 Il intègre également un **piano virtuel (synthétiseur)** qui permet de jouer des notes en direct avec le clavier ou la souris. Comme jouer précisément n'est pas toujours évident, j'ai préenregistré deux mélodies célèbres, reproduites fidèlement d'après leurs partitions :
 
 - **The Imperial March** (Thème de Dark Vador) – composé par John Williams
-- **Here's to You** (du film *Sacco et Vanzetti*) – composé par Ennio Morricone (avec Joan Baez)
+- **La marche de Sacco et Vanzetti** (du film *Sacco et Vanzetti*) – composé par Ennio Morricone
 
 Les animations sont **réactives à l'audio** : elles pulsent, ondulent et évoluent en temps réel en fonction du flux sonore. Elles sont entièrement paramétrables (couleurs, intensité, formes, etc.).
 
@@ -276,13 +276,18 @@ Voici une courte vidéo de présentation :
 
 #### Les mélodies ou l'upload audio
 <a id="melody"></a>
-Pour générer notre flux audio, nous pouvons soit utiliser un les mélodies, soit charger directement un fichier son qui peut être au format mp3, mp4 ou m4a1. Corcernant les mélodie (les mélodies sont la simulation d'une partition lue et jouée automatiquement au synthé sans qu'il n'y ait besoin que l'humain joue vraiment). Deux melodies sont disponibles, la marche impériale de Star wars et la marche de sacco et vanzetti
+
+Les mélodies préprogrammées : il s’agit de séquences musicales simulées, comme si une partition était lue et interprétée en direct par le synthétiseur, sans que vous ayez à jouer vous-même.
+
+Deux mélodies sont actuellement disponibles :  La Marche impériale (de Star Wars)  
+La marche de Sacco et Vanzetti
+
 
 <div align="center">
     <img src="screenshots/melodies_boutons.png" alt="melodies_boutons.png" />
 </div>
 
-Sinon on peut upload un son
+Sinon on peut charger directement un fichier audio aux formats MP3, MP4 ou M4A.
 
 <div align="center">
     <img src="screenshots/upload.png" alt="upload.png" />
