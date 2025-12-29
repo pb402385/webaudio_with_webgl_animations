@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
+  <a href="https://github.com/pb402385/webaudio_with_webgl_animations/">
     <img src="/favicon.ico" alt="Logo" width="80" height="80">
   </a>
 
@@ -77,9 +77,13 @@
 ## A propos du projet
 <a id="a-propos-du-projet"></a>
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+Chargeur MP3/MP4 avec animations (codées en javascript et GLSL), dispose aussi d'un piano (synthé) qui permet de jouer soi même nos notes, comme ce n'est pas facile, j'ai préenregistré 2 mélodies en me basant sur les partitions de ces deux morceaux que j'ai choisi (The Imperial March (Darth Vader's Theme) composé par John Williams et Marche de Sacco et Vanzetti composé par Ennio Morricone). 
 
-Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`, `project_license`
+Les animations réagissent en fonction du flux audio et peuvent être paramétrées, de plus le son peut être altéré par divers effets comme le filtre audio ou divers effets.
+
+Voici une vidéo youtube pour montrer le rendu final de l'application (Cliquer sur l'image pour regarder la vidéo).
+
+[![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
