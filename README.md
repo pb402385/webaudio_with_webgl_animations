@@ -248,13 +248,13 @@ Voici une courte vidéo présentant les différentes animations possibles dans l
 https://github.com/user-attachments/assets/ea8c63dd-818e-44c1-a017-e59964816623
 
 
-On peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
+On peut lancer une génération d'animations aléatoires en cliquant sur le bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
 
 <div align="center">
     <img src="screenshots/effect_video_webgl.png" alt="effect_video_webgl.png" />
 </div>
 
-Celui-ci nous ouvre une popin listant toutes les animations et nous permettant de les sélectionner afin qu'elles soit dans une liste de lecture
+Celui-ci nous ouvre une pop-in listant toutes les animations et nous permettant de les sélectionner afin qu'elles soient dans une liste de lecture
 
 <div align="center">
     <img src="screenshots/video_random_animation.png" alt="video_random_animation.png" />
@@ -267,9 +267,11 @@ Celui-ci nous ouvre une popin listant toutes les animations et nous permettant d
 
 #### Le synthé
 <a id="synthe"></a>
-Le synthé permet de générer notre flux audio, il fonctionne à l'aide d'oscillateur que l'API web audio nous founit et avec ceux ci nous pouvons jouer toutes les notes. On peut changer le type de l'onde afin d'en modifier sensiblement la tonalité ( Triangle, Sine, Square, Sawtooth )
 
-Voici une petite vidéo afin de le présenter:
+**Le synthétiseur intégré** permet de générer le flux audio en temps réel. Il repose sur des oscillateurs fournis par l’API Web Audio, qui nous permettent de produire toutes les notes souhaitées. Il est possible de modifier le **type d’onde** (Triangle, Sine, Square ou Sawtooth) pour altérer sensiblement la timbre et la tonalité du son.
+
+Voici une courte vidéo de présentation :
+
 //TODO vidéo demo synthé
 
 #### Les mélodies ou l'upload audio
