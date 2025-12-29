@@ -1,4 +1,3 @@
-// audio-worklet-noise.js
 // White, Pink, Brownian, Blue, Violet + filtre passe-bas premier ordre contrôlable
 class NoiseProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
