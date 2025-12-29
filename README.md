@@ -119,7 +119,7 @@ Voici une démonstration du rendu final de l'application (Cliquez sur l'image po
 ### Prérequis et installation
 <a id="prérequis-et-installation"></a>
 
-Installez Nodejs (https://nodejs.org/fr)
+Installez Node.js (https://nodejs.org/fr)
 
 Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
   ```sh
@@ -135,7 +135,15 @@ Vous arrivez sur la page de l'application
 
 <img src="screenshots/application.png" alt="application.png" />
 
-L'application peut grâce à l'API Web Audio prendre en entrée un flux audio ou un son provenant du synthétiseur, le flux permet d'afficher plusieurs informations qui nous sont envoyées par le son qui peut également être altéré via divers paramètres (filtre, equalizer, effet), ce flux est ensuite transformé en une texture qui nous permettra de modifier des fonctions glsl (Web GL) afin de faire varier de très belles animations 2D/3D que l'on peut également paramétrer afin d'altérer le rendu visuel.
+L'application utilise la **Web Audio API** pour analyser en temps réel le flux audio, qu'il provienne d'un fichier chargé (MP3/MP4/M4A1) ou du **synthétiseur/piano intégré**.
+
+Ce flux est analysé pour extraire diverses informations (fréquences, amplitude, rythme, etc.), qui servent à piloter à la fois :
+- Des **effets audio** modifiables en direct : filtres (passe-bas, passe-haut...), égaliseur, réverbération, distortion, etc.
+- De **magnifiques visualisations 2D/3D** rendues avec **WebGL** et des shaders **GLSL**.
+
+Les données audio sont converties en une texture dynamique qui alimente les shaders, permettant aux animations de réagir précisément à la musique.
+
+Tous les paramètres sont ajustables par l'utilisateur (Intensité et type des effets audio, comportement des animations visuelles)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
