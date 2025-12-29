@@ -185,7 +185,7 @@ Et de sa version 2D
 </div>
 
 <div align="center">
-Si un son est en cours, la figure se fait déformer par la texture2D citée plus haut et voici un exemple de sa déformation en 3D
+Si un audio est actif, la géométrie de la figure est modulée par la texture2D évoquée plus haut. Illustration ci-dessous d’une déformation en 3D.
 </div>
 <br/>
 <div align="center">
@@ -203,7 +203,7 @@ Et de sa version 2D
 
 
 <div align="center">
-On peut également démultiplier la figure à l'infini comme sur la capture ci-dessous:
+On peut également démultiplier la figure à l'infini comme sur l'illustration ci-dessous:
 </div>
 <br/>
 <div align="center">
@@ -212,7 +212,7 @@ On peut également démultiplier la figure à l'infini comme sur la capture ci-d
 
 
 <div align="center">
-On peut également ajouter un effet de twist sur les formes
+On peut également ajouter un effet de twist sur la géométrie de la figure
 </div>
 <br/>
 <div align="center">
@@ -221,7 +221,7 @@ On peut également ajouter un effet de twist sur les formes
 
 #### Les paramètres vidéo
 <a id="video_params"></a>
-Voici les différents paramètres possibles pour la partie vidéo
+Voici les différents paramètres disponibles pour la partie vidéo
 
 <div align="center">
     <img src="screenshots/video_params.png" alt="video_params.png" />
