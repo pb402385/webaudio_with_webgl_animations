@@ -166,7 +166,7 @@ Voici à quoi ressemble un exemple de cette texture à un instant T
     <img src="screenshots/exemple_texture.png" alt="exemple_texture.png" />
 </div>
 
-Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer et afficher en 3D et celles-ci varient en fonction de l'intensité du flux audio, il a été rajouté une coupe 2D afin également de déformer ondulairement les formes. On peut également pour le cas 3D, répéter l'affichage de la forme à l'infini
+Initialement, le projet commence avec des **formes 3D personnalisables** (shapes), affichées en trois dimensions et animées en temps réel selon l’intensité du son. Une **coupe 2D** a ensuite été intégrée pour déformer ces formes de façon ondulatoire, ajoutant une dimension visuelle supplémentaire. En mode 3D, on peut enfin **répéter la forme à l’infini**, générant un effet hypnotique de duplication sans fin.
 
 <div align="center">
 Par exemple, voici une capture du Torus en 3D
