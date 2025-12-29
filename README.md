@@ -47,7 +47,7 @@
             <ul>
                 <li><a href="#synthe">Le synthé</a></li>
                 <li><a href="#melody">Les mélodies ou l'upload audio</a></li>
-                <li><a href="#audio_params">Les paramètres audio</a></li>
+                <li><a href="#audio-params">Les paramètres audio</a></li>
             </ul>
         </li>
       </ul>
@@ -56,7 +56,15 @@
         <a href="#codereview">Explication du code</a>
       <ul>
         <li><a href="#code-video">Partie Vidéo</a></li>
-        <li><a href="#code-audio">Partie Audio</a></li>
+        <li>
+            <a href="#code-audio">Partie Audio</a>
+            <ul>
+                <li><a href="#code-init-audio-context">Initialisation du audioContext</a></li>
+                <li><a href="#code-synthe">Code du synthé</a></li>
+                <li><a href="#code-melody">Code des mélodies</a></li>
+                <li><a href="#code-audio-params">Code des paramètres/effets audio</a></li>
+            </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#license">License</a></li>
@@ -251,7 +259,7 @@ Une fois le son uploadé, les  canvas s'animent, les deux premier concernent le 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Les paramètres audio
-<a id="audio_params"></a>
+<a id="audio-params"></a>
 
 <div align="center">
     <img src="screenshots/audio_params.png" alt="audio_params.png" />
@@ -458,6 +466,8 @@ On peut également modifier l'application simplement en modifiant un nombre flot
 
 Le fonctionnement principal se situe dans le fichier webaudio.js
 
+#### Initialisation du audioContext
+<a id="code-init-audio-context"></a>
 Tout d'abord il nous faut initialiser le context webaudio, car depuis plusieurs années (Chrome 66+, puis tous les navigateurs), les politiques autoplay des navigateurs bloquent la lecture audio automatique pour éviter les pubs sonores intrusives, l’AudioContext est souvent créé en état suspended (suspendu) si pas initié directement par une interaction utilisateur (comme un clic ou touch)
 
 ```javascript
@@ -793,6 +803,21 @@ function playBuffer(buffer) {
 	};
 }
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+#### Code du synthétiseur
+<a id="code-synthe"></a>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+#### Code des mélodies
+<a id="code-melody"></a>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+#### Code des paramètres/effets audio
+<a id="code-audio-params"></a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
