@@ -809,10 +809,150 @@ function playBuffer(buffer) {
 #### Code du synthétiseur
 <a id="code-synthe"></a>
 
+Concernant le synthé, il est généré via le code javascript
+
+```javascript
+    /**PART binding keys of keyboard **/
+    var tabNoteInfo = ['LA<br>2','LA<br>#2','SI<br>2','DO<br>3','DO<br>#3','RE<br>3','RE<br>#3','MI<br>3','FA<br>3','FA<br>#3','SOL<br>3','SOL<br>#3','LA<br>3','LA<br>#3','SI<br>3','DO<br>4'];
+    var tabTouches = ['q','z','s','d','r','f','t','g','h','u','j','i','k','o','l','m'];
+    var tabTouchesBool = [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false];
+    //TODO to erase (mini note test table) #testNote //!\\ onclick events work with a delay, not like keys
+    var strTestNote = "<table><tr><td class='topPiano' id='topPiano0'>&nbsp;</td><td class='topPiano' id='topPiano2'>&nbsp;</td><td class='topPiano' id='topPiano3'>&nbsp;</td><td class='topPiano' id='topPiano5'>&nbsp;</td><td class='topPiano' id='topPiano7'>&nbsp;</td><td class='topPiano' id='topPiano8'>&nbsp;</td><td class='topPiano' id='topPiano10'>&nbsp;</td><td class='topPiano' id='topPiano12'>&nbsp;</td><td class='topPiano' id='topPiano14'>&nbsp;</td><td class='topPiano' id='topPiano15'>&nbsp;</td></tr><tr>";
+    var strTestNoteDiese = "<table><tr>";
+    for(var j=0; j<tabFrequences.length; j++){
+        if(j !== 1 && j !== 4 && j !== 6 && j !== 9 && j !== 11 && j !== 13){
+            strTestNote = strTestNote + "<td class='testNoteTD' id='testNoteTD"+j+"' onmousedown='play("+j+",false)' onmouseup='stop("+j+",false)' onmouseover='setPianoHover(" + j + ",1,true);' onmouseout='setPianoHover(" + j + ",1,false);'>" + tabTouches[j] + "<p class='pPiano'>" + tabNoteInfo[j] + "</p></td>";
+        }else{
+            strTestNoteDiese = strTestNoteDiese + "<td class='testNoteDieseTD' id='testNoteDieseTD"+j+"'  onmousedown='play("+j+",false)' onmouseup='stop("+j+",false);this.style.backgroundColor=\"black\"' onmouseover='setPianoHover(" + j + ",0,true);' onmouseout='setPianoHover(" + j + ",0,false);'>" + tabTouches[j] + "<p class='pPiano'>" + tabNoteInfo[j] + "</p></td>";
+            if(j == 1 || j == 6) strTestNoteDiese = strTestNoteDiese + "<td class='testNoteDieseTDBlank'></td>";
+        }
+    }
+    strTestNote = strTestNote + "</tr></table>";
+    strTestNoteDiese = strTestNoteDiese + "</tr></table>";
+```
+
+Ensuite une fois qu'il est crée au niveau de la vue, on peut jouer une note simplement en lançant cette méthode
+
+```javascript
+    function playNoteKeyboard(freq){
+        if(tabTouchesBool[freq] == false){
+            noteToPlay = new SoundK(tabFrequences[freq], tabType[type], freq);
+            tabTouchesBool[freq] = true;
+        }
+    }
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Code des mélodies
 <a id="code-melody"></a>
+
+Les mélodies sont des successions de notes jouées selon un certain tempo, le code associé est simplement composé de plusieurs tableaux qui nous font jouer la partition selon le tempo grâce à des settimeout
+
+```javascript
+    var notesAjouerStarWarsL1 = ["fa","fa","fa","la#","fa++","re#+","re+","do+","la#+","fa+","re#+","re+","do+","la#+","fa+","re#+","re+","re#+"];
+    var notesAjouerStarWarsL2 = ["do+.","fa","fa","fa","do+","soupir","fa","fa","sol.","sol","re#+","re+","do+","la#+","la#+","do+","re+","do+","sol","la","fa","fa"];
+    var notesAjouerStarWarsL3 = ["sol.","sol","re#+","re+","do+","la#+","fa+","fa","fa","fa","sol.","sol","re#+","re+","do+","la#+"];
+    var notesAjouerStarWarsL4 = ["la#+","do+","re+","do+","sol","la","fa.","fa","la#+.","sol#+","fa#+.","fa+","re#+.","do#+","do+.","la#+","do+.","fa","fa","fa"];
+    var beatsStarWarsL1 = [4,4,4,16,8,4,4,4,16,8,4,4,4,16,8,4,4,4];
+    var beatsStarWarsL2 = [16,4,4,4,16,8,4,4,8,4,4,4,4,4,4,2,2,4,4,8,4,4];
+    var beatsStarWarsL3 = [8,4,4,4,4,4,16,8,4,4,8,4,4,4,4,4];
+    var beatsStarWarsL4 = [4,2,2,4,4,8,4,2,4,2,4,2,4,2,4,2,16,4,4,4];
+    var noteNamesStarWars = ['do','do#','re','re#','mi','fa','fa#','sol','sol#','la','la#','si']
+    var tonesStarWars = [261.626,277.183,293.665,311.127,329.628,349.228,369.994,391.995,415.305,440,466.164,493.883];
+    var noteNamesTxt = ['3','4','5','6','7','8','9','10','11','12','13','14'];
+
+    notesAjouerStarWars = notesAjouerStarWarsL1.concat(notesAjouerStarWarsL2).concat(notesAjouerStarWarsL3).concat(notesAjouerStarWarsL4);
+    beatsStarWars = beatsStarWarsL1.concat(beatsStarWarsL2).concat(beatsStarWarsL3).concat(beatsStarWarsL4);
+
+    //notesAjouerStarWars = notesAjouerStarWarsL4;
+    //beatsStarWars = beatsStarWarsL4;
+    tonesStarWars = divideBy2(tonesStarWars);
+
+    function reverseDiese(){
+        for(var i=0; i<noteNamesStarWars.length; i++){
+            if(noteNamesStarWars[i].indexOf("#") >= 0){
+                var tmpNote = noteNamesStarWars[i];
+                noteNamesStarWars[i] = noteNamesStarWars[i-1];
+                noteNamesStarWars[i-1] = tmpNote;
+                var tmpFreq = tonesStarWars[i];
+                tonesStarWars[i] = tonesStarWars[i-1];
+                tonesStarWars[i-1] = tmpFreq;
+            }
+        }
+    }
+
+    reverseDiese();
+```
+
+```javascript
+    notePlayed0 = false;
+    var finish0 = true;
+    function runMelodieStarWars(i,j){
+        
+        var beat;
+        finish0 = false;
+        
+        if(notePlayed0 == false && stopMelodie2 == false){
+
+            var tempo;
+            var notePlayedForHover = -1;
+            
+            if(i==j){
+
+                for (var k = 0; k < noteNamesStarWars.length; k++) {
+                    
+                    if(notesAjouerStarWars[i].indexOf(noteNamesStarWars[k]) >= 0){
+                        
+                        var freqToPlay = tonesStarWars[k];
+                        if(notesAjouerStarWars[i].indexOf("+") >= 0) freqToPlay = freqToPlay*2;
+                        if(notesAjouerStarWars[i].indexOf("-") >= 0) freqToPlay = freqToPlay/2;
+                        noteToPlay = new Sound0(freqToPlay, tabType[type]);
+                        beat = tabMelodieDureeNoteStarWars[i];
+                        if(notesAjouerStarWars[i].indexOf(".") >= 0) beat = beat*1.5;
+                        
+                        
+                        notePlayedForHover = noteNamesTxt[k];
+                        //console.log(notesAjouerStarWars[i]+" freq:"+freqToPlay+" beat="+beat);
+                        break;
+                    }
+                    
+                }
+                
+                if(notesAjouerStarWars[i] == "soupir"){
+                    beat = 1;
+                }
+
+                play0(notePlayedForHover);
+                tempo = dureeNote2*beat;
+            }else{
+                tempo = 10;
+            }
+
+            setTimeout(function(){
+                
+                if(i==notesAjouerStarWars.length-1){
+                    runMelodieStarWars(0,0);
+                }else{
+                    if(i==j){
+                        stop0(notePlayedForHover);
+
+                        finish0 = true;
+                        
+                        //we move on to the next musical note
+                        if(i<notesAjouerStarWars.length-1) runMelodieStarWars(i+1,j);
+                    }else{
+                        //we play time out
+                        runMelodieStarWars(i,j+1);
+                    }
+                }
+                
+                //if(i==notesAjouerStarWars.length-1) runMelodieStarWars(0,0);
+            
+            }, tempo);
+        }
+    }
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
