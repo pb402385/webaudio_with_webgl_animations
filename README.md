@@ -273,14 +273,16 @@ Celui-ci nous ouvre une pop-in listant toutes les animations et nous permettant 
 Voici une courte vidéo de présentation :
 
 //TODO vidéo demo synthé
+[![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
 
 #### Les mélodies ou l'upload audio
 <a id="melody"></a>
 
 Les mélodies préprogrammées : il s’agit de séquences musicales simulées, comme si une partition était lue et interprétée en direct par le synthétiseur, sans que vous ayez à jouer vous-même.
 
-Deux mélodies sont actuellement disponibles :  La Marche impériale (de Star Wars)  
-La marche de Sacco et Vanzetti
+Deux mélodies sont actuellement disponibles :  
+- La Marche impériale (de Star Wars)  
+- La marche de Sacco et Vanzetti
 
 
 <div align="center">
@@ -293,7 +295,7 @@ Sinon on peut charger directement un fichier audio aux formats MP3, MP4 ou M4A.
     <img src="screenshots/upload.png" alt="upload.png" />
 </div>
 
-Une fois le son uploadé, les  canvas s'animent, les deux premier concernent le son en temps réel et représentent l'amplitude. le graphe du bas représente le spectre du fichier uploadé
+Une fois le son uploadé, les canvas s'animent, les deux premier concernent le son en temps réel (le premier représentent l'amplitude et le second la forme de l'onde). le graphe du bas représente le spectre audio du fichier uploadé.
 
 <div align="center">
     <img src="screenshots/canvas_audio.png" alt="canvas_audio.png" />
@@ -336,7 +338,7 @@ Concernant les paramètres audio, les paramètres suivants sont disponibles:
 
 
 
-5. **Speed Melody**: permet d'ajuster la vitesse des 2 mélodies pré enregistrée
+5. **Speed Melody**: permet d'ajuster la vitesse des 2 mélodies pré enregistrées
 6. **Type**: type de l'onde jouée par l'oscillateur ( Triangle, Sine, Square, Sawtooth ) ne concerne que les melodies et le synthé
 
 Paramétrage avancé des effets:
@@ -400,7 +402,7 @@ async function loadShaders() {
 }
 ```
 
-Le fichier **fragmentSource.glsl** contient la fonction mainImage qui sera éxécutée pour afficher notre animation 3D. Celui importera en son sein le fichier  **fragmentSourceUserShader** qui contient le code de toutes les animations, celles que l'on aura sélectionné viendra surcharger le code de la fonction mainImage
+Le fichier **fragmentSource.glsl** contient la fonction mainImage qui sera éxécutée pour afficher notre animation 3D. Celui-ci importera en son sein le fichier  **fragmentSourceUserShader** qui contient le code de toutes les animations, celles que l'on aura sélectionné viendra surcharger le code de la fonction mainImage
 
 le chargement des paramètres ainsi que du tableau de frequences du son audio que l'on transforme en temps réel se situe à ce niveau dans le code
 
@@ -420,7 +422,7 @@ le chargement des paramètres ainsi que du tableau de frequences du son audio qu
 	}
 ```
 
-Concernant les interractions de la souris avec le canvas d'animation 3D, les fonctions qui gèrent ces évènement se situent également dans le fichier webgl.js (utile si l'on veut en ajouter ou réaliser des modifications sur celles-ci)
+Concernant les interractions de la souris avec le canvas d'animation 3D, les fonctions qui gèrent ces évènements se situent également dans le fichier webgl.js (utile si l'on veut en ajouter ou réaliser des modifications sur celles-ci)
 
 ```javascript
     //mouse effect management
@@ -459,7 +461,7 @@ Concernant les interractions de la souris avec le canvas d'animation 3D, les fon
 ```
 
 
-Maintenant je vais expliquer comment en pratique prendre une animation GLSL et comment dans le code GLSL récupérer la texture2D qui va nous permettre de créer des modification de vecteurs qui nous permettront de réaliser nos animations en fonction du son
+Maintenant je vais expliquer comment en pratique prendre une animation GLSL et comment dans le code GLSL récupérer la texture2D qui va nous permettre de créer des modification de vecteurs qui nous permettront de réaliser nos animations en fonction de la variation du flux audio.
 
 Tout d'abord il faut récupérer la texture2D qui est générée en temps réel en fonction du tableau de fréquences:
 
