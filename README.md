@@ -22,6 +22,7 @@
     <li>
       <a href="#a-propos-du-projet">A propos du projet</a>
       <ul>
+        <li><a href="#demo-video">Démo vidéo</a></li>
         <li><a href="#technologies">Technologies</a></li>
       </ul>
     </li>
@@ -88,7 +89,10 @@ Les animations sont **réactives à l'audio** : elles pulsent, ondulent et évol
 
 De plus, le son peut être modifié avec divers **effets audio** en temps réel (filtres, réverb, distortion, etc.) grâce à l'API Web Audio.
 
-## Démo vidéo
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Démo vidéo
+<a id="demo-video"></a>
 
 Voici une démonstration du rendu final de l'application (Cliquez sur l'image pour regarder la vidéo):
 
@@ -99,8 +103,12 @@ Voici une démonstration du rendu final de l'application (Cliquez sur l'image po
 ### Technologies
 <a id="technologies"></a>
 
+* [WebGL](https://fr.wikipedia.org/wiki/WebGL)
 * [Three.js](https://threejs.org)
 * [WebAudioAPI] (https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+* [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
+* [HTML](https://en.wikipedia.org/wiki/HTML)
+* [CSS](https://en.wikipedia.org/wiki/CSS)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
