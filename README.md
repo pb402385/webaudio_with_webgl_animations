@@ -77,11 +77,20 @@
 ## A propos du projet
 <a id="a-propos-du-projet"></a>
 
-Chargeur MP3/MP4 avec animations (codées en javascript et GLSL), dispose aussi d'un piano (synthé) qui permet de jouer soi même nos notes, comme ce n'est pas facile, j'ai préenregistré 2 mélodies en me basant sur les partitions de ces deux morceaux que j'ai choisi (The Imperial March (Darth Vader's Theme) composé par John Williams et Marche de Sacco et Vanzetti composé par Ennio Morricone). 
+Ce projet est un **lecteur audio MP3/MP4** avec des **visualisations animées** spectaculaires, codées en JavaScript et en shaders **GLSL** (WebGL). 
 
-Les animations réagissent en fonction du flux audio et peuvent être paramétrées, de plus le son peut être altéré par divers effets comme le filtre audio ou divers effets.
+Il intègre également un **piano virtuel (synthétiseur)** qui permet de jouer des notes en direct avec le clavier ou la souris. Comme jouer précisément n'est pas toujours évident, j'ai préenregistré deux mélodies célèbres, reproduites fidèlement d'après leurs partitions :
 
-Voici une vidéo youtube pour montrer le rendu final de l'application (Cliquer sur l'image pour regarder la vidéo).
+- **The Imperial March** (Thème de Dark Vador) – composé par John Williams
+- **Here's to You** (du film *Sacco et Vanzetti*) – composé par Ennio Morricone (avec Joan Baez)
+
+Les animations sont **réactives à l'audio** : elles pulsent, ondulent et évoluent en temps réel en fonction du flux sonore. Elles sont entièrement paramétrables (couleurs, intensité, formes, etc.).
+
+De plus, le son peut être modifié avec divers **effets audio** en temps réel (filtres, réverb, distortion, etc.) grâce à l'API Web Audio.
+
+## Démo vidéo
+
+Voici une démonstration du rendu final de l'application (Cliquez sur l'image pour regarder la vidéo):
 
 [![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
 
