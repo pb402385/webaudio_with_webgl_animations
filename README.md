@@ -153,13 +153,13 @@ Tous les paramètres sont ajustables par l'utilisateur (Intensité et type des e
 ### Partie Vidéo
 <a id="part-video"></a>
 
-Comme expliqué un peut plus haut, le son est transformé en une texture2D (une image) qui représente l'instant t de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
+Comme expliqué un peut plus haut, le son est transformé en une **texture2D** (une image) qui représente l'instant **T** de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
 
 #### Fonctionnement général
 <a id="fonctionnement"></a>
 
 <div align="center">
-Voici à quoi ressemble un exemple de cette texture à un instant t
+Voici à quoi ressemble un exemple de cette texture à un instant T
 </div>
 <br/>
 <div align="center">
