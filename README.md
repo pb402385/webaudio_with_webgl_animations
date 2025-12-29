@@ -124,7 +124,7 @@ Voici à quoi ressemble un exemple de cette texture à un instant t
 </div>
 <br/>
 <div align="center">
-    <img src="screenshots/exemple_texture.png" alt="application.png" />
+    <img src="screenshots/exemple_texture.png" alt="exemple_texture.png" />
 </div>
 
 Initialement, le projet fonctionne sur des formes (shapes) que l'on peut changer et afficher en 3D et celles-ci varient en fonction de l'intensité du flux audio, il a été rajouté une coupe 2D afin également de déformer ondulairement les formes. On peut également pour le cas 3D, répéter l'affichage de la forme à l'infini
@@ -134,7 +134,7 @@ Par exemple, voici une capture du Torus en 3D
 </div>
 <br/>
 <div align="center">
-    <img src="screenshots/shape_torus_webgl.png" alt="application.png" />
+    <img src="screenshots/shape_torus_webgl.png" alt="shape_torus_webgl.png" />
 </div>
 
 <div align="center">
@@ -142,7 +142,7 @@ Et de sa version 2D
 </div>
 <br/>
 <div align="center">
-    <img src="screenshots/shape_torus_2d_webgl.png" alt="application.png" />
+    <img src="screenshots/shape_torus_2d_webgl.png" alt="shape_torus_2d_webgl.png" />
 </div>
 
 <div align="center">
@@ -150,7 +150,7 @@ Si un son est en cours, la figure se fait déformer par la texture2D citée plus
 </div>
 <br/>
 <div align="center">
-    <img src="screenshots/shape_square_3d_animated_webgl.png" alt="application.png" />
+    <img src="screenshots/shape_square_3d_animated_webgl.png" alt="shape_square_3d_animated_webgl.png" />
 </div>
 
 
@@ -159,7 +159,7 @@ Et de sa version 2D
 </div>
 <br/>
 <div align="center">
-    <img src="screenshots/shape_square_2d_animated_webgl.png" alt="application.png" />
+    <img src="screenshots/shape_square_2d_animated_webgl.png" alt="shape_square_2d_animated_webgl.png" />
 </div>
 
 
@@ -168,7 +168,7 @@ On peut également démultiplier la figure à l'infini comme sur la capture ci-d
 </div>
 <br/>
 <div align="center">
-    <img src="screenshots/shape_infinity_webgl.png" alt="application.png" />
+    <img src="screenshots/shape_infinity_webgl.png" alt="shape_infinity_webgl.png" />
 </div>
 
 
@@ -177,7 +177,7 @@ On peut également ajouter un effet de twist sur les formes
 </div>
 <br/>
 <div align="center">
-    <img src="screenshots/shape_twist_webgl.png" alt="application.png" />
+    <img src="screenshots/shape_twist_webgl.png" alt="shape_twist_webgl.png" />
 </div>
 
 #### Les paramètres vidéo
@@ -185,7 +185,7 @@ On peut également ajouter un effet de twist sur les formes
 Voici les différents paramètres possibles pour la partie vidéo
 
 <div align="center">
-    <img src="screenshots/video_params.png" alt="application.png" />
+    <img src="screenshots/video_params.png" alt="video_params.png" />
 </div>
 
 Les paramètres suivants sont disponibles:
@@ -206,12 +206,14 @@ https://github.com/user-attachments/assets/ea8c63dd-818e-44c1-a017-e59964816623
 On peut lancer une génération d'animations aléatoires en cliquant sur la bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
 
 <div align="center">
-    <img src="screenshots/effect_video_webgl.png" alt="application.png" />
+    <img src="screenshots/effect_video_webgl.png" alt="effect_video_webgl.png" />
 </div>
 
 Celui-ci nous ouvre une popin listant toutes les animations et nous permettant de les sélectionner afin qu'elles soit dans une liste de lecture
 
-<img src="screenshots/video_random_animation.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/video_random_animation.png" alt="video_random_animation.png" />
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -229,15 +231,21 @@ Voici une petite vidéo afin de le présenter:
 <a id="melody"></a>
 Pour générer notre flux audio, nous pouvons soit utiliser un les mélodies, soit charger directement un fichier son qui peut être au format mp3, mp4 ou m4a1. Corcernant les mélodie (les mélodies sont la simulation d'une partition lue et jouée automatiquement au synthé sans qu'il n'y ait besoin que l'humain joue vraiment). Deux melodies sont disponibles, la marche impériale de Star wars et la marche de sacco et vanzetti
 
-<img src="screenshots/melodies_boutons.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/melodies_boutons.png" alt="melodies_boutons.png" />
+</div>
 
 Sinon on peut upload un son
 
-<img src="screenshots/upload.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/upload.png" alt="upload.png" />
+</div>
 
 Une fois le son uploadé, les  canvas s'animent, les deux premier concernent le son en temps réel et représentent l'amplitude. le graphe du bas représente le spectre du fichier uploadé
 
-<img src="screenshots/canvas_audio.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/canvas_audio.png" alt="canvas_audio.png" />
+</div>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -245,7 +253,9 @@ Une fois le son uploadé, les  canvas s'animent, les deux premier concernent le 
 #### Les paramètres audio
 <a id="audio_params"></a>
 
-<img src="screenshots/audio_params.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/audio_params.png" alt="audio_params.png" />
+</div>
 
 Concernant les paramètres audio, les paramètres suivants sont disponibles:
 
@@ -279,7 +289,9 @@ Concernant les paramètres audio, les paramètres suivants sont disponibles:
 
 Paramétrage avancé des effets:
 <br/>
-<img src="screenshots/audio_effets_params.png" alt="application.png" />
+<div align="center">
+    <img src="screenshots/audio_effets_params.png" alt="audio_effets_params.png" />
+</div>
 <br/>
 Détails des paramètrages disponibles par effet:
 
@@ -697,7 +709,7 @@ function buidGraph(){
 Voici la capture de notre graphe webAudio déssiné mais simplifié (je n'ai pas mis tous les AudioWorkletNode car il y a énormément d'effets ainsi que pas affiché tous les oscillatorNode car il en existe 1 par touche présente sur le synthé et cela prendrai beaucoup trop d'espace sur le graphe)
 
 <div align="center">
-    <img src="screenshots/graphe_audio.png" alt="application.png" />
+    <img src="screenshots/graphe_audio.png" alt="graphe_audio.png" />
 </div>
 
 Notre graphe étant enfin terminé, notre application est opérationnelle! On remarque que l'on a deux fonctions draw qui se sont exécutées permettant de dessiner nos courbes en temps réel. Il est  à noter un point important, c'est dans la méthode **draw** que nous obtenons le tableau de fréquence que nous envoyons en temps réel à la partie vidéo 3D
