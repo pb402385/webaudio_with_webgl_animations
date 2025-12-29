@@ -118,7 +118,9 @@ Voici une démonstration du rendu final de l'application (Cliquez sur l'image po
 
 ### Prérequis et installation
 <a id="prérequis-et-installation"></a>
-Installez nodejs
+
+Installez Nodejs (https://nodejs.org/fr)
+
 Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
   ```sh
   python -m http.server 8000
