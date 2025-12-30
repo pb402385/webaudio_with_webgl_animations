@@ -46,7 +46,7 @@
         <li>
             <a href="#part-audio">Partie Audio</a>
             <ul>
-                <li><a href="#synthe">Le synthé</a></li>
+                <li><a href="#synthe">Le Le synthétiseur intégré</a></li>
                 <li><a href="#melody">Les mélodies ou l'upload audio</a></li>
                 <li><a href="#audio-params">Les paramètres audio</a></li>
             </ul>
@@ -60,14 +60,15 @@
         <li>
             <a href="#code-audio">Partie Audio</a>
             <ul>
-                <li><a href="#code-init-audio-context">Initialisation du audioContext</a></li>
-                <li><a href="#code-synthe">Code du synthé</a></li>
+                <li><a href="#code-init-audio-context">Initialisation du contexte Web Audio</a></li>
+                <li><a href="#code-synthe">Code du Le synthétiseur</a></li>
                 <li><a href="#code-melody">Code des mélodies</a></li>
                 <li><a href="#code-audio-params">Code des paramètres/effets audio</a></li>
             </ul>
         </li>
       </ul>
     </li>
+    <li><a href="#improvment">Points à améliorer</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Remerciements</a></li>
@@ -265,7 +266,7 @@ Celui-ci nous ouvre une pop-in listant toutes les animations et nous permettant 
 ### Partie Audio
 <a id="part-audio"></a>
 
-#### Le synthé
+#### Le synthétiseur intégré
 <a id="synthe"></a>
 
 **Le synthétiseur intégré** permet de générer le flux audio en temps réel. Il repose sur des oscillateurs fournis par l’API Web Audio, qui nous permettent de produire toutes les notes souhaitées. Il est possible de modifier le **type d’onde** (Triangle, Sine, Square ou Sawtooth) pour altérer sensiblement la timbre et la tonalité du son.
@@ -295,7 +296,9 @@ Sinon on peut charger directement un fichier audio aux formats MP3, MP4 ou M4A.
     <img src="screenshots/upload.png" alt="upload.png" />
 </div>
 
-Une fois le son uploadé, les canvas s'animent, les deux premier concernent le son en temps réel (le premier représentent l'amplitude et le second la forme de l'onde). le graphe du bas représente le spectre audio du fichier uploadé.
+Une fois le fichier audio chargé, les canvas s’animent automatiquement :  Les deux premiers affichent des visualisations en temps réel du son (le premier représente l’amplitude des fréquences, tandis que le second montre la forme temporelle de l’onde elle-même). 
+
+Le graphique du bas présente le spectre audio complet du fichier uploadé (répartition des fréquences).
 
 <div align="center">
     <img src="screenshots/canvas_audio.png" alt="canvas_audio.png" />
@@ -311,14 +314,14 @@ Une fois le son uploadé, les canvas s'animent, les deux premier concernent le s
     <img src="screenshots/audio_params.png" alt="audio_params.png" />
 </div>
 
-Concernant les paramètres audio, les paramètres suivants sont disponibles:
+Les paramètres suivants sont disponibles:
 
-1. **Volume**: permet de monter ou diminuer le son (valeur comprise entre 0 et 100%)
-2. **Equalizer**: permet de paramétrer manuellement la valeur des fréquences autorisées (high,mid et low) (valeur comprise entre 0 et 100% pour chaque type)
-3. **Filtre**: permet de choisir le filtre utilisé, il est associé à une fréquence qui peut être modifiée (les différents filtres sont: Low Pass (120hz), High Pass (120hz), Band Pass (800hz), Low Shelf (180hz), High Shelf (6000hz), Peaking (1000hz), Notch (500hz) et All Pass (500hz))
-4. **Effects**: permet d'activer 1 effet sur le son parmi la liste suivante: ( ceux ayant un astérisque peuvent être paramétrés )
+1. **Volume**: permet de monter ou diminuer le volume du son (**valeur comprise entre 0 et 100%**)
+2. **Equalizer**: permet de paramétrer manuellement la valeur des fréquences autorisées (high,mid et low) (**valeur comprise entre 0 et 100%** pour chaque type)
+3. **Filtre**: permet de choisir le filtre utilisé, il est associé à une fréquence qui peut être modifiée (les différents filtres sont: **Low Pass** (120 Hz), **High Pass** (120 Hz), **Band Pass** (800 Hz), **Low Shelf** (180 Hz), **High Shelf** (6000 Hz), **Peaking** (1000 Hz), **Notch** (500 Hz) et **All Pass** (500 Hz))
+4. **Effects**: permet d'activer 1 effet sur le son parmi la liste suivante: (ceux ayant un astérisque peuvent être paramétrés)
 
-    - **MOOG**: le filtre produit un son "crémeux" (creamy), gras et musical (utile avec le synthé ou certaines musique utilisant des synthés).
+    - **MOOG**: le filtre produit un son "crémeux" (creamy), gras et musical (utile avec le Le synthétiseur intégré ou certaines musique utilisant des synthétiseurs).
 
     - **NOISE** (*): le filtre produit l'ajout intentionnel d’un signal de bruit (noise) pour créer une texture sonore, enrichir un son ou produire un effet artistique.
 
@@ -338,8 +341,8 @@ Concernant les paramètres audio, les paramètres suivants sont disponibles:
 
 
 
-5. **Speed Melody**: permet d'ajuster la vitesse des 2 mélodies pré enregistrées
-6. **Type**: type de l'onde jouée par l'oscillateur ( Triangle, Sine, Square, Sawtooth ) ne concerne que les melodies et le synthé
+5. **Speed Melody**: permet d'ajuster la vitesse des 2 mélodies pré enregistrées (**valeur comprise entre 0.5x et 1.5x**)
+6. **Type**: type de l'onde jouée par l'oscillateur ( **Triangle**, **Sine**, **Square**, **Sawtooth** ) ne concerne que les melodies et le synthétiseur intégré
 
 Paramétrage avancé des effets:
 <br/>
@@ -392,7 +395,7 @@ Détails des paramètrages disponibles par effet:
 
 Le fonctionnement principal se situe dans le fichier **webgl.js**
 
-Le code est initialisé en chargeant la partie GLSL au début, tout objet 3D est traité en deux grandes étapes principales pour les shaders : les vertex shaders et les fragment shaders. Ce sont les deux programmes écrits en GLSL qui tournent directement sur la carte graphique (GPU).
+Le code est initialisé en chargeant la partie GLSL au début, tout objet 3D est traité en deux grandes étapes principales pour les shaders : les vertex shaders et les fragments shaders. Ce sont les deux programmes écrits en GLSL qui tournent directement sur la carte graphique (GPU).
 
 ```javascript
 async function loadShaders() {
@@ -402,9 +405,9 @@ async function loadShaders() {
 }
 ```
 
-Le fichier **fragmentSource.glsl** contient la fonction mainImage qui sera éxécutée pour afficher notre animation 3D. Celui-ci importera en son sein le fichier  **fragmentSourceUserShader** qui contient le code de toutes les animations, celles que l'on aura sélectionné viendra surcharger le code de la fonction mainImage
+Le fichier **fragmentSource.glsl** contient la fonction mainImage qui sera éxécutée pour afficher notre animation 3D. Celui-ci importera en son sein le fichier  **fragmentSourceUserShader** qui contient le code de toutes les animations, celle que l'on aura sélectionné viendra alors surcharger le code de la fonction mainImage
 
-le chargement des paramètres ainsi que du tableau de frequences du son audio que l'on transforme en temps réel se situe à ce niveau dans le code
+Le chargement des paramètres nécessaires à l’animation WebGL, ainsi que du tableau de fréquences issu de l’analyse audio en temps réel, s’effectue à ce niveau du code.
 
 ```javascript
     dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side, side, THREE.RGBAFormat);
@@ -422,7 +425,7 @@ le chargement des paramètres ainsi que du tableau de frequences du son audio qu
 	}
 ```
 
-Concernant les interractions de la souris avec le canvas d'animation 3D, les fonctions qui gèrent ces évènements se situent également dans le fichier webgl.js (utile si l'on veut en ajouter ou réaliser des modifications sur celles-ci)
+Les interactions de la souris avec le canvas d’animation 3D (clics, déplacements, zoom, etc.) sont gérées par des fonctions situées dans le fichier webgl.js. Ce fichier est l’endroit idéal pour ajouter de nouvelles interactions ou modifier le comportement existant.
 
 ```javascript
     //mouse effect management
@@ -460,10 +463,11 @@ Concernant les interractions de la souris avec le canvas d'animation 3D, les fon
 	});
 ```
 
+**Intégrer une animation GLSL et utiliser la texture audio en temps réel**
 
-Maintenant je vais expliquer comment en pratique prendre une animation GLSL et comment dans le code GLSL récupérer la texture2D qui va nous permettre de créer des modification de vecteurs qui nous permettront de réaliser nos animations en fonction de la variation du flux audio.
+Je vais maintenant expliquer comment, en pratique, ajouter une nouvelle animation GLSL au projet, et surtout comment récupérer dans le code du shader la texture 2D générée à partir du son. Cette texture nous permettra de modifier les vecteurs (positions, déplacements, déformations, etc.) en fonction des variations du flux audio, créant ainsi des animations réactives au rythme et aux fréquences.
 
-Tout d'abord il faut récupérer la texture2D qui est générée en temps réel en fonction du tableau de fréquences:
+Pour commencer, la première étape consiste à **récupérer cette texture 2D**, qui est générée en temps réel à partir du tableau de fréquences issu de l’analyse audio :
 
 ```glsl
 vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
@@ -471,21 +475,24 @@ vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
 
 A titre informatif, on peut accéder soit à la position du vecteur de texture généré via les champs x, y et z (exemple: fragColorTexture.xy), soit également à leur couleur RGB via les champs r, g et b (exemple: fragColorTexture.rgb)
 
-Ensuite il faut trouver l'endroit de l'animation qui nous interesse et à l'aide des informations que la texture nous envoit, réaliser des opérations qui altèrent notre animation ( de préférence de manière harmonieuse )
+Ensuite il faut trouver l'endroit de l'animation qui nous interesse et à l'aide des informations que la texture nous envoit, réaliser des opérations qui altèrent notre animation (de préférence de manière harmonieuse)
 
-On peut par exemple utiliser la fonction mix est une des fonctions les plus utiles et utilisées en GLSL (le langage des shaders dans WebGL, Three.js, OpenGL, etc.). Elle permet de faire une interpolation linéaire entre deux valeurs.
+On peut par exemple utiliser la fonction **mix** est une des fonctions les plus utiles et utilisées en GLSL (le langage des shaders dans WebGL, Three.js, OpenGL, etc.). Elle permet de faire une interpolation linéaire entre deux valeurs.
 
 ```glsl
     fragColor = mix(color, vec3(0.5), fragColorTexture.xyz);
 ```
 
-On peut également utiliser la fonction smoothstep en GLSL (utilisée dans Three.js, WebGL, shaders en général) qui permet de créer des transitions douces (smooth transitions) entre deux valeurs. Elle est parfaite pour les animations fluides, les masques progressifs, les effets de fondu, etc.
+On peut également utiliser la fonction **smoothstep** en GLSL (utilisée dans Three.js, WebGL, shaders en général) qui permet de créer des transitions douces (smooth transitions) entre deux valeurs. Elle est parfaite pour les animations fluides, les masques progressifs, les effets de fondu, etc.
 
 ```glsl
     fragColor = smoothstep(color, vec3(0.5), fragColorTexture.xyz);
 ```
 
-Mais attention au problème d'antialising qui peut faire buguer la partie gauche de l'animation ou créer des bords en escalier très visibles et peu esthétiques après un smoothstep, mais pas d'inquiétude, on peut le solutionner ainsi!
+Attention toutefois au **problème d’anti-aliasing** : il peut parfois provoquer des artefacts sur la partie gauche de l’animation ou générer des bords en escalier (staircasing) très visibles et peu esthétiques, surtout après l’utilisation d’un **smoothstep**.
+
+Pas de panique, ce problème est facilement contournable avec la solution suivante !
+
 
 ```glsl
     // l'operation que l'on souhaite réaliser
@@ -496,7 +503,7 @@ Mais attention au problème d'antialising qui peut faire buguer la partie gauche
     col *=  smooth; 
 ```
 
-On peut également modifier l'application simplement en modifiant un nombre flottant, ou en faisant une multiplication de vecteurs, par exemple:
+On peut également modifier l'animation simplement en modifiant un nombre flottant, ou en faisant une multiplication de vecteurs, par exemple:
 
 ```glsl
     // modifier un flottant
@@ -512,9 +519,10 @@ On peut également modifier l'application simplement en modifiant un nombre flot
 
 Le fonctionnement principal se situe dans le fichier webaudio.js
 
-#### Initialisation du audioContext
+#### Initialisation du contexte Web Audio
 <a id="code-init-audio-context"></a>
-Tout d'abord il nous faut initialiser le context webaudio, car depuis plusieurs années (Chrome 66+, puis tous les navigateurs), les politiques autoplay des navigateurs bloquent la lecture audio automatique pour éviter les pubs sonores intrusives, l’AudioContext est souvent créé en état suspended (suspendu) si pas initié directement par une interaction utilisateur (comme un clic ou touch)
+
+Tout d'abord il nous faut **initialiser le contexte Web Audio**, car depuis plusieurs années (Chrome 66+, puis tous les navigateurs), les politiques autoplay des navigateurs bloquent la lecture audio automatique pour éviter les pubs sonores intrusives, le contexte Web Audio est souvent créé en état suspended (suspendu) si pas initié directement par une interaction utilisateur (comme un clic ou un touch)
 
 ```javascript
 // Fonction à appeler sur le premier clic/touch de l’utilisateur
@@ -544,8 +552,7 @@ async function unlockAudio() {
 }
 ```
 
-Une fois notre audioContext actif, on peut charger tous les modules qui nous seront nécessaires lors de la future création de notre graphe audio,
-ces audioWorklet Processor nous permettent de remplacer les javascriptNodes obsolètes et d'avoir un code spécifique par effet audio que l'on pourra utiliser dans nos modifications du flux audio
+Une fois notre contexte Web Audio actif, on peut charger tous les modules qui nous seront nécessaires lors de la future création de notre graphe audio, ces audioWorklet Processor nous permettent de remplacer les javascriptNodes obsolètes et d'avoir un code spécifique par effet audio que l'on pourra utiliser dans nos modifications du flux audio
 
 ```javascript
 async function initAudio() {
@@ -762,7 +769,7 @@ function buidGraph(){
 }
 ```
 
-Voici la capture de notre graphe webAudio déssiné mais simplifié (je n'ai pas mis tous les AudioWorkletNode car il y a énormément d'effets ainsi que pas affiché tous les oscillatorNode car il en existe 1 par touche présente sur le synthé et cela prendrai beaucoup trop d'espace sur le graphe)
+Voici la capture de notre graphe webAudio déssiné mais simplifié (je n'ai pas mis tous les AudioWorkletNode car il y a énormément d'effets ainsi que pas affiché tous les oscillatorNode car il en existe 1 par touche présente sur le synthétiseur intégré et cela prendrai beaucoup trop d'espace sur le graphe)
 
 <div align="center">
     <img src="screenshots/graphe_audio.png" alt="graphe_audio.png" />
@@ -855,7 +862,7 @@ function playBuffer(buffer) {
 #### Code du synthétiseur
 <a id="code-synthe"></a>
 
-Concernant le synthé, il est généré via le code javascript
+Concernant le synthétiseur intégré, il est généré via le code javascript
 
 ```javascript
     /**PART binding keys of keyboard **/
@@ -1148,6 +1155,15 @@ Comme vous pouvez le voir, on crée une classe NoiseProcessor qui extends AudioW
 Ensuite nous avons une fonction **process(inputs, outputs, parameters)**, c'est elle qui traite le son en temps réel, bloc par bloc. Elle prend en entrée 3 paramètres, tout d'abords les inputs qui est le tableau d'entrées audio, ensuite les outputs qui est le tableau de sorties audio (C'est ici que vous écrivez le son traité). Enfin la partie que l'on va souvent devoir adapter, le paramètre parameters qui représente l'Objet contenant les valeurs des AudioParam personnalisés déclarés via parameterDescriptors() dont je parlais plus haut. Dans l'exemple du Noise, on voit que l'on a 3 paramètres (le type, le cutoff et le gain). ensuite nous codons notre effet et si on a plusieurs paramètres, on fait un switch case afin de gérer nos différents cas. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Points à améliorer
+<a id="improvment"></a>
+
+Voici une liste de points à améliorer afin d'améliorer cette application
+
+- Meilleure gestion de la RAM
+- Retirer les noeuds oscillateur du synthétiseur intégré et ecrire un audio worklet node spécifique afin de pouvoir jouer deux notes en même temps sans que cela nuise au son en sortie
+
 
 ## License
 <a id="license"></a>
