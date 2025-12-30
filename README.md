@@ -552,7 +552,7 @@ async function unlockAudio() {
 }
 ```
 
-Une fois notre contexte Web Audio actif, on peut charger tous les modules qui nous seront nécessaires lors de la future création de notre graphe audio, ces audioWorklet Processor nous permettent de remplacer les javascriptNodes obsolètes et d'avoir un code spécifique par effet audio que l'on pourra utiliser dans nos modifications du flux audio
+Une fois notre contexte Web Audio actif, on doit **charger tous les modules** qui nous seront nécessaires lors de la future création de notre graphe audio, ces audioWorklet Processor nous permettent de remplacer les javascriptNodes obsolètes et d'avoir un code spécifique par effet audio que l'on pourra utiliser dans nos modifications du flux audio
 
 ```javascript
 async function initAudio() {
@@ -719,7 +719,7 @@ function initAudioContext2(){
 }
 ```
 
-On construit enfin notre graphe audio, en paramétrant nos noeuds de l'égaliseur, le noeud de gain qui gère le volume, notre noeud de filtre ainsi qu'a notre noeud d'analyse. On dessine à ce moment nos deux courbes et enfin on se connect au noeud de destination afin de finaliser ce build
+Nous pouvons enfin construire notre graphe audio : nous paramétrons les différents nœuds de l’égaliseur, le nœud de gain qui contrôle le volume, le nœud de filtre, ainsi que le nœud d’analyse. À cette étape, nous dessinons les deux courbes à l’écran, puis nous connectons l’ensemble au nœud de destination pour finaliser la construction du graphe.
 
 ```javascript
 function buidGraph(){
