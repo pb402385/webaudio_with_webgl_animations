@@ -769,13 +769,13 @@ function buidGraph(){
 }
 ```
 
-Voici la capture de notre graphe webAudio déssiné mais simplifié (je n'ai pas mis tous les AudioWorkletNode car il y a énormément d'effets ainsi que pas affiché tous les oscillatorNode car il en existe 1 par touche présente sur le synthétiseur intégré et cela prendrai beaucoup trop d'espace sur le graphe)
+Voici une capture d’écran de notre graphe Web Audio, présenté de manière simplifiée. Je n’ai pas représenté tous les AudioWorkletNode (car il y en a un très grand nombre en raison des nombreux effets), ni tous les OscillatorNode (un par touche du synthétiseur intégré, ce qui rendrait le graphe beaucoup trop chargé et illisible).
 
 <div align="center">
     <img src="screenshots/graphe_audio.png" alt="graphe_audio.png" />
 </div>
 
-Notre graphe étant enfin terminé, notre application est opérationnelle! On remarque que l'on a deux fonctions draw qui se sont exécutées permettant de dessiner nos courbes en temps réel. Il est  à noter un point important, c'est dans la méthode **draw** que nous obtenons le tableau de fréquence que nous envoyons en temps réel à la partie vidéo 3D
+Notre graphe étant enfin terminé, notre application est opérationnelle! On remarque que l'on a deux fonctions draw qui sont exécutées permettant de dessiner nos courbes en temps réel. Il est à noter un point important, c'est dans la méthode **draw** que nous obtenons le tableau de fréquences que nous envoyons en temps réel à la partie vidéo 3D
 
 ```javascript
     if(analyser.frequencyBinCount){
@@ -788,8 +788,7 @@ Notre graphe étant enfin terminé, notre application est opérationnelle! On re
 	arrayFreqToOpenGL = frequencyData;
 ```
 
-
-Le code du process utilisé afin de charger un fichier audio (mp3, mp4, m4a1) via un champs input type file. Une fois le fichier envoyé vie le champs input, on decode le contexte audio et on crée le noeud source, ensuite on connecte ce noeud source à notre graphe audio, on dessine son spectre puis on lance la musique en faisant source.start()
+Ce code permet de charger un fichier audio (MP3, MP4, M4A) via un champs input de type file. Ensuite, on decode le contexte audio et on crée le noeud source, ensuite on connecte ce noeud source à notre graphe audio, on dessine son spectre et enfin on démarre la lecture de la musique via source.start().
 
 ```javascript
 function loadInputSound(element) {
@@ -1192,11 +1191,11 @@ Concernant la partie web audio, je remercie mon professeur de Master **Michel Bu
 
 Maintenant je souhaiterai remercier les développeurs a qui j'ai pu emprunter du code web GL sur Shadertoy (https://www.shadertoy.com/)
 
-* Remerciement à **BigWIngs** de qui j'ai pu récupérer l'animation **Trou Noir** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/3d2SWK
-* Remerciement à **Inigo Quilez** de qui j'ai pu récupérer l'animation **3D Sierpinski Triangle** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/4dl3Wl
-* Remerciement à **GarlicGraphix** de qui j'ai pu récupérer l'animation **3D Sierpinski Infinite** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/wc23zR
-* Remerciement à **Shane** de qui j'ai pu récupérer l'animation **3D Sierpinski Mobius** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/XsGXDV
-* Remerciement une seconde fois à  **Shane** de qui j'ai pu récupérer l'animation **Mandelbrot Decoration** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/ttscWn
+* Remerciements à **BigWIngs** de qui j'ai pu récupérer l'animation **Trou Noir** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/3d2SWK
+* Remerciements à **Inigo Quilez** de qui j'ai pu récupérer l'animation **3D Sierpinski Triangle** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/4dl3Wl
+* Remerciements à **GarlicGraphix** de qui j'ai pu récupérer l'animation **3D Sierpinski Infinite** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/wc23zR
+* Remerciements à **Shane** de qui j'ai pu récupérer l'animation **3D Sierpinski Mobius** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/XsGXDV
+* Remerciements une seconde fois à  **Shane** de qui j'ai pu récupérer l'animation **Mandelbrot Decoration** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/ttscWn
 
 Concernant les autres animations, je me suis aidé principalement de GROK AI et de chat GPT.
 
