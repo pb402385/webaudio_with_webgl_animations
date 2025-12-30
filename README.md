@@ -167,6 +167,7 @@ Voici à quoi ressemble un exemple de cette texture à un instant T
     <img src="screenshots/exemple_texture.png" alt="exemple_texture.png" />
 </div>
 
+
 Initialement, le projet commence avec des **formes 3D personnalisables** (shapes), affichées en trois dimensions et animées en temps réel selon l’intensité du son. Une **coupe 2D** a ensuite été intégrée pour déformer ces formes de façon ondulatoire, ajoutant une dimension visuelle supplémentaire. En mode 3D, on peut enfin **répéter la forme à l’infini**, générant un effet hypnotique de duplication sans fin.
 
 <div align="center">
