@@ -136,7 +136,7 @@ Vous arrivez sur la page de l'application
 
 <img src="screenshots/application.png" alt="application.png" />
 
-L'application utilise la **Web Audio API** pour analyser en temps réel le flux audio, qu'il provienne d'un fichier chargé (MP3/MP4/M4A1) ou du **synthétiseur/piano intégré**.
+L'application utilise la **Web Audio API** pour analyser en temps réel le flux audio, qu'il provienne d'un fichier chargé (MP3/MP4/M4A) ou du **synthétiseur/piano intégré**.
 
 Ce flux est analysé pour extraire diverses informations (fréquences, amplitude, rythme, etc.), qui servent à piloter à la fois :
 - Des **effets audio** modifiables en direct : filtres (passe-bas, passe-haut...), égaliseur, réverbération, distortion, etc.
@@ -788,7 +788,7 @@ Notre graphe étant enfin terminé, notre application est opérationnelle! On re
 	arrayFreqToOpenGL = frequencyData;
 ```
 
-Ce code permet de charger un fichier audio (MP3, MP4, M4A) via un champs input de type file. Ensuite, on decode le contexte audio et on crée le noeud source, ensuite on connecte ce noeud source à notre graphe audio, on dessine son spectre et enfin on démarre la lecture de la musique via source.start().
+Ce code permet de charger un fichier audio (**MP3, MP4, M4A**) via un champs input de type file. Ensuite, on decode le contexte audio et on crée le noeud source, ensuite on connecte ce noeud source à notre graphe audio, on dessine son spectre et enfin on démarre la lecture de la musique via source.start().
 
 ```javascript
 function loadInputSound(element) {
@@ -861,7 +861,7 @@ function playBuffer(buffer) {
 #### Code du synthétiseur
 <a id="code-synthe"></a>
 
-Concernant le synthétiseur intégré, il est généré via le code javascript
+Quant au synthétiseur intégré, il est entièrement généré par du code JavaScript.
 
 ```javascript
     /**PART binding keys of keyboard **/
@@ -883,7 +883,7 @@ Concernant le synthétiseur intégré, il est généré via le code javascript
     strTestNoteDiese = strTestNoteDiese + "</tr></table>";
 ```
 
-Ensuite une fois qu'il est crée au niveau de la vue, on peut jouer une note simplement en lançant cette méthode
+Ensuite, une fois que le synthétiseur est créé au niveau de la vue (interface utilisateur), il suffit d’appeler cette méthode pour jouer une note.
 
 ```javascript
     function playNoteKeyboard(freq){
@@ -899,7 +899,9 @@ Ensuite une fois qu'il est crée au niveau de la vue, on peut jouer une note sim
 #### Code des mélodies
 <a id="code-melody"></a>
 
-Les mélodies sont des successions de notes jouées selon un certain tempo, le code associé est simplement composé de plusieurs tableaux qui nous font jouer la partition selon le tempo grâce à des settimeout
+Les mélodies, c’est tout simplement une **série de notes jouées les unes après les autres** à un certain rythme. Dans le code, on utilise juste des tableaux qui listent les notes, et on les joue au bon tempo grâce à des **setTimeout**.
+
+Par exemple, voici la partie du code qui nous crée les données pour représenter la première mélodie (The Imperial March).
 
 ```javascript
     var notesAjouerStarWarsL1 = ["fa","fa","fa","la#","fa++","re#+","re+","do+","la#+","fa+","re#+","re+","do+","la#+","fa+","re#+","re+","re#+"];
@@ -936,6 +938,8 @@ Les mélodies sont des successions de notes jouées selon un certain tempo, le c
 
     reverseDiese();
 ```
+
+Et voici la partie du code qui nous permet de lancer cette mélodie tout en suivant un tempo bien précis grâce au setTimeout.
 
 ```javascript
     notePlayed0 = false;
@@ -1011,7 +1015,7 @@ Les mélodies sont des successions de notes jouées selon un certain tempo, le c
 #### Code des paramètres/effets audio
 <a id="code-audio-params"></a>
 
-Concernant les paramètres, soit ils sont nativement gérés par les composants existants de l'API web audio. Par exemple prenons le cas du volume qui fonctionne sur le noeud de gain, les mises à jours de sa valeur sont réalisées via un input qui met à jour sa valeur dès que la valeur de l'input change.
+Pour les paramètres, certains sont **gérés nativement** par les composants de l’API Web Audio. Par exemple, sans le cas de volume, il est contrôlé directement par le nœud de gain : un input utilisateur permet de modifier sa valeur en temps réel, la mise à jour s’effectuant dès que la valeur de l’input change en exécutant cette fonction.
 
 ```javascript
     //Manage volume
@@ -1022,7 +1026,8 @@ Concernant les paramètres, soit ils sont nativement gérés par les composants 
     }
 ```
 
-Sinon il existe d'autre paramètres qui sont codés via des AudioWorkletNode, ce sont nos propres noeuds codés nous permettant de réaliser nos propres paramètres tel que des filtres personnalisés, divers effets. Dans ces cas là nous devont écrire l'intégralité du composant. Par exemple dans l'application, je vais vous exposer comment j'ai créé mon propre effet noise (bruit)
+D’autres paramètres, en revanche, sont implémentés à l’aide d’**AudioWorkletNode** personnalisés. Il s’agit de nœuds que nous codons nous-mêmes **pour créer des effets sur mesure**, comme des filtres spécifiques ou divers traitements audio. Dans ce cas, nous devons développer l’intégralité du composant. Par exemple, dans l’application, je vais vous expliquer comment j’ai implémenté mon propre effet de bruit (noise).
+
 
 ```javascript
 // White, Pink, Brownian, Blue, Violet + filtre passe-bas premier ordre contrôlable
@@ -1151,17 +1156,26 @@ registerProcessor('noise', NoiseProcessor);
 
 Comme vous pouvez le voir, on crée une classe NoiseProcessor qui extends AudioWorkletProcessor, au début on a une méthode get **parameterDescriptors()** qui permet de déclarer des paramètres automatisables personnalisés (AudioParam) pour notre AudioWorkletNode.
 
-Ensuite nous avons une fonction **process(inputs, outputs, parameters)**, c'est elle qui traite le son en temps réel, bloc par bloc. Elle prend en entrée 3 paramètres, tout d'abords les inputs qui est le tableau d'entrées audio, ensuite les outputs qui est le tableau de sorties audio (C'est ici que vous écrivez le son traité). Enfin la partie que l'on va souvent devoir adapter, le paramètre parameters qui représente l'Objet contenant les valeurs des AudioParam personnalisés déclarés via parameterDescriptors() dont je parlais plus haut. Dans l'exemple du Noise, on voit que l'on a 3 paramètres (le type, le cutoff et le gain). ensuite nous codons notre effet et si on a plusieurs paramètres, on fait un switch case afin de gérer nos différents cas. 
+Ensuite, nous disposons de la fonction **process(inputs, outputs, parameters)**, qui est responsable du traitement du son en temps réel, bloc par bloc (généralement 128 échantillons). Cette fonction reçoit trois paramètres :  
+- **inputs** : un tableau contenant les entrées audio ;  
+- **outputs** : un tableau contenant les sorties audio (c’est ici que nous écrivons le signal traité) ;  
+- **parameters** : un objet regroupant les valeurs des AudioParam personnalisés, tels que ceux déclarés précédemment via parameterDescriptors().
+
+Dans l’exemple de l’effet Noise, nous avons trois paramètres : le type, le cutoff et le gain. Nous codons ensuite l’effet proprement dit et, lorsque plusieurs paramètres sont présents, nous utilisons souvent un switch-case pour gérer les différents cas selon la valeur active.
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Points à améliorer
 <a id="improvment"></a>
 
-Voici une liste de points à améliorer afin d'améliorer cette application
+Voici une liste de points à améliorer pour optimiser cette application :  
 
-- Meilleure gestion de la RAM
-- Retirer les noeuds oscillateur du synthétiseur intégré et ecrire un audio worklet node spécifique afin de pouvoir jouer deux notes en même temps sans que cela nuise au son en sortie
+- Une meilleure gestion de la mémoire RAM ;  
+- Supprimer les nœuds oscillateurs individuels du synthétiseur intégré et les remplacer par un AudioWorkletNode dédié, ce qui permettra de jouer plusieurs notes simultanément (polyphonie) sans dégrader la qualité du son en sortie.
+
+
 
 
 ## License
@@ -1178,7 +1192,7 @@ Informations de contact:
 **Prénom**: Benjamin <br/>
 **Pays**: FRANCE <br/>
 **Ville**: Nice <br/>
-**Mail**: pb402385@gmail.com <br/>
+**E-mail**: pb402385@gmail.com <br/>
 **Github**: https://github.com/pb402385
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -1186,10 +1200,11 @@ Informations de contact:
 ## Remerciements
 <a id="acknowledgments"></a>
 
-Tout d'abord, je souhaite remercier mon pote **Klem** qui m'a initié au web GL il y à plusieurs années et sans qui il ne me serait jamais venu à l'idée de combiner du web GL à du web audio.
-Concernant la partie web audio, je remercie mon professeur de Master **Michel Buffa** qui m'a fait connaitre le web audio durant mes études.
+Tout d’abord, je tiens à remercier mon ami **Klem**, qui m’a initié au WebGL il y a plusieurs années. Sans lui, l’idée de combiner WebGL et Web Audio ne me serait jamais venue à l’esprit.  
 
-Maintenant je souhaiterai remercier les développeurs a qui j'ai pu emprunter du code web GL sur Shadertoy (https://www.shadertoy.com/)
+Pour la partie Web Audio, un grand merci à mon professeur de Master, **Michel Buffa**, qui me l’a fait découvrir pendant mes études.  
+
+Je souhaite également remercier les développeurs dont j’ai pu m’inspirer et emprunter du code WebGL sur **Shadertoy** (https://www.shadertoy.com/).  
 
 * Remerciements à **BigWIngs** de qui j'ai pu récupérer l'animation **Trou Noir** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/3d2SWK
 * Remerciements à **Inigo Quilez** de qui j'ai pu récupérer l'animation **3D Sierpinski Triangle** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/4dl3Wl
@@ -1197,7 +1212,7 @@ Maintenant je souhaiterai remercier les développeurs a qui j'ai pu emprunter du
 * Remerciements à **Shane** de qui j'ai pu récupérer l'animation **3D Sierpinski Mobius** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/XsGXDV
 * Remerciements une seconde fois à  **Shane** de qui j'ai pu récupérer l'animation **Mandelbrot Decoration** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/ttscWn
 
-Concernant les autres animations, je me suis aidé principalement de GROK AI et de chat GPT.
+Enfin, pour les autres animations, j’ai été principalement aidé par **l'IA Grok (xAI)** et un peu également de **ChatGPT**.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
