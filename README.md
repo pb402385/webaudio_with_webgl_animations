@@ -669,7 +669,7 @@ console.log("AudioWorkletNode created and connected (fft-fx-effect-processor)");
 }
 ```
 
-On peut enfin initialiser tous les composants nécéssaires à la construction de notre graphe audio
+On arrive au moment où on peut enfin créer les nœuds nécessaires pour monter notre graphe audio.
 
 ```javascript
 function initAudioContext2(){
@@ -719,7 +719,7 @@ function initAudioContext2(){
 }
 ```
 
-Nous pouvons enfin construire notre graphe audio : nous paramétrons les différents nœuds de l’égaliseur, le nœud de gain qui contrôle le volume, le nœud de filtre, ainsi que le nœud d’analyse. À cette étape, nous dessinons les deux courbes à l’écran, puis nous connectons l’ensemble au nœud de destination pour finaliser la construction du graphe.
+On peut maintenant assembler notre graphe audio : configuration des nœuds d’égaliseur, de gain (volume), de filtre et d’analyse, lancement des deux méthodes permettant de dessiner les deux courbes d'analyse de l'audio en temps réel et enfin, connexion finale au nœud de destination.
 
 ```javascript
 function buidGraph(){
