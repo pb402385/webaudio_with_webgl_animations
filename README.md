@@ -1172,20 +1172,22 @@ Dans l’exemple de l’effet Noise, nous avons trois paramètres : le type, le 
 
 Voici une liste de points à améliorer pour optimiser cette application :  
 
-- Une meilleure gestion de la mémoire RAM ;  
+- Une meilleure gestion de la mémoire RAM.  
 - Supprimer les nœuds oscillateurs individuels du synthétiseur intégré et les remplacer par un AudioWorkletNode dédié, ce qui permettra de jouer plusieurs notes simultanément (polyphonie) sans dégrader la qualité du son en sortie.
-
-
-
+- Optimiser les effets basés sur AudioWorkletNode pour obtenir un rendu sonore plus harmonieux, en affinant notamment leurs paramètres (certains problèmes actuels tenant uniquement à un réglage suboptimal).  
+- Autoriser l'application simultanée de plusieurs effets, contrairement à l'implémentation actuelle qui limite à un seul effet à la fois.
+- Pourquoi pas, ajouter une boîte à rythme pour accompagner le synthétiseur intégré.
 
 ## License
 <a id="license"></a>
-C’est **open source ET gratuit**. Pas de piège, pas de version premium cachée, pas d’abonnement surprise. Juste du code libre pour des humains libres. 
+
+Le projet est entièrement **open source et gratuit**. Aucune restriction : Simplement du code libre au service de tous, offert à la communauté.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
 <a id="contact"></a>
+
 Informations de contact:
 
 **Nom**: Porta <br/>
