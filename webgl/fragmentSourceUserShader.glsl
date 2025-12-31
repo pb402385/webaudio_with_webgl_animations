@@ -1135,12 +1135,16 @@ float GetDisc(vec3 p, vec3 pp) {
     return 1.5*m/numSamples;
 }
 
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
 void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
 	vec2 m = iMouse.xy/iResolution.xy;
 
-	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy)/2.0;
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy)/10.0;
 
 	if(uIntFreq == 2) {
 		m = vec2(0.0,0.0);
@@ -1206,23 +1210,29 @@ void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
     if(dS<SURFDIST) {
         col = vec3(0);      // its black!
     }
-
-	vec2 poss = vec2(0.5, 0.3);  // Centre-bas de l'écran
-	vec4 valeurAuCentre = texture2D(iChannel0, poss);
     
     #ifdef USEDISC
     //col += disc*vec3(1,.8,.5)*1.5;
 	if(fragColorTexture.x>=0.0){
-		vec3 pattern = disc*((0.7+abs(mix(0.01, 0.5,fragColorTexture.x))))*vec3(1,.8,.5);
+		vec3 pattern = disc*((0.7+abs(mix(0.01, 0.7,fragColorTexture.x))))*vec3(.9,.8,.9);
 		vec3 aa = fwidth(pattern);
 		vec3 smoothed = mix(-aa, aa, pattern);
 		col += smoothed;
 	}
-	//if(fragColorTexture.x>0.0) col += disc*((0.5+abs(mix(0.01, 0.5,valeurAuCentre.x))))*vec3(1,.8,.5);
-	//if(fragColorTexture.x>0.0) col += disc*(vec3(1.0)-smoothstep(vec3(1,.8,.5),vec3(fragColorTexture.xyz),vec3(fragColorTexture.xyz)))*(1.5 - smoothstep(0.01, 1.5, fragColorTexture.x/255.));
     #endif
+
     #ifdef USESTREAM
-    col += min(.5, stream)*vec3(.7, .7, 1.);
+	if(fragColorTexture.x>0.0){
+		vec3 patternStream = mix(col, col,fragColorTexture.rgb);
+		vec3 aaa = fwidth(patternStream);
+		vec3 smoothedStream = mix(-aaa, aaa, patternStream);
+		smoothedStream.b = 0.85;
+		smoothedStream.r = random(fragColorTexture.xy);
+		smoothedStream.g = random(fragColorTexture.yz);
+		col += min(.5, stream)*vec3(.7, .7, 1.)*smoothedStream;
+	} else {
+		col += min(.5, stream)*vec3(.7, .7, 1.);
+	}
     #endif
     
     fragColor = vec4(col,1.0);
