@@ -202,11 +202,27 @@ function setEffectToOpenGL(val){
 		document.getElementById("buttonInfinityAnim").disabled = true;
 		//reset du zoom
 		mesh.material.uniforms.iResolution.value.x = 500;
+
+		//notre champs ondulation affiche ses valeurs liées aux autres animations
+		document.getElementById("h5_ondulation").innerHTML = "TYPE";
+		document.getElementById("value_html_ondulation_1").innerHTML = "Type 1";
+		document.getElementById("value_html_ondulation_2").innerHTML = "Type 2";
+		document.getElementById("value_html_ondulation_3").innerHTML = "Type 3";
+		document.getElementById("value_html_ondulation_4").innerHTML = "Type 4";
+		document.getElementById("value_html_ondulation_5").innerHTML = "Type 5";
 	} else {
 		//sinon on les enable
 		document.getElementById("buttonTypeAnim").disabled = false;
 		document.getElementById("buttonTypeTextureAnim").disabled = false;
 		document.getElementById("buttonInfinityAnim").disabled = false;
+
+		//notre champs ondulation affiche ses valeurs par défaut
+		document.getElementById("h5_ondulation").innerHTML = "ONDULATION";
+		document.getElementById("value_html_ondulation_1").innerHTML = "2";
+		document.getElementById("value_html_ondulation_2").innerHTML = "4";
+		document.getElementById("value_html_ondulation_3").innerHTML = "8";
+		document.getElementById("value_html_ondulation_4").innerHTML = "12";
+		document.getElementById("value_html_ondulation_5").innerHTML = "16";
 	}
 
 }
