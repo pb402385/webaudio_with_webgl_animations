@@ -6,93 +6,95 @@
     <img src="/favicon.ico" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Chargeur MP3/MP4 avec animations</h3>
+<h3 align="center">MP3/MP4 player with animations</h3>
 
   <p align="center">
-    Chargeur MP3/MP4 avec animations (javascript et webGl) et piano en web audio
+    MP3/MP4 player with animations (JavaScript and WebGL) and web audio piano
     <br />
-    <a href="https://github.com/pb402385/webaudio_with_webgl_animations">Voir Demo</a>
+    <a href="https://github.com/pb402385/webaudio_with_webgl_animations">See Demo</a>
   </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Sommaire</summary>
+  <summary>Summary</summary>
   <ol>
     <li>
-      <a href="#a-propos-du-projet">A propos du projet</a>
+      <a href="#a-propos-du-projet">About project</a>
       <ul>
-        <li><a href="#demo-video">Démo vidéo</a></li>
+        <li><a href="#demo-video">Video demo</a></li>
         <li><a href="#technologies">Technologies</a></li>
       </ul>
     </li>
     <li>
-      <a href="#commencer">Commencer</a>
+      <a href="#commencer">Begin</a>
       <ul>
-        <li><a href="#prérequis-et-installation">Prérequis et installation</a></li>
+        <li><a href="#prérequis-et-installation">Prerequisites and installation</a></li>
       </ul>
     </li>
-    <li><a href="#presentation">Presentation de l'application</a></li>
+    <li><a href="#presentation">Application presentation</a></li>
     <li>
-        <a href="#functionalities">Fonctionnalités</a>
+        <a href="#functionalities">Features</a>
       <ul>
         <li>
-            <a href="#part-video">Partie Vidéo</a>
+            <a href="#part-video">Video Section</a>
             <ul>
-                <li><a href="#fonctionnement">Fonctionnement général</a></li>
-                <li><a href="#video_params">Les paramètres vidéo</a></li>
+                <li><a href="#fonctionnement">How it works (in general)</a></li>
+                <li><a href="#video_params">Video settings</a></li>
             </ul>
         </li>
         <li>
-            <a href="#part-audio">Partie Audio</a>
+            <a href="#part-audio">Audio Section</a>
             <ul>
-                <li><a href="#synthe">Le synthétiseur intégré</a></li>
-                <li><a href="#melody">Les mélodies ou l'upload audio</a></li>
-                <li><a href="#audio-params">Les paramètres audio</a></li>
+                <li><a href="#synthe">The onboard synthesizer</a></li>
+                <li><a href="#melody">The melodies or the audio upload</a></li>
+                <li><a href="#audio-params">Audio settings</a></li>
             </ul>
         </li>
       </ul>
     </li>
     <li>
-        <a href="#codereview">Explication du code</a>
+        <a href="#codereview">Code walkthrough</a>
       <ul>
-        <li><a href="#code-video">Partie Vidéo</a></li>
+        <li><a href="#code-video">Vidéo Section</a></li>
         <li>
-            <a href="#code-audio">Partie Audio</a>
+            <a href="#code-audio">Audio Section</a>
             <ul>
-                <li><a href="#code-init-audio-context">Initialisation du contexte Web Audio</a></li>
-                <li><a href="#code-synthe">Code du Le synthétiseur</a></li>
-                <li><a href="#code-melody">Code des mélodies</a></li>
-                <li><a href="#code-audio-params">Code des paramètres/effets audio</a></li>
+                <li><a href="#code-init-audio-context">Initializing the Web Audio Context</a></li>
+                <li><a href="#code-synthe">Synthesizer implementation</a></li>
+                <li><a href="#code-melody">Melodies Implementation</a></li>
+                <li><a href="#code-audio-params">Audio Parameters and Effects implementation</a></li>
             </ul>
         </li>
       </ul>
     </li>
-    <li><a href="#improvment">Points à améliorer</a></li>
+    <li><a href="#improvment">Potential improvements</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Remerciements</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
 <!-- ABOUT THE PROJECT -->
-## A propos du projet
+## About project
 <a id="a-propos-du-projet"></a>
 
-Ce projet est un **lecteur audio MP3/MP4** avec des **visualisations animées** spectaculaires, codées en JavaScript et en shaders **GLSL** (WebGL). 
+This project is an **MP3/MP4 audio player** featuring spectacular **animated visualizations**, built with JavaScript and **GLSL** shaders (WebGL).
 
-Il intègre également un **piano virtuel (synthétiseur)** qui permet de jouer des notes en direct avec le clavier ou la souris. Comme jouer précisément n'est pas toujours évident, j'ai préenregistré deux mélodies célèbres, reproduites fidèlement d'après leurs partitions :
+It also includes a **virtual piano (synthesizer)** that lets you play notes live using your computer keyboard or mouse. Since playing accurately can sometimes be tricky, I have pre-recorded two famous melodies, faithfully reproduced from their original sheet music:
 
-- **The Imperial March** (Thème de Dark Vador) – composé par John Williams
-- **La marche de Sacco et Vanzetti** (du film *Sacco et Vanzetti*) – composé par Ennio Morricone
+- **The Imperial March** (Darth Vader’s theme) – composed by John Williams  
+- **The Ballad of Sacco and Vanzetti** (from the film *Sacco and Vanzetti*) – composed by Ennio Morricone
 
-Les animations sont **réactives à l'audio** : elles pulsent, ondulent et évoluent en temps réel en fonction du flux sonore. Elles sont entièrement paramétrables (couleurs, intensité, formes, etc.).
+The animations are **audio-reactive**: they pulse, wave, and evolve in real time according to the sound stream. They are fully customizable (colors, intensity, shapes, etc.).
 
-De plus, le son peut être modifié avec divers **effets audio** en temps réel (filtres, réverb, distortion, etc.) grâce à l'API Web Audio.
+Additionally, the sound can be modified in real time with various **audio effects** (filters, reverb, distortion, etc.) using the Web Audio API.
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Démo vidéo
+### Video demo
 <a id="demo-video"></a>
 
 Voici une démonstration du rendu final de l'application (Cliquez sur l'image pour regarder la vidéo):
@@ -114,10 +116,10 @@ Voici une démonstration du rendu final de l'application (Cliquez sur l'image po
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Commencer
+## Begin
 <a id="commencer"></a>
 
-### Prérequis et installation
+### Prerequisites and installation
 <a id="prérequis-et-installation"></a>
 
 Installez Node.js (https://nodejs.org/fr)
@@ -129,7 +131,7 @@ Téléchargez le projet, puis depuis la racine du projet, tapez la commande suiv
 
 Ensuite, rendez-vous à l'url suivante: <a href="http://localhost:8000/index.html">http://localhost:8000/index.html</a>
 
-### Presentation de l'application
+### Application presentation
 <a id="presentation"></a>
 
 Vous arrivez sur la page de l'application
@@ -148,15 +150,15 @@ Tous les paramètres sont ajustables par l'utilisateur (Intensité et type des e
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Fonctionnalités
+## Features
 <a id="functionalities"></a>
 
-### Partie Vidéo
+### Video Section
 <a id="part-video"></a>
 
 Comme expliqué un peut plus haut, le son est transformé en une **texture2D** (une image) qui représente l'instant **T** de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
 
-#### Fonctionnement général
+#### How it works (in general)
 <a id="fonctionnement"></a>
 
 <div align="center">
@@ -223,7 +225,7 @@ On peut également ajouter un effet de twist sur la géométrie de la figure
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### Les paramètres vidéo
+#### Video settings
 <a id="video_params"></a>
 Voici les différents paramètres disponibles pour la partie vidéo
 
@@ -266,10 +268,10 @@ Celui-ci nous ouvre une pop-in listant toutes les animations et nous permettant 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Partie Audio
+### Audio Section
 <a id="part-audio"></a>
 
-#### Le synthétiseur intégré
+#### The onboard synthesizer
 <a id="synthe"></a>
 
 **Le synthétiseur intégré** permet de générer le flux audio en temps réel. Il repose sur des oscillateurs fournis par l’API Web Audio, qui nous permettent de produire toutes les notes souhaitées. Il est possible de modifier le **type d’onde** (Triangle, Sine, Square ou Sawtooth) pour altérer sensiblement la timbre et la tonalité du son.
@@ -279,7 +281,7 @@ Voici une courte vidéo de présentation :
 //TODO vidéo demo synthé
 [![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
 
-#### Les mélodies ou l'upload audio
+#### The melodies or the audio upload
 <a id="melody"></a>
 
 Les mélodies préprogrammées : il s’agit de séquences musicales simulées, comme si une partition était lue et interprétée en direct par le synthétiseur, sans que vous ayez à jouer vous-même.
@@ -310,7 +312,7 @@ Le graphique du bas présente le spectre audio complet du fichier uploadé (rép
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### Les paramètres audio
+#### Audio settings
 <a id="audio-params"></a>
 
 <div align="center">
@@ -390,10 +392,10 @@ Détails des paramètrages disponibles par effet:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Explication du code
+## Code walkthrough
 <a id="codereview"></a>
 
-### Partie Vidéo
+### Vidéo Section
 <a id="code-video"></a>
 
 Le fonctionnement principal se situe dans le fichier **webgl.js**
@@ -414,56 +416,56 @@ Le chargement des paramètres nécessaires à l’animation WebGL, ainsi que du 
 
 ```javascript
     dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side, side, THREE.RGBAFormat);
-	
-	_uniforms = {
-		iChannel0:			{ type: "t", value: dataTex },
-		uIntEffect:			{ type: "i", value: effectToOpenGL},
-		uIntInfinity:		{ type: "i", value: infinityToOpenGL},
-		uIntFreq:			{ type: "i", value: freqToOpenGL },
-		uIntType:			{ type: "i", value: typeToOpenGL },
-		uIntTypeTexture:	{ type: "i", value: typeTextureToOpenGL },
-		iGlobalTime:    	{ type: "f", value: 1.0 },
-		iResolution: 		{ type: "v3", value: new THREE.Vector3() },
-		iMouse: 			{ type: 'v4', value: new THREE.Vector2() },
-	}
+    
+    _uniforms = {
+        iChannel0:			{ type: "t", value: dataTex },
+        uIntEffect:			{ type: "i", value: effectToOpenGL},
+        uIntInfinity:		{ type: "i", value: infinityToOpenGL},
+        uIntFreq:			{ type: "i", value: freqToOpenGL },
+        uIntType:			{ type: "i", value: typeToOpenGL },
+        uIntTypeTexture:	{ type: "i", value: typeTextureToOpenGL },
+        iGlobalTime:    	{ type: "f", value: 1.0 },
+        iResolution: 		{ type: "v3", value: new THREE.Vector3() },
+        iMouse: 			{ type: 'v4', value: new THREE.Vector2() },
+    }
 ```
 
 Les interactions de la souris avec le canvas d’animation 3D (clics, déplacements, zoom, etc.) sont gérées par des fonctions situées dans le fichier webgl.js. Ce fichier est l’endroit idéal pour ajouter de nouvelles interactions ou modifier le comportement existant.
 
 ```javascript
     //mouse effect management
-	document.getElementById("shaderPixelAnim").appendChild(renderer.domElement);
-	canvasClicked = false;
-	renderer.domElement.addEventListener('mousemove', function(e) {
-		if(canvasClicked == true){
-			var canvas = renderer.domElement;
-			var rect = canvas.getBoundingClientRect();
-			mesh.material.uniforms.iMouse.value.x = -parseFloat((e.clientX - rect.left));
-			mesh.material.uniforms.iMouse.value.y = -parseFloat((e.clientY - rect.top));
-		}
-	});
-	renderer.domElement.addEventListener('mousedown', function(e) {
-			var canvas = renderer.domElement;
-			var rect = canvas.getBoundingClientRect();
-			mesh.material.uniforms.iMouse.value.x = -parseFloat((e.clientX - rect.left));
-			mesh.material.uniforms.iMouse.value.y = -parseFloat((e.clientY - rect.top));
-			canvasClicked = true;
-	});
-	renderer.domElement.addEventListener('mouseup', function(e) {
-		canvasClicked = false;
-		var canvas = renderer.domElement;
-		var rect = canvas.getBoundingClientRect();
-		mesh.material.uniforms.iMouse.value.z = parseFloat((e.clientX - rect.left));
-		mesh.material.uniforms.iMouse.value.w = parseFloat((e.clientY - rect.top));
-	});
-	renderer.domElement.addEventListener('wheel', function(e) {
-		canvasClicked = false;
-		if(e.wheelDelta > 0) {
-			mesh.material.uniforms.iResolution.value.x = mesh.material.uniforms.iResolution.value.x + 50;
-		} else {
-			mesh.material.uniforms.iResolution.value.x = mesh.material.uniforms.iResolution.value.x - 50;
-		}
-	});
+    document.getElementById("shaderPixelAnim").appendChild(renderer.domElement);
+    canvasClicked = false;
+    renderer.domElement.addEventListener('mousemove', function(e) {
+        if(canvasClicked == true){
+            var canvas = renderer.domElement;
+            var rect = canvas.getBoundingClientRect();
+            mesh.material.uniforms.iMouse.value.x = -parseFloat((e.clientX - rect.left));
+            mesh.material.uniforms.iMouse.value.y = -parseFloat((e.clientY - rect.top));
+        }
+    });
+    renderer.domElement.addEventListener('mousedown', function(e) {
+            var canvas = renderer.domElement;
+            var rect = canvas.getBoundingClientRect();
+            mesh.material.uniforms.iMouse.value.x = -parseFloat((e.clientX - rect.left));
+            mesh.material.uniforms.iMouse.value.y = -parseFloat((e.clientY - rect.top));
+            canvasClicked = true;
+    });
+    renderer.domElement.addEventListener('mouseup', function(e) {
+        canvasClicked = false;
+        var canvas = renderer.domElement;
+        var rect = canvas.getBoundingClientRect();
+        mesh.material.uniforms.iMouse.value.z = parseFloat((e.clientX - rect.left));
+        mesh.material.uniforms.iMouse.value.w = parseFloat((e.clientY - rect.top));
+    });
+    renderer.domElement.addEventListener('wheel', function(e) {
+        canvasClicked = false;
+        if(e.wheelDelta > 0) {
+            mesh.material.uniforms.iResolution.value.x = mesh.material.uniforms.iResolution.value.x + 50;
+        } else {
+            mesh.material.uniforms.iResolution.value.x = mesh.material.uniforms.iResolution.value.x - 50;
+        }
+    });
 ```
 
 **Intégrer une animation GLSL et utiliser la texture audio en temps réel**
@@ -517,12 +519,12 @@ On peut également modifier l'animation simplement en modifiant un nombre flotta
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Partie Audio
+### Audio Section
 <a id="code-audio"></a>
 
 Le fonctionnement principal se situe dans le fichier webaudio.js
 
-#### Initialisation du contexte Web Audio
+#### Initializing the Web Audio Context
 <a id="code-init-audio-context"></a>
 
 Tout d'abord il nous faut **initialiser le contexte Web Audio**, car depuis plusieurs années (Chrome 66+, puis tous les navigateurs), les politiques autoplay des navigateurs bloquent la lecture audio automatique pour éviter les pubs sonores intrusives, le contexte Web Audio est souvent créé en état suspended (suspendu) si pas initié directement par une interaction utilisateur (comme un clic ou un touch)
@@ -535,18 +537,18 @@ async function unlockAudio() {
     // Crée ou reprend l’AudioContext
     audioCtx = new AudioContext();
 
-	// Start when user clicks or after resume (required on most browsers)
-	document.documentElement.addEventListener('click', () => {
-		if (audioCtx.state === 'suspended') audioCtx.resume();
-		initAudio().then(() => {
-			console.log("AudioContext débloqué et prêt !");
-			isUnlocked = true;
+    // Start when user clicks or after resume (required on most browsers)
+    document.documentElement.addEventListener('click', () => {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        initAudio().then(() => {
+            console.log("AudioContext débloqué et prêt !");
+            isUnlocked = true;
 
-			// Mets ici tout ce qui a besoin du son
-			initAudioContext2();
-		});
+            // Mets ici tout ce qui a besoin du son
+            initAudioContext2();
+        });
 
-	}, { once: true });
+    }, { once: true });
 
     // Nettoyage : on ne veut appeler ça qu’une seule fois
     document.removeEventListener('click', unlockAudio);
@@ -565,104 +567,104 @@ async function initAudio() {
       await audioCtx.audioWorklet.addModule('./audio-worklet-processor.js');
       console.log("Processor (my-audio-processor) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/simple-lowpass.js');
-	  console.log("Processor (simple-lowpass-effect) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/simple-lowpass.js');
+      console.log("Processor (simple-lowpass-effect) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/bit-crusher.js');
-	  console.log("Processor (bit-crusher-effect) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/bit-crusher.js');
+      console.log("Processor (bit-crusher-effect) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/pink.js');
-	  console.log("Processor (pink-effect) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/pink.js');
+      console.log("Processor (pink-effect) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/noise.js');
-	  console.log("Processor (noise-effect) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/noise.js');
+      console.log("Processor (noise-effect) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/pitch.js');
-	  console.log("Processor (pitch) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/pitch.js');
+      console.log("Processor (pitch) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/compressor.js');
-	  console.log("Processor (compressor) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/compressor.js');
+      console.log("Processor (compressor) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/reverb.js');
-	  console.log("Processor (reverb) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/reverb.js');
+      console.log("Processor (reverb) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/tremolo.js');
-	  console.log("Processor (tremolo) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/tremolo.js');
+      console.log("Processor (tremolo) loaded successfully");
 
-	  await audioCtx.audioWorklet.addModule('./effect/fft-fx.js');
-	  console.log("Processor (fft-fx) loaded successfully");
+      await audioCtx.audioWorklet.addModule('./effect/fft-fx.js');
+      console.log("Processor (fft-fx) loaded successfully");
 
       // Only now is it safe to create the node
       analyserNode = new AudioWorkletNode(audioCtx, 'my-audio-processor');
       console.log("AudioWorkletNode created and connected (my-audio-processor)");
 
 
-	  // effects
-	  simplePassEffectNode = new AudioWorkletNode(audioCtx, 'simple-lowpass', {
-		parameterData: { cutoff: 800 }
-	  });
-	  console.log("AudioWorkletNode created and connected (simple-lowpass-effect-processor)");
+      // effects
+      simplePassEffectNode = new AudioWorkletNode(audioCtx, 'simple-lowpass', {
+        parameterData: { cutoff: 800 }
+      });
+      console.log("AudioWorkletNode created and connected (simple-lowpass-effect-processor)");
 
-	  bitCrusherEffectNode = new AudioWorkletNode(audioCtx, 'bitcrusher', {
-		outputChannelCount: [2]
-	  });
+      bitCrusherEffectNode = new AudioWorkletNode(audioCtx, 'bitcrusher', {
+        outputChannelCount: [2]
+      });
 
-	  bitCrusherEffectNode.parameters.get('bitDepth').setValueAtTime(16, audioCtx.currentTime);
-	  bitCrusherEffectNode.parameters.get('bitDepth').linearRampToValueAtTime(4, audioCtx.currentTime + 2);
-	  console.log("AudioWorkletNode created and connected (bit-crusher-effect-processor)");
+      bitCrusherEffectNode.parameters.get('bitDepth').setValueAtTime(16, audioCtx.currentTime);
+      bitCrusherEffectNode.parameters.get('bitDepth').linearRampToValueAtTime(4, audioCtx.currentTime + 2);
+      console.log("AudioWorkletNode created and connected (bit-crusher-effect-processor)");
 
-	  pinkEffectNode = new AudioWorkletNode(audioCtx, 'pink-noise-filtered');
-	  pinkEffectNode.parameters.get('cutoff').linearRampToValueAtTime(200, audioCtx.currentTime + 5);
-	  console.log("AudioWorkletNode created and connected (pink-effect-processor)");
+      pinkEffectNode = new AudioWorkletNode(audioCtx, 'pink-noise-filtered');
+      pinkEffectNode.parameters.get('cutoff').linearRampToValueAtTime(200, audioCtx.currentTime + 5);
+      console.log("AudioWorkletNode created and connected (pink-effect-processor)");
 
-	  pitchEffectNode = new AudioWorkletNode(audioCtx, 'pitch');
-	  pitchEffectNode.parameters.get('pitch').setValueAtTime(2, audioCtx.currentTime);
+      pitchEffectNode = new AudioWorkletNode(audioCtx, 'pitch');
+      pitchEffectNode.parameters.get('pitch').setValueAtTime(2, audioCtx.currentTime);
 
-	  console.log("AudioWorkletNode created and connected (pitch-effect-processor)");
+      console.log("AudioWorkletNode created and connected (pitch-effect-processor)");
 
-	  noiseEffectNode = new AudioWorkletNode(audioCtx, 'noise');
-	  noiseEffectNode.parameters.get('type').setValueAtTime(1, 0);        // pink
-	  console.log("AudioWorkletNode created and connected (noise-effect-processor)");
+      noiseEffectNode = new AudioWorkletNode(audioCtx, 'noise');
+      noiseEffectNode.parameters.get('type').setValueAtTime(1, 0);        // pink
+      console.log("AudioWorkletNode created and connected (noise-effect-processor)");
 
-	  compressorEffectNode = new AudioWorkletNode(audioCtx, 'compressor', {
-		processorOptions: { channelCount: 2 }
-	  });
+      compressorEffectNode = new AudioWorkletNode(audioCtx, 'compressor', {
+        processorOptions: { channelCount: 2 }
+      });
 
-	  compressorEffectNode.parameters.get('threshold').value = -24;
-	  compressorEffectNode.parameters.get('ratio').value = 4;
-	  compressorEffectNode.parameters.get('attack').value = 8;
-	  compressorEffectNode.parameters.get('release').value = 120;
-	  compressorEffectNode.parameters.get('makeup').value = 6;
-	  compressorEffectNode.parameters.get('mix').value = 100;
-	  console.log("AudioWorkletNode created and connected (compressor-effect-processor)");
+      compressorEffectNode.parameters.get('threshold').value = -24;
+      compressorEffectNode.parameters.get('ratio').value = 4;
+      compressorEffectNode.parameters.get('attack').value = 8;
+      compressorEffectNode.parameters.get('release').value = 120;
+      compressorEffectNode.parameters.get('makeup').value = 6;
+      compressorEffectNode.parameters.get('mix').value = 100;
+      console.log("AudioWorkletNode created and connected (compressor-effect-processor)");
 
-	  reverbEffectNode = new AudioWorkletNode(audioCtx, 'reverb', {
-		outputChannelCount: [2]
-	  });
+      reverbEffectNode = new AudioWorkletNode(audioCtx, 'reverb', {
+        outputChannelCount: [2]
+      });
 
-	  // Exemple de contrôle
-  	  reverbEffectNode.parameters.get('roomSize').setValueAtTime(0.85, audioCtx.currentTime);
-  	  reverbEffectNode.parameters.get('damping').setValueAtTime(0.3, audioCtx.currentTime);
-  	  reverbEffectNode.parameters.get('wet').setValueAtTime(0.4, audioCtx.currentTime);
-  	  reverbEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 5); // freeze après 5s
-	  console.log("AudioWorkletNode created and connected (reverb-effect-processor)");
+      // Exemple de contrôle
+      reverbEffectNode.parameters.get('roomSize').setValueAtTime(0.85, audioCtx.currentTime);
+      reverbEffectNode.parameters.get('damping').setValueAtTime(0.3, audioCtx.currentTime);
+      reverbEffectNode.parameters.get('wet').setValueAtTime(0.4, audioCtx.currentTime);
+      reverbEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 5); // freeze après 5s
+      console.log("AudioWorkletNode created and connected (reverb-effect-processor)");
 
-	  tremoloEffectNode = new AudioWorkletNode(audioCtx, 'tremolo', {
-		  outputChannelCount: [2],           // indispensable
-		  channelCount: 2,                   // force 2 canaux en sortie
-		  channelCountMode: 'explicit',
-		  channelInterpretation: 'speakers'
-	  });
+      tremoloEffectNode = new AudioWorkletNode(audioCtx, 'tremolo', {
+          outputChannelCount: [2],           // indispensable
+          channelCount: 2,                   // force 2 canaux en sortie
+          channelCountMode: 'explicit',
+          channelInterpretation: 'speakers'
+      });
 
-	  // 3. Carré 8 Hz ultra-nerveux (style dub/techno)
-	  tremoloEffectNode.parameters.get('rate').setValueAtTime(8, audioCtx.currentTime);
-	  tremoloEffectNode.parameters.get('shape').setValueAtTime(2, audioCtx.currentTime);
-	  tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.7, audioCtx.currentTime); // adoucit le carré
-	  console.log("AudioWorkletNode created and connected (tremolo-effect-processor)");
+      // 3. Carré 8 Hz ultra-nerveux (style dub/techno)
+      tremoloEffectNode.parameters.get('rate').setValueAtTime(8, audioCtx.currentTime);
+      tremoloEffectNode.parameters.get('shape').setValueAtTime(2, audioCtx.currentTime);
+      tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.7, audioCtx.currentTime); // adoucit le carré
+      console.log("AudioWorkletNode created and connected (tremolo-effect-processor)");
 
-	fftFxEffectNode = new AudioWorkletNode(audioCtx, 'fft-fx');
-	fftFxEffectNode.parameters.get('mode').setValueAtTime(0, audioCtx.currentTime);
-	fftFxEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 2); // pad infini !
+    fftFxEffectNode = new AudioWorkletNode(audioCtx, 'fft-fx');
+    fftFxEffectNode.parameters.get('mode').setValueAtTime(0, audioCtx.currentTime);
+    fftFxEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 2); // pad infini !
 
 console.log("AudioWorkletNode created and connected (fft-fx-effect-processor)");
     } catch (err) {
@@ -676,49 +678,49 @@ On arrive au moment où on peut enfin créer les nœuds nécessaires pour monter
 
 ```javascript
 function initAudioContext2(){
-	try{
-		
-		//We connect the sound's node
-		gainNode = audioCtx.createGain();
-		gainNode.gain.value = (20/100) * (20/100);
-		
-		//sound equalizer
-		hBand = audioCtx.createBiquadFilter();
-		lBand = audioCtx.createBiquadFilter();	
-		lGain = audioCtx.createGain();
-		mGain = audioCtx.createGain();
-		hGain = audioCtx.createGain();
-		
-		//filter
-		filter = audioCtx.createBiquadFilter();
-		
-		//We create a node to analyze as well as a javascript node
-		analyser = audioCtx.createAnalyser();
-			
-		//Creation of oscillators
-		oscillator = audioCtx.createOscillator();
-		oscillator1 = audioCtx.createOscillator();
-		oscillator2 = audioCtx.createOscillator();
-		oscillator0 = audioCtx.createOscillator();
-		
-		oscillator.start(0);
-		oscillator1.start(0);
-		oscillator2.start(0);
-		oscillator0.start(0);
-		
-		var cpt = 0;
-		for (key in tabKeyNotes) {
-			oscillatorTab[cpt] = audioCtx.createOscillator();
-			oscillatorTab[cpt].start(0);
-			cpt++;
-		}
+    try{
+        
+        //We connect the sound's node
+        gainNode = audioCtx.createGain();
+        gainNode.gain.value = (20/100) * (20/100);
+        
+        //sound equalizer
+        hBand = audioCtx.createBiquadFilter();
+        lBand = audioCtx.createBiquadFilter();	
+        lGain = audioCtx.createGain();
+        mGain = audioCtx.createGain();
+        hGain = audioCtx.createGain();
+        
+        //filter
+        filter = audioCtx.createBiquadFilter();
+        
+        //We create a node to analyze as well as a javascript node
+        analyser = audioCtx.createAnalyser();
+            
+        //Creation of oscillators
+        oscillator = audioCtx.createOscillator();
+        oscillator1 = audioCtx.createOscillator();
+        oscillator2 = audioCtx.createOscillator();
+        oscillator0 = audioCtx.createOscillator();
+        
+        oscillator.start(0);
+        oscillator1.start(0);
+        oscillator2.start(0);
+        oscillator0.start(0);
+        
+        var cpt = 0;
+        for (key in tabKeyNotes) {
+            oscillatorTab[cpt] = audioCtx.createOscillator();
+            oscillatorTab[cpt].start(0);
+            cpt++;
+        }
 
-		buidGraph();
-		setDefaultValues();
-		
-	}catch(e){
-		alert('Web Audio API is not supported in this browser');
-	}
+        buidGraph();
+        setDefaultValues();
+        
+    }catch(e){
+        alert('Web Audio API is not supported in this browser');
+    }
 }
 ```
 
@@ -726,49 +728,49 @@ On peut maintenant assembler notre graphe audio : configuration des nœuds d’�
 
 ```javascript
 function buidGraph(){
-		/** PARAM EGALISEUR **/
-		hBand.type = "lowshelf";
-		hBand.frequency.value = bandSplit[0];
-		hBand.gain.value = gainDb;
+        /** PARAM EGALISEUR **/
+        hBand.type = "lowshelf";
+        hBand.frequency.value = bandSplit[0];
+        hBand.gain.value = gainDb;
 
-		lBand.type = "highshelf";
-		lBand.frequency.value = bandSplit[1];
-		lBand.gain.value = gainDb;
-		lBand.connect(lGain);
-		hBand.connect(hGain);
+        lBand.type = "highshelf";
+        lBand.frequency.value = bandSplit[1];
+        lBand.gain.value = gainDb;
+        lBand.connect(lGain);
+        hBand.connect(hGain);
 
-		// Connect the sound sample to its volume node
-		lGain.connect(gainNode);
-		mGain.connect(gainNode);
-		hGain.connect(gainNode);
+        // Connect the sound sample to its volume node
+        lGain.connect(gainNode);
+        mGain.connect(gainNode);
+        hGain.connect(gainNode);
 
-		/** END PARAM EGALISEUR **/
-		gainNode.connect(filter);
-		
-		filter.connect(analyserNode);	
-		analyserNode.connect(analyser);
+        /** END PARAM EGALISEUR **/
+        gainNode.connect(filter);
+        
+        filter.connect(analyserNode);	
+        analyserNode.connect(analyser);
 
-		function draw1() {
-			draw(analyser);
-			requestAnimationFrame(draw1);
-		}
-		draw1();
+        function draw1() {
+            draw(analyser);
+            requestAnimationFrame(draw1);
+        }
+        draw1();
 
-		function draw2() {
-			drawWave(analyser);
-			requestAnimationFrame(draw2);
-		}
-		draw2();
-		
-		analyserNode.connect(audioCtx.destination);	
+        function draw2() {
+            drawWave(analyser);
+            requestAnimationFrame(draw2);
+        }
+        draw2();
+        
+        analyserNode.connect(audioCtx.destination);	
 
-		let frontCanvasTimeline = document.getElementById("spectreTimelineMP3");
-		frontCanvasTimeline.addEventListener("mousedown", function(event) {
-			console.log("mouse click on canvas, let's jump to another position in the song")
-			var mousePos = getMousePos(frontCanvasTimeline, event);
-			// will compute time from mouse pos and start playing from there...
-			jumpTo(mousePos);
-		})
+        let frontCanvasTimeline = document.getElementById("spectreTimelineMP3");
+        frontCanvasTimeline.addEventListener("mousedown", function(event) {
+            console.log("mouse click on canvas, let's jump to another position in the song")
+            var mousePos = getMousePos(frontCanvasTimeline, event);
+            // will compute time from mouse pos and start playing from there...
+            jumpTo(mousePos);
+        })
 }
 ```
 
@@ -782,37 +784,37 @@ Notre graphe étant enfin terminé, notre application est opérationnelle! On re
 
 ```javascript
     if(analyser.frequencyBinCount){
-		frequencyData = new Uint8Array(analyser.frequencyBinCount);
-		analyser.getByteFrequencyData(frequencyData);
-	} 
+        frequencyData = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(frequencyData);
+    } 
 
-	..........
+    ..........
 
-	arrayFreqToOpenGL = frequencyData;
+    arrayFreqToOpenGL = frequencyData;
 ```
 
 Ce code permet de charger un fichier audio (**MP3, MP4, M4A**) via un champs input de type file. Ensuite, on decode le contexte audio et on crée le noeud source, ensuite on connecte ce noeud source à notre graphe audio, on dessine son spectre et enfin on démarre la lecture de la musique via source.start().
 
 ```javascript
 function loadInputSound(element) {
-	
-	loadAudio(element.files[0]);
-	if(isUnlocked) document.getElementById("currentMp3").innerHTML = element.files[0].name;
+    
+    loadAudio(element.files[0]);
+    if(isUnlocked) document.getElementById("currentMp3").innerHTML = element.files[0].name;
 
-	// Method 1: Create a completely new input (recommended)
-	element.type = 'text';  // temporary change
-	element.type = 'file';  // back to file – this clears it
+    // Method 1: Create a completely new input (recommended)
+    element.type = 'text';  // temporary change
+    element.type = 'file';  // back to file – this clears it
 
 }
 
 async function loadAudio(file) {
-	try {
-	  // Load an audio file
-	  // Decode it
-	  audioCtx.decodeAudioData(await file.arrayBuffer(), playBuffer);
-	} catch (err) {
-	  console.error(`Unable to fetch the audio file. Error: ${err.message}`);
-	}
+    try {
+      // Load an audio file
+      // Decode it
+      audioCtx.decodeAudioData(await file.arrayBuffer(), playBuffer);
+    } catch (err) {
+      console.error(`Unable to fetch the audio file. Error: ${err.message}`);
+    }
 }
 
 soundMP3_is_loaded = false;
@@ -822,46 +824,46 @@ var source;
 
 function playBuffer(buffer) {
 
-	if(!isUnlocked) {
-		openPopin();
-		return;
-	}
-	
-	safeDisconnect(source);
-	source = audioCtx.createBufferSource();
-	source.buffer = buffer;
-	mp3Buffer = buffer;
-	drawTrack(buffer,1,0);
-	source.connect(lBand);
-	source.connect(hBand);
-	source.connect(mGain);
-	source.connect(gainNode);
+    if(!isUnlocked) {
+        openPopin();
+        return;
+    }
+    
+    safeDisconnect(source);
+    source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    mp3Buffer = buffer;
+    drawTrack(buffer,1,0);
+    source.connect(lBand);
+    source.connect(hBand);
+    source.connect(mGain);
+    source.connect(gainNode);
 
-	source.loop = true;
-	source.start();
-	paused = false;
-	restartMp3IconColor();
+    source.loop = true;
+    source.start();
+    paused = false;
+    restartMp3IconColor();
 
-	lastTime = audioCtx.currentTime;
+    lastTime = audioCtx.currentTime;
 
-	soundMP3_is_loaded = true;
-	elapsedTimeSinceStart = 0;
-	animateTime();
+    soundMP3_is_loaded = true;
+    elapsedTimeSinceStart = 0;
+    animateTime();
 
-	// Optional: configure
-	source.loop = true;
+    // Optional: configure
+    source.loop = true;
 
-	// Add ended handler (optional but recommended)
-	source.onended = () => {
-		source.disconnect(); // clean up
-		source.buffer = null; // aide le garbage collector
-	};
+    // Add ended handler (optional but recommended)
+    source.onended = () => {
+        source.disconnect(); // clean up
+        source.buffer = null; // aide le garbage collector
+    };
 }
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### Code du synthétiseur
+#### Synthesizer implementation
 <a id="code-synthe"></a>
 
 Quant au synthétiseur intégré, il est entièrement généré par du code JavaScript.
@@ -899,7 +901,7 @@ Ensuite, une fois que le synthétiseur est créé au niveau de la vue (interface
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### Code des mélodies
+#### Melodies Implementation
 <a id="code-melody"></a>
 
 Les mélodies, c’est tout simplement une **série de notes jouées les unes après les autres** à un certain rythme. Dans le code, on utilise juste des tableaux qui listent les notes, et on les joue au bon tempo grâce à des **setTimeout**.
@@ -1015,7 +1017,7 @@ Et voici la partie du code qui nous permet de lancer cette mélodie tout en suiv
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### Code des paramètres/effets audio
+#### Audio Parameters and Effects implementation
 <a id="code-audio-params"></a>
 
 Pour les paramètres, certains sont **gérés nativement** par les composants de l’API Web Audio. Par exemple, sans le cas de volume, il est contrôlé directement par le nœud de gain : un input utilisateur permet de modifier sa valeur en temps réel, la mise à jour s’effectuant dès que la valeur de l’input change en exécutant cette fonction.
@@ -1170,7 +1172,7 @@ Dans l’exemple de l’effet Noise, nous avons trois paramètres : le type, le 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Points à améliorer
+## Potential improvements
 <a id="improvment"></a>
 
 Voici une liste de points à améliorer pour optimiser cette application :  
@@ -1202,7 +1204,7 @@ Informations de contact:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Remerciements
+## Acknowledgments
 <a id="acknowledgments"></a>
 
 Tout d’abord, je tiens à remercier mon ami **Klem**, qui m’a initié au WebGL il y a plusieurs années. Sans lui, l’idée de combiner WebGL et Web Audio ne me serait jamais venue à l’esprit.  

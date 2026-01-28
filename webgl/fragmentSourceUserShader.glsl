@@ -1214,9 +1214,9 @@ void mainImageFunBlackHole( out vec4 fragColor, in vec2 fragCoord )
     #ifdef USEDISC
     //col += disc*vec3(1,.8,.5)*1.5;
 	if(fragColorTexture.x>=0.0){
-		vec3 pattern = disc*((0.7+abs(mix(0.01, 0.7,fragColorTexture.x))))*vec3(.9,.8,.9);
+		vec3 pattern = disc*((0.7+abs(mix(0.01, 0.7,fragColorTexture.x))))*vec3(.5,.4,.5);
 		vec3 aa = fwidth(pattern);
-		vec3 smoothed = mix(-aa, aa, pattern);
+		vec3 smoothed = smoothstep(-aa, aa, pattern);
 		col += smoothed;
 	}
     #endif
