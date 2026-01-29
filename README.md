@@ -15,6 +15,10 @@
   </p>
 </div>
 
+
+[![Language: English](https://img.shields.io/badge/Language-English-blue)](README.md)
+
+
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Sommaire</summary>
