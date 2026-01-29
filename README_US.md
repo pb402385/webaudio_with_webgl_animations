@@ -16,7 +16,7 @@
 </div>
 
 
-[![Français](https://img.shields.io/badge/lang-fr-F38181?style=for-the-badge&logo=flag&logoColor=white)](./README.md)
+[![Language: French](https://img.shields.io/badge/Language-French-blue)](./README.md)
 
 
 <!-- TABLE OF CONTENTS -->

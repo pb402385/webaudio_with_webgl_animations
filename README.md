@@ -16,7 +16,7 @@
 </div>
 
 
-[![Language: English](https://img.shields.io/badge/Language-English-blue)](README.md)
+[![Language: English](https://img.shields.io/badge/Language-English-blue)](README_US.md)
 
 
 <!-- TABLE OF CONTENTS -->
