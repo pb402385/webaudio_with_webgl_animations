@@ -15,9 +15,9 @@
   </p>
 </div>
 
-<div>
-    [![Français](https://img.shields.io/badge/lang-fr-F38181?style=for-the-badge&logo=flag&logoColor=white)](/README.md)
-</div>
+
+[![Français](https://img.shields.io/badge/lang-fr-F38181?style=for-the-badge&logo=flag&logoColor=white)](./README.md)
+
 
 <!-- TABLE OF CONTENTS -->
 <details>
