@@ -85,12 +85,12 @@
 
 Ce projet est un **lecteur audio MP3/MP4** avec des **visualisations animées** spectaculaires, codées en JavaScript et en shaders **GLSL** (WebGL). 
 
-Il intègre également un **piano virtuel (synthétiseur)** qui permet de jouer des notes en direct avec le clavier ou la souris. Comme jouer précisément n'est pas toujours évident, j'ai préenregistré deux mélodies célèbres, reproduites fidèlement d'après leurs partitions :
+Il intègre également un **piano virtuel (synthétiseur)** qui permet de jouer des notes en direct avec le clavier ou la souris. Comme jouer précisément n'est pas toujours évident, j'ai préenregistré deux mélodies célèbres, reproduites fidèlement d'après leurs partitions:
 
 - **The Imperial March** (Thème de Dark Vador) – composé par John Williams
 - **La marche de Sacco et Vanzetti** (du film *Sacco et Vanzetti*) – composé par Ennio Morricone
 
-Les animations sont **réactives à l'audio** : elles pulsent, ondulent et évoluent en temps réel en fonction du flux sonore. Elles sont entièrement paramétrables (couleurs, intensité, formes, etc.).
+Les animations sont **réactives à l'audio**: elles pulsent, ondulent et évoluent en temps réel en fonction du flux sonore. Elles sont entièrement paramétrables (couleurs, intensité, formes, etc.).
 
 De plus, le son peut être modifié avec divers **effets audio** en temps réel (filtres, réverb, distortion, etc.) grâce à l'API Web Audio.
 
@@ -142,8 +142,8 @@ Vous arrivez sur la page de l'application
 
 L'application utilise la **Web Audio API** pour analyser en temps réel le flux audio, qu'il provienne d'un fichier chargé (MP3/MP4/M4A) ou du **synthétiseur/piano intégré**.
 
-Ce flux est analysé pour extraire diverses informations (fréquences, amplitude, rythme, etc.), qui servent à piloter à la fois :
-- Des **effets audio** modifiables en direct : filtres (passe-bas, passe-haut...), égaliseur, réverbération, distortion, etc.
+Ce flux est analysé pour extraire diverses informations (fréquences, amplitude, rythme, etc.), qui servent à piloter à la fois:
+- Des **effets audio** modifiables en direct: filtres (passe-bas, passe-haut...), égaliseur, réverbération, distortion, etc.
 - De **magnifiques visualisations 2D/3D** rendues avec **WebGL** et des shaders **GLSL**.
 
 Les données audio sont converties en une texture dynamique qui alimente les shaders, permettant aux animations de réagir précisément à la musique.
@@ -235,17 +235,17 @@ Voici les différents paramètres disponibles pour la partie vidéo
     <img src="screenshots/video_params.png" alt="video_params.png" />
 </div>
 
-**Paramètres disponibles :**
+**Paramètres disponibles:**
 
 1. **Base Shape** (*): Permet de sélectionner la forme géométrique de base. **Options disponibles**: Carré, Petit carré, Tore, Petit tore, Hexagone, Cône et Cercle.
 
-2. **Animation** (*): Définit le mode de rendu de la forme : en **3D** ou en **2D**. Si l’option **NONE** est sélectionnée, seule la texture 2D générée en temps réel par le son est affichée (image générée par le son en temps réel qui permet d'altérer visuellement les animations)
+2. **Animation** (*): Définit le mode de rendu de la forme: en **3D** ou en **2D**. Si l’option **NONE** est sélectionnée, seule la texture 2D générée en temps réel par le son est affichée (image générée par le son en temps réel qui permet d'altérer visuellement les animations)
 
 3. **Ondulation** (*): Contrôle l’intensité de la déformation de la forme géométrique en fonction du signal audio. Plus la valeur est élevée, plus la déformation est prononcée.
 
 4. **Single/infinity** (*): Choisit entre l’affichage d’une unique forme ou la duplication infinie de celle-ci dans l’espace, grâce à une répétition de la matrice.
 
-5. **Effect**: Les effets marqués (SHAPE) influencent directement la géométrie de la forme (*) en la déformant légèrement. Les autres effets proposent des animations indépendantes de la forme de base : leur apparence varie en fonction de la texture 2D, ce qui permet d’enrichir et de diversifier le rendu visuel global.
+5. **Effect**: Les effets marqués (SHAPE) influencent directement la géométrie de la forme (*) en la déformant légèrement. Les autres effets proposent des animations indépendantes de la forme de base: leur apparence varie en fonction de la texture 2D, ce qui permet d’enrichir et de diversifier le rendu visuel global.
 
 6. **Type**: Remplace le paramètre Ondulation lorsque l'on n'est pas dans le cas d'une forme (*), il permet de modifier l'animation 3D ce qui la rend un peu paramétrable dans le but de produire des rendus visuels légèrement différents
 
@@ -278,7 +278,7 @@ Celui-ci nous ouvre une pop-in listant toutes les animations et nous permettant 
 
 **Le synthétiseur intégré** permet de générer le flux audio en temps réel. Il repose sur des oscillateurs fournis par l’API Web Audio, qui nous permettent de produire toutes les notes souhaitées. Il est possible de modifier le **type d’onde** (Triangle, Sine, Square ou Sawtooth) pour altérer sensiblement la timbre et la tonalité du son.
 
-Voici une courte vidéo de présentation :
+Voici une courte vidéo de présentation:
 
 //TODO vidéo demo synthé
 [![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
@@ -286,9 +286,9 @@ Voici une courte vidéo de présentation :
 #### Les mélodies ou l'upload audio
 <a id="melody"></a>
 
-Les mélodies préprogrammées : il s’agit de séquences musicales simulées, comme si une partition était lue et interprétée en direct par le synthétiseur, sans que vous ayez à jouer vous-même.
+Les mélodies préprogrammées: il s’agit de séquences musicales simulées, comme si une partition était lue et interprétée en direct par le synthétiseur, sans que vous ayez à jouer vous-même.
 
-Deux mélodies sont actuellement disponibles :  
+Deux mélodies sont actuellement disponibles:  
 - La Marche impériale (de Star Wars)  
 - La marche de Sacco et Vanzetti
 
@@ -303,7 +303,7 @@ Sinon on peut charger directement un fichier audio aux formats MP3, MP4 ou M4A.
     <img src="screenshots/upload.png" alt="upload.png" />
 </div>
 
-Une fois le fichier audio chargé, les canvas s’animent automatiquement :  Les deux premiers affichent des visualisations en temps réel du son (le premier représente l’amplitude des fréquences, tandis que le second montre la forme temporelle de l’onde elle-même). 
+Une fois le fichier audio chargé, les canvas s’animent automatiquement:  Les deux premiers affichent des visualisations en temps réel du son (le premier représente l’amplitude des fréquences, tandis que le second montre la forme temporelle de l’onde elle-même). 
 
 Le graphique du bas présente le spectre audio complet du fichier uploadé (répartition des fréquences).
 
@@ -345,8 +345,6 @@ Les paramètres suivants sont disponibles:
     - **TREMOLO** (*): le filtre produit un effet audio qui consiste à moduler périodiquement le volume (amplitude) d’un signal sonore, créant une variation régulière de loudness (fort → faible → fort → faible…).
 
     - **FFT FX** (*): le filtre produit un effet audio basé sur la Fast Fourier Transform (Transformation de Fourier Rapide), une algorithmique mathématique qui décompose un signal audio temporel en ses composantes fréquentielles (spectre de fréquences)
-
-
 
 5. **Speed Melody**: permet d'ajuster la vitesse des 2 mélodies pré enregistrées (**valeur comprise entre 0.5x et 1.5x**)
 6. **Type**: type de l'onde jouée par l'oscillateur ( **Triangle**, **Sine**, **Square**, **Sawtooth** ) ne concerne que les melodies et le synthétiseur intégré
@@ -402,7 +400,7 @@ Détails des paramètrages disponibles par effet:
 
 Le fonctionnement principal se situe dans le fichier **webgl.js**
 
-Le code est initialisé en chargeant la partie GLSL au début, tout objet 3D est traité en deux grandes étapes principales pour les shaders : les vertex shaders et les fragments shaders. Ce sont les deux programmes écrits en GLSL qui tournent directement sur la carte graphique (GPU).
+Le code est initialisé en chargeant la partie GLSL au début, tout objet 3D est traité en deux grandes étapes principales pour les shaders: les vertex shaders et les fragments shaders. Ce sont les deux programmes écrits en GLSL qui tournent directement sur la carte graphique (GPU).
 
 ```javascript
 async function loadShaders() {
@@ -474,7 +472,7 @@ Les interactions de la souris avec le canvas d’animation 3D (clics, déplaceme
 
 Je vais maintenant expliquer comment, en pratique, ajouter une nouvelle animation GLSL au projet, et surtout comment récupérer dans le code du shader la texture 2D générée à partir du son. Cette texture nous permettra de modifier les vecteurs (positions, déplacements, déformations, etc.) en fonction des variations du flux audio, créant ainsi des animations réactives au rythme et aux fréquences.
 
-Pour commencer, la première étape consiste à **récupérer cette texture 2D**, qui est générée en temps réel à partir du tableau de fréquences issu de l’analyse audio :
+Pour commencer, la première étape consiste à **récupérer cette texture 2D**, qui est générée en temps réel à partir du tableau de fréquences issu de l’analyse audio:
 
 ```glsl
 vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
@@ -496,7 +494,7 @@ On peut également utiliser la fonction **smoothstep** en GLSL (utilisée dans T
     fragColor = smoothstep(color, vec3(0.5), fragColorTexture.xyz);
 ```
 
-Attention toutefois au **problème d’anti-aliasing** : il peut parfois provoquer des artefacts sur la partie gauche de l’animation ou générer des bords en escalier (staircasing) très visibles et peu esthétiques, surtout après l’utilisation d’un **smoothstep**.
+Attention toutefois au **problème d’anti-aliasing**: il peut parfois provoquer des artefacts sur la partie gauche de l’animation ou générer des bords en escalier (staircasing) très visibles et peu esthétiques, surtout après l’utilisation d’un **smoothstep**.
 
 Pas de panique, ce problème est facilement contournable avec la solution suivante !
 
@@ -726,7 +724,7 @@ function initAudioContext2(){
 }
 ```
 
-On peut maintenant assembler notre graphe audio : configuration des nœuds d’égaliseur, de gain (volume), de filtre et d’analyse, lancement des deux méthodes permettant de dessiner les deux courbes d'analyse de l'audio en temps réel et enfin, connexion finale au nœud de destination.
+On peut maintenant assembler notre graphe audio: configuration des nœuds d’égaliseur, de gain (volume), de filtre et d’analyse, lancement des deux méthodes permettant de dessiner les deux courbes d'analyse de l'audio en temps réel et enfin, connexion finale au nœud de destination.
 
 ```javascript
 function buidGraph(){
@@ -1022,7 +1020,7 @@ Et voici la partie du code qui nous permet de lancer cette mélodie tout en suiv
 #### Code des paramètres/effets audio
 <a id="code-audio-params"></a>
 
-Pour les paramètres, certains sont **gérés nativement** par les composants de l’API Web Audio. Par exemple, sans le cas de volume, il est contrôlé directement par le nœud de gain : un input utilisateur permet de modifier sa valeur en temps réel, la mise à jour s’effectuant dès que la valeur de l’input change en exécutant cette fonction.
+Pour les paramètres, certains sont **gérés nativement** par les composants de l’API Web Audio. Par exemple, sans le cas de volume, il est contrôlé directement par le nœud de gain: un input utilisateur permet de modifier sa valeur en temps réel, la mise à jour s’effectuant dès que la valeur de l’input change en exécutant cette fonction.
 
 ```javascript
     //Manage volume
@@ -1163,12 +1161,12 @@ registerProcessor('noise', NoiseProcessor);
 
 Comme vous pouvez le voir, on crée une classe NoiseProcessor qui extends AudioWorkletProcessor, au début on a une méthode get **parameterDescriptors()** qui permet de déclarer des paramètres automatisables personnalisés (AudioParam) pour notre AudioWorkletNode.
 
-Ensuite, nous disposons de la fonction **process(inputs, outputs, parameters)**, qui est responsable du traitement du son en temps réel, bloc par bloc (généralement 128 échantillons). Cette fonction reçoit trois paramètres :  
-- **inputs** : un tableau contenant les entrées audio ;  
-- **outputs** : un tableau contenant les sorties audio (c’est ici que nous écrivons le signal traité) ;  
-- **parameters** : un objet regroupant les valeurs des AudioParam personnalisés, tels que ceux déclarés précédemment via parameterDescriptors().
+Ensuite, nous disposons de la fonction **process(inputs, outputs, parameters)**, qui est responsable du traitement du son en temps réel, bloc par bloc (généralement 128 échantillons). Cette fonction reçoit trois paramètres:  
+- **inputs**: un tableau contenant les entrées audio ;  
+- **outputs**: un tableau contenant les sorties audio (c’est ici que nous écrivons le signal traité) ;  
+- **parameters**: un objet regroupant les valeurs des AudioParam personnalisés, tels que ceux déclarés précédemment via parameterDescriptors().
 
-Dans l’exemple de l’effet Noise, nous avons trois paramètres : le type, le cutoff et le gain. Nous codons ensuite l’effet proprement dit et, lorsque plusieurs paramètres sont présents, nous utilisons souvent un switch-case pour gérer les différents cas selon la valeur active.
+Dans l’exemple de l’effet Noise, nous avons trois paramètres: le type, le cutoff et le gain. Nous codons ensuite l’effet proprement dit et, lorsque plusieurs paramètres sont présents, nous utilisons souvent un switch-case pour gérer les différents cas selon la valeur active.
 
 
 
@@ -1177,7 +1175,7 @@ Dans l’exemple de l’effet Noise, nous avons trois paramètres : le type, le 
 ## Points à améliorer
 <a id="improvment"></a>
 
-Voici une liste de points à améliorer pour optimiser cette application :  
+Voici une liste de points à améliorer pour optimiser cette application:  
 
 - Une meilleure gestion de la mémoire RAM.  
 - Supprimer les nœuds oscillateurs individuels du synthétiseur intégré et les remplacer par un AudioWorkletNode dédié, ce qui permettra de jouer plusieurs notes simultanément (polyphonie) sans dégrader la qualité du son en sortie.
@@ -1188,7 +1186,7 @@ Voici une liste de points à améliorer pour optimiser cette application :
 ## License
 <a id="license"></a>
 
-Le projet est entièrement **open source et gratuit**. Aucune restriction : Simplement du code libre au service de tous, offert à la communauté.
+Le projet est entièrement **open source et gratuit**. Aucune restriction: Simplement du code libre au service de tous, offert à la communauté.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

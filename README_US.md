@@ -247,32 +247,34 @@ Here are the different settings available for the video section
 
 **Available settings :**
 
-1. **Base Shape** (*): Permet de sélectionner la forme géométrique de base. **Options disponibles**: Carré, Petit carré, Tore, Petit tore, Hexagone, Cône et Cercle.
+1. **Base Shape** (*): Allows you to select the basic geometric shape. **Available options:** Square, Small square, Torus, Small torus, Hexagon, Cone, and Circle.
 
-2. **Animation** (*): Définit le mode de rendu de la forme : en **3D** ou en **2D**. Si l’option **NONE** est sélectionnée, seule la texture 2D générée en temps réel par le son est affichée (image générée par le son en temps réel qui permet d'altérer visuellement les animations)
+2. **Animation** (*): Defines the rendering mode of the shape: **3D** or **2D**. If **NONE** option is selected, only the 2D texture generated in real time by the sound is displayed (a sound-reactive 2D image that can visually alter the animations).
 
-3. **Ondulation** (*): Contrôle l’intensité de la déformation de la forme géométrique en fonction du signal audio. Plus la valeur est élevée, plus la déformation est prononcée.
+3. **Ondulation** (*): Controls the intensity of the geometric shape’s deformation based on the audio signal.The higher the value, the more pronounced the deformation.
 
-4. **Single/infinity** (*): Choisit entre l’affichage d’une unique forme ou la duplication infinie de celle-ci dans l’espace, grâce à une répétition de la matrice.
+4. **Single/infinity** (*): Chooses between displaying a single shape or an infinite duplication of it in space, created through matrix repetition.
 
-5. **Effect**: Les effets marqués (SHAPE) influencent directement la géométrie de la forme (*) en la déformant légèrement. Les autres effets proposent des animations indépendantes de la forme de base : leur apparence varie en fonction de la texture 2D, ce qui permet d’enrichir et de diversifier le rendu visuel global.
+5. **Effect**: Effects marked as (SHAPE) directly influence the geometry of the base shape (*) by slightly deforming it. The other effects are independent animations that do not modify the base shape: their appearance reacts to the 2D texture, which helps enrich and diversify the overall visual result.
 
-6. **Type**: Remplace le paramètre Ondulation lorsque l'on n'est pas dans le cas d'une forme (*), il permet de modifier l'animation 3D ce qui la rend un peu paramétrable dans le but de produire des rendus visuels légèrement différents
+6. **Type**: Replaces the “Ondulation” parameter when not using a geometric shape (*). It allows you to modify the 3D animation slightly, giving a bit of control to produce subtly different visual renderings.
 
-(*) Indique que cela ne concerne uniquement que les formes géométriques (SHAPE)
 
-Voici une courte vidéo présentant les différentes animations possibles dans leur état de base, sans l’influence de la texture 2D générée par le son.
+(*) Indicates that this parameter only applies to geometric shapes (SHAPE mode)
+
+Here is a short video showing the different possible animations in their default state, without any influence from the real-time 2D sound-generated texture.
 
 https://github.com/user-attachments/assets/ea8c63dd-818e-44c1-a017-e59964816623
 
+You can trigger the generation of random animations by clicking the button located right next to the “Effect” title in the video menu (see screenshot)
 
-On peut lancer une génération d'animations aléatoires en cliquant sur le bouton juste à côté du titre effet dans le menu vidéo (voir capture) 
+
 
 <div align="center">
     <img src="screenshots/effect_video_webgl.png" alt="effect_video_webgl.png" />
 </div>
 
-Celui-ci nous ouvre une pop-in listant toutes les animations et nous permettant de les sélectionner afin qu'elles soient dans une liste de lecture
+Clicking this opens a pop-in window displaying the full list of animations. You can then select the ones you want to add to your playlist.
 
 <div align="center">
     <img src="screenshots/video_random_animation.png" alt="video_random_animation.png" />
@@ -286,9 +288,9 @@ Celui-ci nous ouvre une pop-in listant toutes les animations et nous permettant 
 #### The onboard synthesizer
 <a id="synthe"></a>
 
-**Le synthétiseur intégré** permet de générer le flux audio en temps réel. Il repose sur des oscillateurs fournis par l’API Web Audio, qui nous permettent de produire toutes les notes souhaitées. Il est possible de modifier le **type d’onde** (Triangle, Sine, Square ou Sawtooth) pour altérer sensiblement la timbre et la tonalité du son.
+**The onboard synthesizer** generates the audio stream in real time. It is based on oscillators provided by the Web Audio API, allowing us to produce any desired note. You can change the **waveform type** (Triangle, Sine, Square, or Sawtooth) to significantly alter the timbre and overall tone of the sound.
 
-Voici une courte vidéo de présentation :
+Here is a short presentation video:
 
 //TODO vidéo demo synthé
 [![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
@@ -296,26 +298,28 @@ Voici une courte vidéo de présentation :
 #### The melodies or the audio upload
 <a id="melody"></a>
 
-Les mélodies préprogrammées : il s’agit de séquences musicales simulées, comme si une partition était lue et interprétée en direct par le synthétiseur, sans que vous ayez à jouer vous-même.
+Pre-programmed melodies: these are simulated musical sequences, as if a score were being read and performed live by the synthesizer, without you having to play anything yourself.
 
-Deux mélodies sont actuellement disponibles :  
-- La Marche impériale (de Star Wars)  
-- La marche de Sacco et Vanzetti
+Two melodies are currently available:  
+- The Imperial March (from Star Wars)  
+- The Sacco and Vanzetti March
 
 
 <div align="center">
     <img src="screenshots/melodies_boutons.png" alt="melodies_boutons.png" />
 </div>
 
-Sinon on peut charger directement un fichier audio aux formats MP3, MP4 ou M4A.
+Alternatively, you can directly load an audio file in MP3, MP4, or M4A format.
 
 <div align="center">
     <img src="screenshots/upload.png" alt="upload.png" />
 </div>
 
-Une fois le fichier audio chargé, les canvas s’animent automatiquement :  Les deux premiers affichent des visualisations en temps réel du son (le premier représente l’amplitude des fréquences, tandis que le second montre la forme temporelle de l’onde elle-même). 
+Once an audio file is loaded, the canvases automatically come to life:  The first two display real-time sound visualisations. The first one represents the amplitude of frequencies (frequency-domain view), the second shows the temporal waveform itself (time-domain view).
 
-Le graphique du bas présente le spectre audio complet du fichier uploadé (répartition des fréquences).
+The bottom graph displays the complete audio spectrum of the uploaded file (full frequency distribution).
+
+
 
 <div align="center">
     <img src="screenshots/canvas_audio.png" alt="canvas_audio.png" />
@@ -331,76 +335,87 @@ Le graphique du bas présente le spectre audio complet du fichier uploadé (rép
     <img src="screenshots/audio_params.png" alt="audio_params.png" />
 </div>
 
-Les paramètres suivants sont disponibles:
+The following parameters are available:
 
-1. **Volume**: permet de monter ou diminuer le volume du son (**valeur comprise entre 0 et 100%**)
-2. **Equalizer**: permet de paramétrer manuellement la valeur des fréquences autorisées (high,mid et low) (**valeur comprise entre 0 et 100%** pour chaque type)
-3. **Filtre**: permet de choisir le filtre utilisé, il est associé à une fréquence qui peut être modifiée (les différents filtres sont: **Low Pass** (120 Hz), **High Pass** (120 Hz), **Band Pass** (800 Hz), **Low Shelf** (180 Hz), **High Shelf** (6000 Hz), **Peaking** (1000 Hz), **Notch** (500 Hz) et **All Pass** (500 Hz))
-4. **Effects**: permet d'activer 1 effet sur le son parmi la liste suivante: (ceux ayant un astérisque peuvent être paramétrés)
+1. **Volume**: Allows you to increase or decrease the sound volume (**value between 0 and 100%**)
+2. **Equalizer**: Lets you manually adjust the levels of the allowed frequencies (high, mid, and low) (**value between 0 and 100%** for each band)
+3. **Filtre**:  Lets you choose the filter type, each associated with a characteristic frequency that can be adjusted. (Available filter types: **Low Pass** (120 Hz), **High Pass** (120 Hz), **Band Pass** (800 Hz), **Low Shelf** (180 Hz), **High Shelf** (6000 Hz), **Peaking** (1000 Hz), **Notch** (500 Hz) and **All Pass** (500 Hz))
+4. **Effects**: Allows you to activate one effect from the following list (those marked with * can be further customized):
 
-    - **MOOG**: le filtre produit un son "crémeux" (creamy), gras et musical (utile avec le Le synthétiseur intégré ou certaines musique utilisant des synthétiseurs).
+    - **MOOG**: Produces a creamy, fat, and musical filtered sound (especially effective with the built-in synthesizer or synth-heavy tracks).
 
-    - **NOISE** (*): le filtre produit l'ajout intentionnel d’un signal de bruit (noise) pour créer une texture sonore, enrichir un son ou produire un effet artistique.
+    - **NOISE** (*): Intentionally adds a noise signal to create texture, enrich the sound, or achieve an artistic effect. 
 
-    - **PITCH** (*): le filtre modifie le son qui devient plus aigu (pitch plus haut) ou plus grave (pitch plus bas) tout en gardant exactement la même longueur.
+    - **PITCH** (*): Shifts the pitch up (higher) or down (lower) while preserving the exact duration of the sound.
 
-    - **BIT CRUSHER** (*): le filtre produit un effet audio numérique qui simule la dégradation sonore d’un signal audio en réduisant volontairement sa qualité, comme le faisaient les vieux équipements numériques à faible résolution (consoles 8-bit, samplers anciens, etc.).
+    - **BIT CRUSHER** (*): Simulates digital audio degradation by intentionally reducing bit depth and sample rate, mimicking old 8-bit consoles, vintage samplers, etc.
 
-    - **SIMPLE LOWPASS**: le filtre produit un effet audio qui laisse passer les basses fréquences (les graves) tout en atténuant ou en coupant les hautes fréquences (les aigus).
+    - **SIMPLE LOWPASS**: Lets low frequencies pass while attenuating or cutting high frequencies.  
 
-    - **COMPRESSOR** (*): le filtre produit un effet audio qui réduit automatiquement la dynamique d’un signal audio, c’est-à-dire l’écart entre les parties les plus faibles et les plus fortes.
+    - **COMPRESSOR** (*): Automatically reduces the dynamic range — the difference between the quietest and loudest parts.
 
-    - **REVERB**: le filtre produit un effet audio qui simule la résonance naturelle d’un espace acoustique (comme une pièce, une salle, une cathédrale, une grotte, etc.).
+    - **REVERB**: Simulates the natural acoustic resonance of a physical space (room, hall, cathedral, cave, etc.). 
 
-    - **TREMOLO** (*): le filtre produit un effet audio qui consiste à moduler périodiquement le volume (amplitude) d’un signal sonore, créant une variation régulière de loudness (fort → faible → fort → faible…).
+    - **TREMOLO** (*): Periodically modulates the volume (amplitude), creating a regular loud–quiet–loud–quiet pulsing effect.  
 
-    - **FFT FX** (*): le filtre produit un effet audio basé sur la Fast Fourier Transform (Transformation de Fourier Rapide), une algorithmique mathématique qui décompose un signal audio temporel en ses composantes fréquentielles (spectre de fréquences)
+    - **FFT FX** (*): Uses Fast Fourier Transform (FFT) algorithms to manipulate the frequency spectrum of the audio.
 
+5. **Speed Melody**: Adjusts the playback speed of the two pre-recorded melodies (**range: 0.5× to 1.5×**)
+6. **Type**: Selects the waveform type used by the oscillator (**Triangle**, **Sine**, **Square**, **Sawtooth**). Only applies to the pre-programmed melodies and the built-in synthesizer.
 
+Advanced effect parameters:
 
-5. **Speed Melody**: permet d'ajuster la vitesse des 2 mélodies pré enregistrées (**valeur comprise entre 0.5x et 1.5x**)
-6. **Type**: type de l'onde jouée par l'oscillateur ( **Triangle**, **Sine**, **Square**, **Sawtooth** ) ne concerne que les melodies et le synthétiseur intégré
-
-Paramétrage avancé des effets:
 <br/>
 <div align="center">
     <img src="screenshots/audio_effets_params.png" alt="audio_effets_params.png" />
 </div>
 <br/>
-Détails des paramètrages disponibles par effet:
+Available settings per effect:
 
-- **NOISE**: 4 types de bruit ajoutés
-    * Bruit blanc - fortes pluies, télévision brouillée
-    * Bruit rose - vent, cascade, méditation
-    * Bruit brun - tonnerre lointain, mer agitée
-    * Bruit bleu - un jet d'air, un sifflement
+- **NOISE**: 4 noise types:
+    * White noise – heavy rain, detuned TV static
+    * Pink noise – wind, waterfalls, meditation / sleep sounds
+    * Brown noise – distant thunder, stormy sea
+    * Blue noise – high-pressure air jet, piercing his
 
-- **PITCH**: 4 effets possibles:
-    * Octave supérieure
-    * Octave inférieure
-    * Démon / robot
-    * Choeur léger
 
-- **BIT CRUSHER**: 2 effets possibles:
-    * Super lisse sans fermeture
-    * Effet lo-fi extrême
 
-- **COMPRESSOR**: 5 effets possibles:
-    * Défaut
-    * Nivellement doux
-    * Effet de glue bus de groupe
+- **PITCH**: 4 pitch-shift styles:
+    * Octave up
+    * Octave down
+    * Demon / robot voice
+    * Light choir
+
+
+
+- **BIT CRUSHER**: 2 styles:
+    * Super smooth (no hard aliasing)
+    * Extreme lo-fi crunch
+
+
+
+- **COMPRESSOR**: 5 presets:
+    * Default
+    * Gentle leveling
+    * Bus glue / group glue
     * Drum squash
-    * Limiteur transparent
+    * Transparent limiter
 
-- **TREMOLO**: 3 effets possibles:
-    * Défaut
-    * Panoramique automatique large et lent (0,33 Hz)
-    * Onde carrée ultra-nerveuse de 8 Hz (style dub/techno)
 
-- **FFT FX**: 3 effets possibles:
-    * Gel spectral
-    * Scintillement / Flou spectral
-    * Modificateur de hauteur ±2 octaves préservant les formants
+
+- **TREMOLO**: 3 styles:
+    * Default
+    * Wide & slow auto-panning (0.33 Hz)
+    * Ultra-nervous 8 Hz square-wave tremolo (dub / techno vibe)
+
+
+
+- **FFT FX**: 3 styles:
+    * Spectral freeze
+    * Spectral shimmer / blur
+    * Formant-preserving pitch shifter ±2 octaves
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -410,9 +425,9 @@ Détails des paramètrages disponibles par effet:
 ### Vidéo Section
 <a id="code-video"></a>
 
-Le fonctionnement principal se situe dans le fichier **webgl.js**
+The core functionality is located in the file **webgl.js**
 
-Le code est initialisé en chargeant la partie GLSL au début, tout objet 3D est traité en deux grandes étapes principales pour les shaders : les vertex shaders et les fragments shaders. Ce sont les deux programmes écrits en GLSL qui tournent directement sur la carte graphique (GPU).
+The code is initialized by loading the GLSL part at the very beginning. Every 3D object is processed in two main stages for the shaders: vertex shaders and fragment shaders. These are the two programs written in GLSL that run directly on the graphics card (GPU).
 
 ```javascript
 async function loadShaders() {
@@ -422,9 +437,9 @@ async function loadShaders() {
 }
 ```
 
-Le fichier **fragmentSource.glsl** contient la fonction mainImage qui sera éxécutée pour afficher notre animation 3D. Celui-ci importera en son sein le fichier  **fragmentSourceUserShader** qui contient le code de toutes les animations, celle que l'on aura sélectionné viendra alors surcharger le code de la fonction mainImage
+The file **fragmentSource.glsl** contains the mainImage function, which is executed to render our 3D animation. This file imports **fragmentSourceUserShader**, which contains the code for all available animations. The animation selected by the user will then override / replace the content of the mainImage function.
 
-Le chargement des paramètres nécessaires à l’animation WebGL, ainsi que du tableau de fréquences issu de l’analyse audio en temps réel, s’effectue à ce niveau du code.
+Loading the parameters required for the WebGL animation — as well as the real-time audio frequency array coming from the audio analyser — takes place at this level in the code.
 
 ```javascript
     dataTex = new THREE.DataTexture(arrayFreqToOpenGL, side, side, THREE.RGBAFormat);
@@ -442,7 +457,7 @@ Le chargement des paramètres nécessaires à l’animation WebGL, ainsi que du 
     }
 ```
 
-Les interactions de la souris avec le canvas d’animation 3D (clics, déplacements, zoom, etc.) sont gérées par des fonctions situées dans le fichier webgl.js. Ce fichier est l’endroit idéal pour ajouter de nouvelles interactions ou modifier le comportement existant.
+Mouse interactions with the 3D animation canvas (clicks, drags, zoom, etc.) are handled by functions located in the webgl.js file. This file is the ideal place to add new interactions or modify existing behavior.
 
 ```javascript
     //mouse effect management
