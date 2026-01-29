@@ -15,6 +15,10 @@
   </p>
 </div>
 
+<div>
+    [![Français](https://img.shields.io/badge/lang-fr-F38181?style=for-the-badge&logo=flag&logoColor=white)](/README.md)
+</div>
+
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Summary</summary>
@@ -97,7 +101,9 @@ Additionally, the sound can be modified in real time with various **audio effect
 ### Video demo
 <a id="demo-video"></a>
 
-Voici une démonstration du rendu final de l'application (Cliquez sur l'image pour regarder la vidéo):
+Here is a demonstration of the final application rendering: (Click on the image to watch the video)
+
+
 
 [![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
 
@@ -122,31 +128,33 @@ Voici une démonstration du rendu final de l'application (Cliquez sur l'image po
 ### Prerequisites and installation
 <a id="prérequis-et-installation"></a>
 
-Installez Node.js (https://nodejs.org/fr)
+Install Node.js (https://nodejs.org/fr)
 
-Téléchargez le projet, puis depuis la racine du projet, tapez la commande suivante afin de lancer le serveur
+Download the project, then from the project root, type the following command to start the server:
   ```sh
   python -m http.server 8000
   ```
 
-Ensuite, rendez-vous à l'url suivante: <a href="http://localhost:8000/index.html">http://localhost:8000/index.html</a>
+Next, open the following URL in your browser: <a href="http://localhost:8000/index.html">http://localhost:8000/index.html</a>
 
 ### Application presentation
 <a id="presentation"></a>
 
-Vous arrivez sur la page de l'application
+You should now see the application page open in your browser
 
 <img src="screenshots/application.png" alt="application.png" />
 
-L'application utilise la **Web Audio API** pour analyser en temps réel le flux audio, qu'il provienne d'un fichier chargé (MP3/MP4/M4A) ou du **synthétiseur/piano intégré**.
+The application uses the **Web Audio API** to perform real-time analysis of the audio stream, whether it comes from a loaded file (MP3/MP4/M4A) or from the **built-in synthesizer/virtual piano**.
 
-Ce flux est analysé pour extraire diverses informations (fréquences, amplitude, rythme, etc.), qui servent à piloter à la fois :
-- Des **effets audio** modifiables en direct : filtres (passe-bas, passe-haut...), égaliseur, réverbération, distortion, etc.
-- De **magnifiques visualisations 2D/3D** rendues avec **WebGL** et des shaders **GLSL**.
+This stream is analyzed to extract various information (frequencies, amplitude, rhythm, etc.), which is then used to drive both:
+- Real-time modifiable **audio effects**: filters (low-pass, high-pass…), equalizer, reverb, distortion, etc.  
+- **Stunning 2D/3D visualizations** rendered with **WebGL** and **GLSL** shaders.
 
-Les données audio sont converties en une texture dynamique qui alimente les shaders, permettant aux animations de réagir précisément à la musique.
+The audio data is converted into a dynamic texture that feeds the shaders, allowing the animations to react precisely and synchronously to the music.
 
-Tous les paramètres sont ajustables par l'utilisateur (Intensité et type des effets audio, comportement des animations visuelles)
+All parameters are fully user-adjustable (intensity and type of audio effects, behavior of the visual animations, etc.).
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -156,13 +164,15 @@ Tous les paramètres sont ajustables par l'utilisateur (Intensité et type des e
 ### Video Section
 <a id="part-video"></a>
 
-Comme expliqué un peut plus haut, le son est transformé en une **texture2D** (une image) qui représente l'instant **T** de la variation du son, cette texture peut être utilisée en glsl (Web GL) afin de modifier en temps réels les vecteurs de l'animation graphique.
+As explained a bit earlier, the sound is transformed into a **texture2D** (an image) that represents the instantaneous variation of the audio at the current time **T**. This texture can then be used in GLSL (WebGL) to dynamically modify the vectors of the graphical animation in real time.
+
+
 
 #### How it works (in general)
 <a id="fonctionnement"></a>
 
 <div align="center">
-Voici à quoi ressemble un exemple de cette texture à un instant T
+This is an example of what the generated texture2D looks like at time T
 </div>
 <br/>
 <div align="center">
@@ -170,10 +180,12 @@ Voici à quoi ressemble un exemple de cette texture à un instant T
 </div>
 
 
-Initialement, le projet commence avec des **formes 3D personnalisables** (shapes), affichées en trois dimensions et animées en temps réel selon l’intensité du son. Une **coupe 2D** a ensuite été intégrée pour déformer ces formes de façon ondulatoire, ajoutant une dimension visuelle supplémentaire. En mode 3D, on peut enfin **répéter la forme à l’infini**, générant un effet hypnotique de duplication sans fin.
+Initially, the project started with **customizable 3D shapes**, displayed in three dimensions and animated in real time based on sound intensity.A **2D slice** (or cross-section) was then added to deform these shapes in a wavy, undulating manner, introducing an extra visual layer and dimension. In 3D mode, it is also possible to **repeat the shape infinitely, creating a mesmerizing**, hypnotic effect of endless duplication and replication.
+
+
 
 <div align="center">
-Par exemple, voici une capture du Torus en 3D
+For example, here is a capture of the torus rendered in 3D
 </div>
 <br/>
 <div align="center">
@@ -181,7 +193,7 @@ Par exemple, voici une capture du Torus en 3D
 </div>
 
 <div align="center">
-Et de sa version 2D
+And this is what the 2D torus looks like
 </div>
 <br/>
 <div align="center">
@@ -189,7 +201,7 @@ Et de sa version 2D
 </div>
 
 <div align="center">
-Si un audio est actif, la géométrie de la figure est modulée par la texture2D évoquée plus haut. Illustration ci-dessous d’une déformation en 3D.
+If audio is playing, the geometry of the figure is modulated by the 2D texture mentioned above. An illustration of this 3D deformation is shown below.
 </div>
 <br/>
 <div align="center">
@@ -198,7 +210,7 @@ Si un audio est actif, la géométrie de la figure est modulée par la texture2D
 
 
 <div align="center">
-Et de sa version 2D
+And this is what the 2D looks like
 </div>
 <br/>
 <div align="center">
@@ -207,7 +219,7 @@ Et de sa version 2D
 
 
 <div align="center">
-On peut également démultiplier la figure à l'infini comme sur l'illustration ci-dessous:
+The shape can also be multiplied infinitely, as shown in the illustration below
 </div>
 <br/>
 <div align="center">
@@ -216,7 +228,7 @@ On peut également démultiplier la figure à l'infini comme sur l'illustration 
 
 
 <div align="center">
-On peut également ajouter un effet de twist sur la géométrie de la figure
+We can also add a twist effect to the geometry of the shape
 </div>
 <br/>
 <div align="center">
@@ -227,13 +239,13 @@ On peut également ajouter un effet de twist sur la géométrie de la figure
 
 #### Video settings
 <a id="video_params"></a>
-Voici les différents paramètres disponibles pour la partie vidéo
+Here are the different settings available for the video section
 
 <div align="center">
     <img src="screenshots/video_params.png" alt="video_params.png" />
 </div>
 
-**Paramètres disponibles :**
+**Available settings :**
 
 1. **Base Shape** (*): Permet de sélectionner la forme géométrique de base. **Options disponibles**: Carré, Petit carré, Tore, Petit tore, Hexagone, Cône et Cercle.
 
