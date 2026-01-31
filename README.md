@@ -557,7 +557,7 @@ async function unlockAudio() {
 }
 ```
 
-Une fois notre contexte Web Audio actif, on doit **charger tous les modules** qui nous seront nécessaires lors de la future création de notre graphe audio, ces audioWorklet Processor nous permettent de remplacer les javascriptNodes obsolètes et d'avoir un code spécifique par effet audio que l'on pourra utiliser dans nos modifications du flux audio
+Une fois notre contexte Web Audio actif, on doit **charger tous les modules** qui nous seront nécessaires lors de la future création de notre graphe audio, ces audioWorklet Processor nous permettent de remplacer les ScriptProcessorNode / JavaScriptNode obsolètes tout en offrant des performances bien meilleures (le code s'exécute sur un thread séparé dans le contexte audio) et une latence plus faible et d'avoir un code spécifique par effet audio que l'on pourra utiliser dans nos modifications du flux audio.
 
 ```javascript
 async function initAudio() {

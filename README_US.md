@@ -495,36 +495,35 @@ Mouse interactions with the 3D animation canvas (clicks, drags, zoom, etc.) are 
     });
 ```
 
-**Intégrer une animation GLSL et utiliser la texture audio en temps réel**
+**Integrating a GLSL animation and using the real-time audio texture**
 
-Je vais maintenant expliquer comment, en pratique, ajouter une nouvelle animation GLSL au projet, et surtout comment récupérer dans le code du shader la texture 2D générée à partir du son. Cette texture nous permettra de modifier les vecteurs (positions, déplacements, déformations, etc.) en fonction des variations du flux audio, créant ainsi des animations réactives au rythme et aux fréquences.
+I will now explain, step by step, how to practically add a new GLSL animation to the project — and above all, how to retrieve and use the real-time 2D audio texture inside your shader code.This texture is generated in real time from the audio frequency analysis array. It allows you to modulate vectors (positions, displacements, deformations, etc.) based on the audio’s rhythm and frequency variations, creating truly sound-reactive animations.
 
-Pour commencer, la première étape consiste à **récupérer cette texture 2D**, qui est générée en temps réel à partir du tableau de fréquences issu de l’analyse audio :
+The first thing to do is to **retrieve this 2D texture**.
 
 ```glsl
 vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
 ```
 
-A titre informatif, on peut accéder soit à la position du vecteur de texture généré via les champs x, y et z (exemple: fragColorTexture.xy), soit également à leur couleur RGB via les champs r, g et b (exemple: fragColorTexture.rgb)
+For information, you can access it either via its vector components (x, y, z fields) — example: fragColorTexture.xy or via its color components (RGB) — example: fragColorTexture.rgb (Both ways are valid depending on what you want to control in your animation).
 
-Ensuite il faut trouver l'endroit de l'animation qui nous interesse et à l'aide des informations que la texture nous envoit, réaliser des opérations qui altèrent notre animation (de préférence de manière harmonieuse)
+Next, you need to locate the part of the animation you want to affect, and — using the information provided by the texture — perform operations that modify your animation (preferably in a smooth and harmonious way).
 
-On peut par exemple utiliser la fonction **mix** est une des fonctions les plus utiles et utilisées en GLSL (le langage des shaders dans WebGL, Three.js, OpenGL, etc.). Elle permet de faire une interpolation linéaire entre deux valeurs.
+For example, one of the most useful and commonly used functions in GLSL (the shading language used in WebGL, Three.js, OpenGL, etc.) is **mix()**. The mix() function performs a linear interpolation (lerp) between two values, based on a third parameter that acts as a blending factor (usually between 0.0 and 1.0).
 
 ```glsl
     fragColor = mix(color, vec3(0.5), fragColorTexture.xyz);
 ```
 
-On peut également utiliser la fonction **smoothstep** en GLSL (utilisée dans Three.js, WebGL, shaders en général) qui permet de créer des transitions douces (smooth transitions) entre deux valeurs. Elle est parfaite pour les animations fluides, les masques progressifs, les effets de fondu, etc.
+You can also use the **smoothstep()** function in GLSL (commonly used in Three.js, WebGL, and shaders in general). It creates smooth, S-shaped transitions between two threshold values. This function is perfect for fluid animations, progressive masks, fade effects, soft edges, and anything where you want to avoid abrupt or harsh changes.
 
 ```glsl
     fragColor = smoothstep(color, vec3(0.5), fragColorTexture.xyz);
 ```
 
-Attention toutefois au **problème d’anti-aliasing** : il peut parfois provoquer des artefacts sur la partie gauche de l’animation ou générer des bords en escalier (staircasing) très visibles et peu esthétiques, surtout après l’utilisation d’un **smoothstep**.
+However, watch out for the **anti-aliasing issue**: It can sometimes cause artifacts on the left part of the animation or produce very visible and unaesthetic staircased / jagged edges (staircasing), especially after using **smoothstep()**.
 
-Pas de panique, ce problème est facilement contournable avec la solution suivante !
-
+No need to panic — this problem is very easy to work around with the following solution!
 
 ```glsl
     // l'operation que l'on souhaite réaliser
@@ -535,7 +534,7 @@ Pas de panique, ce problème est facilement contournable avec la solution suivan
     col *=  smooth; 
 ```
 
-On peut également modifier l'animation simplement en modifiant un nombre flottant, ou en faisant une multiplication de vecteurs, par exemple:
+You can also modify the animation very simply by adjusting a floating-point number, or by performing multiplications on vectors, for example:
 
 ```glsl
     // modifier un flottant
@@ -549,12 +548,12 @@ On peut également modifier l'animation simplement en modifiant un nombre flotta
 ### Audio Section
 <a id="code-audio"></a>
 
-Le fonctionnement principal se situe dans le fichier webaudio.js
+The main functionality is located in the file webaudio.js
 
 #### Initializing the Web Audio Context
 <a id="code-init-audio-context"></a>
 
-Tout d'abord il nous faut **initialiser le contexte Web Audio**, car depuis plusieurs années (Chrome 66+, puis tous les navigateurs), les politiques autoplay des navigateurs bloquent la lecture audio automatique pour éviter les pubs sonores intrusives, le contexte Web Audio est souvent créé en état suspended (suspendu) si pas initié directement par une interaction utilisateur (comme un clic ou un touch)
+First of all, we need to **initialize the Web Audio context**. For several years now (since Chrome 66+, and then adopted by all major browsers), browsers enforce strict autoplay policies to prevent intrusive automatic audio playback (mostly to block unwanted advertisement sounds).  As a result, the Web Audio context is very often created in a suspended state if it is not explicitly started / resumed following a user gesture (such as a click, tap, key press, or any other direct user interaction).
 
 ```javascript
 // Fonction à appeler sur le premier clic/touch de l’utilisateur
@@ -584,7 +583,7 @@ async function unlockAudio() {
 }
 ```
 
-Une fois notre contexte Web Audio actif, on doit **charger tous les modules** qui nous seront nécessaires lors de la future création de notre graphe audio, ces audioWorklet Processor nous permettent de remplacer les javascriptNodes obsolètes et d'avoir un code spécifique par effet audio que l'on pourra utiliser dans nos modifications du flux audio
+Once our Web Audio context is active, we need to **load all the modules** that will be required later when building our audio graph.These AudioWorklet Processors allow us to replace the now-deprecated ScriptProcessorNode / JavaScriptNode, while offering much better performance (code runs on a separate thread in the audio context) and lower latency.Each AudioWorklet gives us a dedicated, custom processor for a specific audio effect or processing task, which we can then insert into our audio signal chain to modify the audio stream in real time.
 
 ```javascript
 async function initAudio() {
