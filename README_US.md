@@ -1210,18 +1210,18 @@ Here is a list of points to improve in order to optimize this application:Better
 
 - Reduce memory leaks, optimize texture/buffer allocations in WebGL, clean up unused nodes/buffers, and monitor heap usage especially during long sessions or when switching between many audio files/melodies.)
 - Remove individual OscillatorNodes from the built-in synthesizer and replace them with a dedicated AudioWorkletNode. This would enable true polyphony (playing multiple notes simultaneously) without degrading output audio quality.
-    → Current per-note OscillatorNode approach creates too many nodes when polyphony increases → context overload, potential glitches, higher CPU.
-    → A custom AudioWorkletProcessor can handle multiple voices internally (sum of waveforms + per-voice envelopes) in a much more efficient way on the audio thread.
+    * → Current per-note OscillatorNode approach creates too many nodes when polyphony increases → context overload, potential glitches, higher CPU.
+    * → A custom AudioWorkletProcessor can handle multiple voices internally (sum of waveforms + per-voice envelopes) in a much more efficient way on the audio thread.
 - Optimize the AudioWorkletNode-based effects to achieve a more harmonious / musical sound output. Many current issues stem purely from suboptimal parameter tuning (thresholds, Q values, filter curves, gain staging, oversampling if applicable, etc.).
-    → Refine algorithms, add anti-denormalization, improve interpolation, test with real musical content, adjust default presets.
+    * → Refine algorithms, add anti-denormalization, improve interpolation, test with real musical content, adjust default presets.
 - Allow applying multiple effects simultaneously, unlike the current implementation which restricts to only one active effect at a time.
-    → Introduce a proper effect chain (array of AudioWorkletNodes or a single multi-effect processor).
-    → Add UI for ordering effects, enabling/disabling, dry/wet per effect, global bypass.
-    → Manage dynamic insertion/removal without audio glitches (disconnect/reconnect safely).
+    * → Introduce a proper effect chain (array of AudioWorkletNodes or a single multi-effect processor).
+    * → Add UI for ordering effects, enabling/disabling, dry/wet per effect, global bypass.
+    * → Manage dynamic insertion/removal without audio glitches (disconnect/reconnect safely).
 - Optionally: add a drum machine / beatbox / sequencer to accompany the built-in synthesizer.
-    → Simple 4/4 patterns with kick, snare, hi-hat, clap/perc.
-    → Could be implemented via another AudioWorklet (for sample playback or synthesized drums) or using basic Web Audio nodes (noise + filters + envelopes).
-    → Sync it with melody tempo (BPM), allow pattern editing or preset grooves.
+    * → Simple 4/4 patterns with kick, snare, hi-hat, clap/perc.
+    * → Could be implemented via another AudioWorklet (for sample playback or synthesized drums) or using basic Web Audio nodes (noise + filters + envelopes).
+    * → Sync it with melody tempo (BPM), allow pattern editing or preset grooves.
 
 
 
