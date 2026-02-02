@@ -1210,58 +1210,57 @@ Here is a list of points to improve in order to optimize this application:Better
 
 - Reduce memory leaks, optimize texture/buffer allocations in WebGL, clean up unused nodes/buffers, and monitor heap usage especially during long sessions or when switching between many audio files/melodies.)
 - Remove individual OscillatorNodes from the built-in synthesizer and replace them with a dedicated AudioWorkletNode. This would enable true polyphony (playing multiple notes simultaneously) without degrading output audio quality.
-    * → Current per-note OscillatorNode approach creates too many nodes when polyphony increases → context overload, potential glitches, higher CPU.
-    * → A custom AudioWorkletProcessor can handle multiple voices internally (sum of waveforms + per-voice envelopes) in a much more efficient way on the audio thread.
+    * Current per-note OscillatorNode approach creates too many nodes when polyphony increases → context overload, potential glitches, higher CPU.
+    * A custom AudioWorkletProcessor can handle multiple voices internally (sum of waveforms + per-voice envelopes) in a much more efficient way on the audio thread.
 - Optimize the AudioWorkletNode-based effects to achieve a more harmonious / musical sound output. Many current issues stem purely from suboptimal parameter tuning (thresholds, Q values, filter curves, gain staging, oversampling if applicable, etc.).
-    * → Refine algorithms, add anti-denormalization, improve interpolation, test with real musical content, adjust default presets.
+    * Refine algorithms, add anti-denormalization, improve interpolation, test with real musical content, adjust default presets.
 - Allow applying multiple effects simultaneously, unlike the current implementation which restricts to only one active effect at a time.
-    * → Introduce a proper effect chain (array of AudioWorkletNodes or a single multi-effect processor).
-    * → Add UI for ordering effects, enabling/disabling, dry/wet per effect, global bypass.
-    * → Manage dynamic insertion/removal without audio glitches (disconnect/reconnect safely).
+    * Introduce a proper effect chain (array of AudioWorkletNodes or a single multi-effect processor).
+    * Add UI for ordering effects, enabling/disabling, dry/wet per effect, global bypass.
+    * Manage dynamic insertion/removal without audio glitches (disconnect/reconnect safely).
 - Optionally: add a drum machine / beatbox / sequencer to accompany the built-in synthesizer.
-    * → Simple 4/4 patterns with kick, snare, hi-hat, clap/perc.
-    * → Could be implemented via another AudioWorklet (for sample playback or synthesized drums) or using basic Web Audio nodes (noise + filters + envelopes).
-    * → Sync it with melody tempo (BPM), allow pattern editing or preset grooves.
+    * Simple 4/4 patterns with kick, snare, hi-hat, clap/perc.
+    * Could be implemented via another AudioWorklet (for sample playback or synthesized drums) or using basic Web Audio nodes (noise + filters + envelopes).
+    * Sync it with melody tempo (BPM), allow pattern editing or preset grooves.
 
 
 
 ## License
 <a id="license"></a>
 
-Le projet est entièrement **open source et gratuit**. Aucune restriction : Simplement du code libre au service de tous, offert à la communauté.
+The project is entirely **open source and free**.  No restrictions whatsoever: it’s simply free code made available to everyone, offered to the community for the benefit of all.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
 <a id="contact"></a>
 
-Informations de contact:
+Developer / Contact
 
-**Nom**: Porta <br/>
-**Prénom**: Benjamin <br/>
-**Pays**: FRANCE <br/>
-**Ville**: Nice <br/>
-**E-mail**: pb402385@gmail.com <br/>
-**Github**: https://github.com/pb402385
+**Name**: Porta <br/>
+**First Name**: Benjamin <br/>
+**Country**: FRANCE <br/>
+**City**: Nice <br/>
+**Email**: pb402385@gmail.com <br/>
+**GitHub**: https://github.com/pb402385
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Acknowledgments
 <a id="acknowledgments"></a>
 
-Tout d’abord, je tiens à remercier mon ami **Klem**, qui m’a initié au WebGL il y a plusieurs années. Sans lui, l’idée de combiner WebGL et Web Audio ne me serait jamais venue à l’esprit.  
+First and foremost, I want to thank my friend **Klem**, who introduced me to WebGL several years ago. Without him, the idea of combining WebGL and Web Audio would never have crossed my mind.
 
-Pour la partie Web Audio, un grand merci à mon professeur de Master, **Michel Buffa**, qui me l’a fait découvrir pendant mes études.  
+For the Web Audio part, a huge thank you to my Master’s professor, **Michel Buffa**, who introduced me to it during my studies.
 
-Je souhaite également remercier les développeurs dont j’ai pu m’inspirer et emprunter du code WebGL sur **Shadertoy** (https://www.shadertoy.com/).  
+I would also like to thank the developers whose work inspired me and from whom I borrowed WebGL code on **Shadertoy** (https://www.shadertoy.com/).
 
-* Remerciements à **BigWIngs** de qui j'ai pu récupérer l'animation **Trou Noir** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/3d2SWK
-* Remerciements à **Inigo Quilez** de qui j'ai pu récupérer l'animation **3D Sierpinski Triangle** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/4dl3Wl
-* Remerciements à **GarlicGraphix** de qui j'ai pu récupérer l'animation **3D Sierpinski Infinite** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/wc23zR
-* Remerciements à **Shane** de qui j'ai pu récupérer l'animation **3D Sierpinski Mobius** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/XsGXDV
-* Remerciements une seconde fois à  **Shane** de qui j'ai pu récupérer l'animation **Mandelbrot Decoration** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/ttscWn
+* Thanks to **BigWIngs** from whom I adapted the Black Hole animation, original link: https://www.shadertoy.com/view/3d2SWK  
+* Thanks to **Inigo Quilez** from whom I adapted the 3D Sierpinski Triangle animation, original link: https://www.shadertoy.com/view/4dl3Wl  
+* Thanks to **GarlicGraphix** from whom I adapted the 3D Sierpinski Infinite animation, original link: https://www.shadertoy.com/view/wc23zR  
+* Thanks to **Shane** from whom I adapted the 3D Sierpinski Mobius animation, original link: https://www.shadertoy.com/view/XsGXDV  
+* Thanks once again to **Shane** from whom I adapted the Mandelbrot Decoration animation, original link: https://www.shadertoy.com/view/ttscWn
 
-Enfin, pour les autres animations, j’ai été principalement aidé par **l'IA Grok (xAI)** et un peu également de **ChatGPT**.
-
+Finally, for the other animations, I was mainly assisted by **Grok (xAI)** and to a lesser extent by **ChatGPT**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
