@@ -1177,11 +1177,20 @@ Dans l’exemple de l’effet Noise, nous avons trois paramètres: le type, le c
 
 Voici une liste de points à améliorer pour optimiser cette application:  
 
-- Une meilleure gestion de la mémoire RAM.  
-- Supprimer les nœuds oscillateurs individuels du synthétiseur intégré et les remplacer par un AudioWorkletNode dédié, ce qui permettra de jouer plusieurs notes simultanément (polyphonie) sans dégrader la qualité du son en sortie.
-- Optimiser les effets basés sur AudioWorkletNode pour obtenir un rendu sonore plus harmonieux, en affinant notamment leurs paramètres (certains problèmes actuels tenant uniquement à un réglage suboptimal).  
-- Autoriser l'application simultanée de plusieurs effets, contrairement à l'implémentation actuelle qui limite à un seul effet à la fois.
-- Pourquoi pas, ajouter une boîte à rythme pour accompagner le synthétiseur intégré.
+- Une meilleure gestion de la mémoire RAM. (Réduire les fuites mémoire, optimiser les allocations de textures et buffers en WebGL, nettoyer les nœuds et buffers inutilisés, surveiller l’utilisation du tas (heap) particulièrement lors de sessions longues ou lors des changements fréquents de fichiers audio/mélodies.)
+- Supprimer les OscillatorNodes individuels du synthétiseur intégré et les remplacer par un AudioWorkletNode dédié. Cela permettrait une vraie polyphonie (jouer plusieurs notes simultanément) sans dégrader la qualité sonore en sortie.
+  * L’approche actuelle (un OscillatorNode par note) crée trop de nœuds quand la polyphonie augmente → surcharge du contexte audio, risques de glitches, consommation CPU élevée.
+  * Un AudioWorkletProcessor personnalisé peut gérer plusieurs voix en interne (somme des formes d’onde + enveloppes par voix) de façon beaucoup plus efficace sur le thread audio.
+- Optimiser les effets basés sur AudioWorkletNode pour obtenir un rendu sonore plus harmonieux et musical. Beaucoup de problèmes actuels viennent uniquement d’un réglage sous-optimal des paramètres (seuils, valeurs Q, courbes de filtre, gestion du gain, oversampling éventuel, etc.).
+  * Affiner les algorithmes, ajouter une protection contre les dénormalisations, améliorer l’interpolation, tester avec du vrai contenu musical, ajuster les presets par défaut.
+- Autoriser l’application simultanée de plusieurs effets (contrairement à l’implémentation actuelle qui limite à un seul effet actif à la fois)
+  * Introduire une vraie chaîne d’effets (tableau d’AudioWorkletNodes ou un processeur multi-effets unique).
+  * Ajouter une interface utilisateur pour réordonner les effets, les activer/désactiver, régler le dry/wet par effet, bypass global.
+  * Gérer l’insertion/suppression dynamique sans coupures audio (déconnexion/reconnexion propre).
+- Optionnel : ajouter une boîte à rythmes / drum machine / séquenceur pour accompagner le synthétiseur intégré
+  * Patterns simples en 4/4 avec kick, snare, hi-hat, clap/percussion.
+  * Peut être implémenté via un autre AudioWorklet (lecture d’échantillons ou batterie synthétisée) ou avec des nœuds Web Audio classiques (bruit + filtres + enveloppes).
+  * Synchronisation avec le tempo des mélodies (BPM), possibilité d’éditer les patterns ou de charger des grooves prédéfinis.
 
 ## License
 <a id="license"></a>

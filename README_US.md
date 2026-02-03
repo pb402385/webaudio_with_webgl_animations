@@ -1198,14 +1198,6 @@ In the case of our Noise effect example, we have three parameters: type, cutoff,
 ## Potential improvements
 <a id="improvment"></a>
 
-Voici une liste de points à améliorer pour optimiser cette application :  
-
-- Une meilleure gestion de la mémoire RAM.  
-- Supprimer les nœuds oscillateurs individuels du synthétiseur intégré et les remplacer par un AudioWorkletNode dédié, ce qui permettra de jouer plusieurs notes simultanément (polyphonie) sans dégrader la qualité du son en sortie.
-- Optimiser les effets basés sur AudioWorkletNode pour obtenir un rendu sonore plus harmonieux, en affinant notamment leurs paramètres (certains problèmes actuels tenant uniquement à un réglage suboptimal).  
-- Autoriser l'application simultanée de plusieurs effets, contrairement à l'implémentation actuelle qui limite à un seul effet à la fois.
-- Pourquoi pas, ajouter une boîte à rythme pour accompagner le synthétiseur intégré.
-
 Here is a list of points to improve in order to optimize this application:Better RAM / memory management.
 
 - Reduce memory leaks, optimize texture/buffer allocations in WebGL, clean up unused nodes/buffers, and monitor heap usage especially during long sessions or when switching between many audio files/melodies.)
