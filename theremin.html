@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neon Theremin — 16 Steps + Delay & Reverb</title>
+  <style>
+    :root {
+      --bg: #0d0015;
+      --panel: #14001f;
+      --accent: #00f0ff;
+      --accent-glow: #00f0ff44;
+      --accent-dark: #0099aa;
+      --text: #e0f7ff;
+      --grid: #2a0040;
+      --flash: #ff00ee;
+      --mute-off: #444455;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 2rem;
+      background-image: 
+        radial-gradient(circle at 15% 50%, #1a0033 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, #220044 0%, transparent 50%);
+    }
+
+    header { text-align:center; margin-bottom:2rem; }
+    h1 {
+      font-size: 3.2rem;
+      background: linear-gradient(90deg, #00f0ff, #ff00aa, #00f0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px #00f0ff66;
+    }
+
+    .controlsTheremin {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1.8rem 2rem;
+      margin: 2rem 0;
+    }
+
+    #play {
+      padding: 1rem 3rem;
+      font-size: 1.4rem;
+      background: linear-gradient(145deg, #00d4ff, #0099cc);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 30px var(--accent-glow);
+      transition: all 0.3s ease;
+    }
+
+    #play:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 50px var(--accent-glow); }
+    #play.active {
+      background: linear-gradient(145deg, #ff3366, #cc0033);
+      box-shadow: 0 0 40px #ff336688;
+    }
+
+    .slider-group, .mute-group {
+      background: rgba(20,0,31,0.6);
+      padding: 1.2rem 1.6rem;
+      border-radius: 16px;
+      border: 1px solid var(--grid);
+      box-shadow: 0 0 20px #0008;
+    }
+
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 320px;
+    }
+
+    .mute-group {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .mute-group h3, .slider-group label {
+      margin-bottom: 0.6rem;
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    input[type="range"] {
+      flex: 1;
+      height: 8px;
+      background: linear-gradient(to right, var(--accent-dark) 0%, var(--accent) 100%);
+      border-radius: 5px;
+      outline: none;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent-glow);
+    }
+
+    .value {
+      font-size: 1.25rem;
+      font-weight: bold;
+      min-width: 70px;
+      text-align: right;
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .sequencerTheremin {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 14px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      background: var(--panel);
+      border-radius: 20px;
+      box-shadow: inset 0 0 40px #00000080, 0 0 60px var(--accent-glow);
+      border: 1px solid #2a0040;
+    }
+
+    .step {
+      aspect-ratio: 1;
+      background: #1a0033;
+      border: 2px solid var(--grid);
+      border-radius: 12px;
+      position: relative;
+      /*overflow: hidden;*/
+      cursor: crosshair;
+      transition: all 0.18s ease;
+      box-shadow: inset 0 0 15px #000000aa;
+    }
+
+    .step:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 25px var(--accent-glow), inset 0 0 20px var(--accent-glow);
+      transform: scale(1.04);
+    }
+
+    .marker {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: var(--accent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent-glow);
+      pointer-events: none;
+      transition: all 0.12s ease-out;
+    }
+
+    .playing {
+      animation: flash 0.8s ease-out;
+      border-color: var(--flash) !important;
+      box-shadow: 
+        0 0 30px var(--flash),
+        0 0 60px var(--flash)aa,
+        inset 0 0 30px var(--flash)66 !important;
+    }
+
+    @keyframes flash {
+      0%   { box-shadow: 0 0 40px var(--flash), 0 0 80px var(--flash)cc; transform: scale(1.08); }
+      40%  { box-shadow: 0 0 60px var(--flash), 0 0 120px var(--flash)ff; transform: scale(1.12); }
+      100% { box-shadow: 0 0 20px var(--flash)88, 0 0 40px var(--flash)44; transform: scale(1); }
+    }
+
+    #muteGrid, #muteGrid2 {
+        display: flex;
+    align-items: center;
+    align-content: space-around;
+    justify-content: space-around;
+    justify-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    }
+
+    .checkbox {
+            width: 100%;
+    background-color: transparent;
+    height: 10px;
+    position: relative;
+    z-index: 999999;
+    cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>NEON THEREMIN • 16 STEPS + DELAY & REVERB</h1>
+  </header>
+
+  <div class="controlsTheremin">
+
+    <button id="play">PLAY LOOP</button>
+
+    <div class="slider-group">
+      <label>Tempo</label>
+      <input type="range" id="tempo" min="60" max="180" value="130" step="1">
+      <span class="value" id="bpmThereminDisplay">130 BPM</span>
+    </div>
+
+    <div class="slider-group">
+      <label>Silence</label>
+      <input type="range" id="silence" min="0" max="70" value="20" step="5">
+      <span class="value" id="silenceDisplay">20%</span>
+    </div>
+
+    <div class="slider-group">
+      <label>Delay Mix</label>
+      <input type="range" id="delayMix" min="0" max="60" value="28" step="2">
+      <span class="value" id="delayMixVal">28%</span>
+    </div>
+
+    <div class="slider-group">
+      <label>Delay Feedback</label>
+      <input type="range" id="delayFeedback" min="0" max="75" value="42" step="3">
+      <span class="value" id="delayFbVal">42%</span>
+    </div>
+
+    <div class="slider-group">
+      <label>Delay Time</label>
+      <input type="range" id="delayTime" min="80" max="800" value="320" step="20">
+      <span class="value" id="delayTimeVal">320 ms</span>
+    </div>
+
+    <!-- NOUVEAU : REVERB -->
+    <div class="slider-group">
+      <label>Reverb Mix</label>
+      <input type="range" id="reverbMix" min="0" max="70" value="22" step="2">
+      <span class="value" id="reverbMixVal">22%</span>
+    </div>
+
+    <div class="mute-group">
+      <h3>Mute steps</h3>
+      <div class="mute-grid" id="muteGrid"></div><div class="mute-grid" id="muteGrid2"></div>
+    </div>
+
+  </div>
+
+  <div class="sequencerTheremin" id="sequencer"></div>
+
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // ────────────────────────────────────────────────
+    //  NŒUDS AUDIO + EFFETS
+    // ────────────────────────────────────────────────
+    let osc, sourceGain, delayNode, feedbackGain, delayFilter, delayWetGain,
+        reverbNode, reverbWetGain;
+
+    function initAudioGraph() {
+      sourceGain = audioCtx.createGain();
+      sourceGain.gain.value = 0.72; // headroom
+
+      // Delay (comme avant)
+      delayNode = audioCtx.createDelay(1.2);
+      delayNode.delayTime.value = 0.32;
+
+      feedbackGain = audioCtx.createGain();
+      feedbackGain.gain.value = 0.42;
+
+      delayFilter = audioCtx.createBiquadFilter();
+      delayFilter.type = "lowpass";
+      delayFilter.frequency.value = 4200;
+      delayFilter.Q.value = 0.707;
+
+      delayWetGain = audioCtx.createGain();
+      delayWetGain.gain.value = 0.28;
+
+      // Reverb (convolver + mix)
+      reverbNode = audioCtx.createConvolver();
+      reverbWetGain = audioCtx.createGain();
+      reverbWetGain.gain.value = 0.22;
+
+      generateHallImpulse(); // crée l'impulsion de réverb
+
+      // Connexions
+      sourceGain.connect(audioCtx.destination);           // dry
+
+      // Delay send → return
+      sourceGain.connect(delayNode);
+      delayNode.connect(delayFilter);
+      delayFilter.connect(feedbackGain);
+      feedbackGain.connect(delayNode);
+      delayNode.connect(delayWetGain);
+      delayWetGain.connect(audioCtx.destination);
+
+      // Reverb send → return
+      sourceGain.connect(reverbNode);
+      reverbNode.connect(reverbWetGain);
+      reverbWetGain.connect(audioCtx.destination);
+    }
+
+    // Génère une impulse response hall simple (procédurale)
+    function generateHallImpulse() {
+      const sampleRate = audioCtx.sampleRate;
+      const length = sampleRate * 2.8; // ~2.8 secondes
+      const impulse = audioCtx.createBuffer(2, length, sampleRate);
+
+      const left = impulse.getChannelData(0);
+      const right = impulse.getChannelData(1);
+
+      for (let i = 0; i < length; i++) {
+        const t = i / sampleRate;
+        const decay = Math.exp(-t * 1.8) * (1 - t / 2.8);
+        const noise = Math.random() * 2 - 1;
+        left[i]  = noise * decay * (0.6 + Math.sin(t * 12) * 0.2);
+        right[i] = noise * decay * (0.6 + Math.cos(t * 15) * 0.2);
+      }
+
+      reverbNode.buffer = impulse;
+    }
+
+    initAudioGraph();
+
+    // ────────────────────────────────────────────────
+    //  UI + variables (le reste reste identique)
+    // ────────────────────────────────────────────────
+    const sequencer = document.getElementById('sequencer');
+    const muteGrid = document.getElementById('muteGrid');
+    const muteGrid2 = document.getElementById('muteGrid2');
+    const playBtn = document.getElementById('play');
+
+    const STEPS = 16;
+    const MIN_FREQ = 80;
+    const MAX_FREQ = 1200;
+
+    let bpmTheremin = 130;
+    let silencePercent = 20;
+    let stepDurationMs = 60000 / bpmTheremin / 4;
+
+    const stepsData = Array(STEPS).fill().map((_, i) => ({
+      freq: 440,
+      vol: 0.7,
+      marker: null,
+      enabled: true
+    }));
+
+    let currentStepTheremin = 0;
+    let isPlayingTheremin = false;
+    let interval = null;
+
+    // Mute checkboxes
+    for (let i = 0; i < STEPS; i++) {
+      const div = document.createElement('div');
+      div.className = 'mute-item';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = true;
+      cb.addEventListener('change', () => stepsData[i].enabled = cb.checked);
+      const label = document.createElement('label');
+      label.textContent = i+1;
+      div.append(cb, label);
+      cb.id = "checkbox"+i;
+      if(i>7) {
+        muteGrid2.appendChild(div);
+      }else{
+        muteGrid.appendChild(div);
+      }
+    }
+
+    // Contrôles sliders
+    document.getElementById('tempo').addEventListener('input', e => {
+      bpmTheremin = +e.target.value;
+      document.getElementById('bpmThereminDisplay').textContent = `${bpmTheremin} BPM`;
+      stepDurationMs = 60000 / bpmTheremin / 4;
+      if (isPlayingTheremin) restartInterval();
+    });
+
+    document.getElementById('silence').addEventListener('input', e => {
+      silencePercent = +e.target.value;
+      document.getElementById('silenceDisplay').textContent = `${silencePercent}%`;
+    });
+
+    document.getElementById('delayMix').addEventListener('input', e => {
+      const v = e.target.value / 100;
+      delayWetGain.gain.setValueAtTime(v, audioCtx.currentTime);
+      document.getElementById('delayMixVal').textContent = `${e.target.value}%`;
+    });
+
+    document.getElementById('delayFeedback').addEventListener('input', e => {
+      const v = e.target.value / 100;
+      feedbackGain.gain.setValueAtTime(v, audioCtx.currentTime);
+      document.getElementById('delayFbVal').textContent = `${e.target.value}%`;
+    });
+
+    document.getElementById('delayTime').addEventListener('input', e => {
+      const ms = +e.target.value;
+      delayNode.delayTime.linearRampToValueAtTime(ms / 1000, audioCtx.currentTime + 0.03);
+      document.getElementById('delayTimeVal').textContent = `${ms} ms`;
+    });
+
+    // Reverb mix
+    document.getElementById('reverbMix').addEventListener('input', e => {
+      const v = e.target.value / 100;
+      reverbWetGain.gain.setValueAtTime(v, audioCtx.currentTime);
+      document.getElementById('reverbMixVal').textContent = `${e.target.value}%`;
+    });
+
+    // Création steps UI (inchangée)
+    for (let i = 0; i < STEPS; i++) {
+      const step = document.createElement('div');
+      step.className = 'step';
+      step.dataset.index = i;
+
+      const marker = document.createElement('div');
+      marker.className = 'marker';
+      step.appendChild(marker);
+
+      const midX = 50, midY = 50;
+      marker.style.left = midX + '%';
+      marker.style.top  = midY + '%';
+
+      stepsData[i].marker = marker;
+      stepsData[i].freq = MIN_FREQ + (midX/100) * (MAX_FREQ - MIN_FREQ);
+      stepsData[i].vol  = 1 - (midY/100);
+
+      step.append
+
+      const checkbox = document.createElement('div');
+      const ctn = document.createElement('div');
+      checkbox.id = "checkbtn"+i;
+      checkbox.className = "checkbox";
+      ctn.appendChild(checkbox);
+      ctn.appendChild(step);
+      if(i > 7 ) {
+        ctn.appendChild(step);
+        ctn.appendChild(checkbox);
+        checkbox.style.top = '20px';    
+      } else {
+        ctn.appendChild(checkbox);
+        ctn.appendChild(step);
+        checkbox.style.top = '-20px';
+      }
+        
+      ctn.addEventListener('mouseover', () => {
+        checkElement = document.getElementById("checkbox"+i);
+        if (checkElement.checked){
+            checkbox.style.backgroundColor = 'blue'
+        }
+      });
+      
+      ctn.addEventListener('mouseout', () => {
+        checkElement = document.getElementById("checkbox"+i);
+        if (checkElement.checked){
+            checkbox.style.backgroundColor = 'transparent'
+        }
+      });
+
+      checkbox.addEventListener('click', () => {
+        checkElement = document.getElementById("checkbox"+i);
+        if (checkElement.checked){
+        checkbox.style.backgroundColor = 'red';
+        checkElement.checked = false;
+        checkbox.parentElement.style.opacity = "0.1";
+        } else {
+        checkbox.style.backgroundColor = 'blue';
+        checkElement.checked = true;
+        checkbox.parentElement.style.opacity = "1.0";
+        }
+      });
+
+      sequencer.appendChild(ctn);
+
+      let isDraggingTheremin = false;
+
+      const update = (clientX, clientY, rect) => {
+        const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+        const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+        stepsData[i].freq = MIN_FREQ + (x / rect.width) * (MAX_FREQ - MIN_FREQ);
+        stepsData[i].vol  = Math.max(0.05, 1 - (y / rect.height));
+        marker.style.left = x + 'px';
+        marker.style.top  = y + 'px';
+      };
+
+      const start = (e, touch=false) => {
+        isDraggingTheremin = true;
+        const rect = step.getBoundingClientRect();
+        const cx = touch ? e.touches[0].clientX : e.clientX;
+        const cy = touch ? e.touches[0].clientY : e.clientY;
+        update(cx, cy, rect);
+      };
+
+      step.addEventListener('mousedown', e => start(e));
+      step.addEventListener('touchstart', e => { e.preventDefault(); start(e, true); }, {passive:false});
+
+      const move = (e, touch=false) => {
+        if (!isDraggingTheremin) return;
+        const rect = step.getBoundingClientRect();
+        const cx = touch ? e.touches[0].clientX : e.clientX;
+        const cy = touch ? e.touches[0].clientY : e.clientY;
+        update(cx, cy, rect);
+      };
+
+      document.addEventListener('mousemove', e => move(e));
+      document.addEventListener('touchmove', e => move(e, true), {passive:false});
+
+      document.addEventListener('mouseup', () => isDraggingTheremin = false);
+      document.addEventListener('touchend', () => isDraggingTheremin = false);
+    }
+
+    function startOsc() {
+      if (osc) osc.stop();
+      osc = audioCtx.createOscillator();
+      osc.type = 'sine';
+      osc.connect(sourceGain);
+      osc.start();
+    }
+
+    function playNextStep() {
+      const now = audioCtx.currentTime;
+      const step = stepsData[currentStepTheremin];
+
+      document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
+      const currentEl = document.querySelector(`.step[data-index="${currentStepTheremin}"]`);
+      if (currentEl) currentEl.classList.add('playing');
+
+      if (!step.enabled) {
+        if (silencePercent === 0) {
+          sourceGain.gain.linearRampToValueAtTime(0.001, now + 0.08);
+        }
+        currentStepTheremin = (currentStepTheremin + 1) % STEPS;
+        return;
+      }
+
+      const silenceSec = (stepDurationMs / 1000) * (silencePercent / 100);
+      const noteSec = (stepDurationMs / 1000) - silenceSec;
+
+      osc.frequency.cancelScheduledValues(now);
+      osc.frequency.setValueAtTime(osc.frequency.value || step.freq, now);
+      osc.frequency.linearRampToValueAtTime(step.freq, now + 0.02);
+
+      if (silencePercent === 0) {
+        sourceGain.gain.cancelScheduledValues(now);
+        sourceGain.gain.linearRampToValueAtTime(step.vol, now + 0.03);
+      } else {
+        sourceGain.gain.cancelScheduledValues(now);
+        sourceGain.gain.setValueAtTime(step.vol, now);
+        sourceGain.gain.linearRampToValueAtTime(0.001, now + noteSec * 0.8);
+      }
+
+      currentStepTheremin = (currentStepTheremin + 1) % STEPS;
+    }
+
+    function restartInterval() {
+      if (!isPlayingTheremin) return;
+      clearInterval(interval);
+      interval = setInterval(playNextStep, stepDurationMs);
+    }
+
+    playBtn.addEventListener('click', async () => {
+      if (isPlayingTheremin) {
+        clearInterval(interval);
+        if (osc) osc.stop();
+        playBtn.textContent = 'PLAY LOOP';
+        playBtn.classList.remove('active');
+        document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
+        isPlayingTheremin = false;
+        return;
+      }
+
+      await audioCtx.resume();
+      startOsc();
+      currentStepTheremin = 0;
+      playNextStep();
+
+      interval = setInterval(playNextStep, stepDurationMs);
+
+      playBtn.textContent = 'STOP';
+      playBtn.classList.add('active');
+      isPlayingTheremin = true;
+    });
+  </script>
+</body>
+</html>
