@@ -29,6 +29,7 @@
 		<link href="css/futurist-popin.css" rel="stylesheet"/>
 		<link href="css/futurist-button-yes-no.css" rel="stylesheet"/>
 		<link href="css/futurist-checklist.css" rel="stylesheet"/>
+		<link href="css/theremin.css" rel="stylesheet"/>
 
 		<link  href="css/responsive.css" rel="stylesheet"/>
 	</head>
@@ -55,6 +56,11 @@
 						<button class="btn-futur" onclick="stopAllSounds();" id="stopAllSounds">
 							<div class="scan"></div>
 							<span class="glitch">STOP</span>
+						</button>
+
+						<button class="btn-futur" onclick="openPopinTheremin();" id="btnTheremin">
+							<div class="scan"></div>
+							<span class="glitch">THEREMIN</span>
 						</button>
 					</div>
 
@@ -790,6 +796,72 @@
 			</div>
 		</div>
 
+
+
+		<div class="popin-overlay" id="popinTheremin">
+			<div class="popinTheremin">
+			<h2>Theremin — 16 Steps </h2>
+			
+			<div class="file-area" id="dropAreaTheremin">
+
+				<div class="controlsTheremin">
+
+					<button id="play">PLAY LOOP</button>
+
+					<div class="slider-group">
+					<label>Tempo</label>
+					<input type="range" id="tempo" min="60" max="180" value="130" step="1">
+					<span class="value" id="bpmThereminDisplay">130 BPM</span>
+					</div>
+
+					<div class="slider-group">
+					<label>Silence</label>
+					<input type="range" id="silence" min="0" max="70" value="20" step="5">
+					<span class="value" id="silenceDisplay">20%</span>
+					</div>
+
+					<div class="slider-group">
+					<label>Delay Mix</label>
+					<input type="range" id="delayMix" min="0" max="60" value="28" step="2">
+					<span class="value" id="delayMixVal">28%</span>
+					</div>
+
+					<div class="slider-group">
+					<label>Delay Feedback</label>
+					<input type="range" id="delayFeedback" min="0" max="75" value="42" step="3">
+					<span class="value" id="delayFbVal">42%</span>
+					</div>
+
+					<div class="slider-group">
+					<label>Delay Time</label>
+					<input type="range" id="delayTime" min="80" max="800" value="320" step="20">
+					<span class="value" id="delayTimeVal">320 ms</span>
+					</div>
+
+					<!-- NOUVEAU : REVERB -->
+					<div class="slider-group">
+					<label>Reverb Mix</label>
+					<input type="range" id="reverbMix" min="0" max="70" value="22" step="2">
+					<span class="value" id="reverbMixVal">22%</span>
+					</div>
+
+					<div class="mute-group">
+					<h3>Mute steps</h3>
+					<div class="mute-grid" id="muteGrid"></div><div class="mute-grid" id="muteGrid2"></div>
+					</div>
+
+				</div>
+
+				<div class="sequencerTheremin" id="sequencer"></div>
+				
+			</div>
+
+			<div class="btn-group">
+				<button class="btn-close" onclick="closePopinTheremin()">Close</button>
+			</div>
+			</div>
+		</div>
+
 		<script>
 			var delayAnim = 10;
 			var activatedRandomAnim = false;
@@ -932,6 +1004,10 @@
 			const popinEffectAnim = overlayEffectAnim.querySelector('.popinEffectAnim');
 			const dropAreaEffectAnim = document.getElementById('dropAreaEffectAnim');
 
+			const overlayTheremin = document.getElementById('popinTheremin');
+			const popinTheremin = overlayTheremin.querySelector('.popinTheremin');
+			const dropAreaTheremin = document.getElementById('dropAreaTheremin');
+
 
 			function openPopinEffectAnim() {
 				overlayEffectAnim.classList.add('active');
@@ -951,6 +1027,16 @@
 			function closePopinParams(){
 				popinParams.classList.remove('active');
 				setTimeout(() => overlayParams.classList.remove('active'), 400);
+			}
+
+			function openPopinTheremin() {
+				overlayTheremin.classList.add('active');
+				setTimeout(() => popinTheremin.classList.add('active'), 50);
+			}
+
+			function closePopinTheremin(){
+				popinTheremin.classList.remove('active');
+				setTimeout(() => overlayTheremin.classList.remove('active'), 400);
 			}
 
 			// Open / Close
@@ -974,6 +1060,10 @@
 
 			overlayEffectAnim.addEventListener('click', e => {
 				if (e.target === overlayEffectAnim) closePopinEffectAnim();
+			});
+
+			overlayTheremin.addEventListener('click', e => {
+				if (e.target === overlayTheremin) closePopinTheremin();
 			});
 		</script>
 

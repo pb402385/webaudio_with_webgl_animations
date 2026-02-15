@@ -1,0 +1,197 @@
+:root {
+    --bg: #0d0015;
+    --panel: #14001f;
+    --accent: #00f0ff;
+    --accent-glow: #00f0ff44;
+    --accent-dark: #0099aa;
+    --text: #e0f7ff;
+    --grid: #2a0040;
+    --flash: #ff00ee;
+    --mute-off: #444455;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.controlsTheremin {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.8rem 2rem;
+    margin: 2rem 0;
+}
+
+#play {
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
+    background: linear-gradient(145deg, #00d4ff, #0099cc);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px var(--accent-glow);
+    transition: all 0.3s ease;
+}
+
+#play:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 50px var(--accent-glow);
+}
+
+#play.active {
+    background: linear-gradient(145deg, #ff3366, #cc0033);
+    box-shadow: 0 0 40px #ff336688;
+}
+
+.slider-group,
+.mute-group {
+    background: rgba(20, 0, 31, 0.6);
+    padding: 1.2rem 1.6rem;
+    border-radius: 16px;
+    border: 1px solid var(--grid);
+    box-shadow: 0 0 20px #0008;
+}
+
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 320px;
+}
+
+.mute-group {
+    width: 100%;
+    max-width: 720px;
+    display: none;
+}
+
+.mute-group h3,
+.slider-group label {
+    margin-bottom: 0.6rem;
+    font-size: 1.1rem;
+    color: var(--accent);
+    text-shadow: 0 0 8px var(--accent-glow);
+}
+
+/*
+input[type="range"] {
+    flex: 1;
+    height: 8px;
+    background: linear-gradient(to right, var(--accent-dark) 0%, var(--accent) 100%);
+    border-radius: 5px;
+    outline: none;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent-glow);
+}
+*/
+
+.value {
+    font-size: 1.25rem;
+    font-weight: bold;
+    min-width: 70px;
+    text-align: right;
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.sequencerTheremin {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 14px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background: var(--panel);
+    border-radius: 20px;
+    box-shadow: inset 0 0 40px #00000080, 0 0 60px var(--accent-glow);
+    border: 1px solid #2a0040;
+}
+
+.step {
+    aspect-ratio: 1;
+    background: #1a0033;
+    border: 2px solid var(--grid);
+    border-radius: 12px;
+    position: relative;
+    /*overflow: hidden;*/
+    cursor: crosshair;
+    transition: all 0.18s ease;
+    box-shadow: inset 0 0 15px #000000aa;
+}
+
+.step:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 25px var(--accent-glow), inset 0 0 20px var(--accent-glow);
+    transform: scale(1.04);
+}
+
+.marker {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent-glow);
+    pointer-events: none;
+    transition: all 0.12s ease-out;
+}
+
+.playing {
+    animation: flash 0.8s ease-out;
+    border-color: var(--flash) !important;
+    box-shadow:
+        0 0 30px var(--flash),
+        0 0 60px var(--flash)aa,
+        inset 0 0 30px var(--flash)66 !important;
+}
+
+@keyframes flash {
+    0% {
+        box-shadow: 0 0 40px var(--flash), 0 0 80px var(--flash)cc;
+        transform: scale(1.08);
+    }
+
+    40% {
+        box-shadow: 0 0 60px var(--flash), 0 0 120px var(--flash)ff;
+        transform: scale(1.12);
+    }
+
+    100% {
+        box-shadow: 0 0 20px var(--flash)88, 0 0 40px var(--flash)44;
+        transform: scale(1);
+    }
+}
+
+#muteGrid,
+#muteGrid2 {
+    display: flex;
+    align-items: center;
+    align-content: space-around;
+    justify-content: space-around;
+    justify-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.checkbox {
+    width: 100%;
+    background-color: transparent;
+    height: 10px;
+    position: relative;
+    z-index: 999999;
+    cursor: pointer;
+}

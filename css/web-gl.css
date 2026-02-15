@@ -585,6 +585,18 @@ body{
     cursor: pointer;
 }
 
+#btnTheremin{
+	background-color: white;
+    z-index: 2;
+    cursor: pointer;
+}
+
+#btnDrumMachine{
+	background-color: white;
+    z-index: 2;
+    cursor: pointer;
+}
+
 .pPiano{
 	font-size: 50%;
 	font-weight: bold;
