@@ -126,7 +126,7 @@
 									<!--
 									<option value="5">Circle Hole</option>
 									<option value="6">Square Hole</option>
-								-->
+									-->
 									<option value="7">Hexagone</option>
 									<option value="8">Cone</option>
 									<option value="9">Circle</option>
@@ -405,50 +405,47 @@
 						</script>
 						
 						<div id="divFiltre">
-								<div id="filterDiv">
-									<div id="filterTitle"><h5>FILTER</h5></div>
-									<div id="filterSelect" class="">
-										<div class="select-wrapper">
-											<select id='filterTest' class="custom_select" onchange="changeEffect(document.getElementById('filterTest').value);">
-												<option value="lowpass" selected>Low Pass</option>
-												<option value="highpass">High Pass</option>
-												<option value="bandpass">Band Pass</option>
-												
-												<option value="lowshelf">Low Shelf</option>
-												<option value="highshelf">High Shelf</option>
-												<option value="peaking">Peaking</option>
-												<option value="notch">Notch</option>
-												
-												<option value="allpass">All Pass</option>
-											</select>
-										</div>
+							<div id="filterDiv">
+								<div id="filterTitle"><h5>FILTER</h5></div>
+								<div id="filterSelect" class="">
+									<div class="select-wrapper">
+										<select id='filterTest' class="custom_select" onchange="changeEffect(document.getElementById('filterTest').value);">
+											<option value="lowpass" selected>Low Pass</option>
+											<option value="highpass">High Pass</option>
+											<option value="bandpass">Band Pass</option>		
+											<option value="lowshelf">Low Shelf</option>
+											<option value="highshelf">High Shelf</option>
+											<option value="peaking">Peaking</option>
+											<option value="notch">Notch</option>												
+											<option value="allpass">All Pass</option>
+										</select>
 									</div>
 								</div>
+							</div>
 
-								<div id="filterPArams">
-									<div id="filterFrequency">
-										<div><h5>FREQUENCY</h5></div>
-										<div class="filterRange"> 
-											<input type="range" id ="frequencyRangeTest" min="0" max="3000" value="350" oninput="changeFrequency(document.getElementById('frequencyRangeTest').value);">
-											<div class="range-value" id="frequencyRangeTestDisplay">350</div>
-										</div>
-									</div>
-									<div id="filterQuality">
-										<div><h5>QUALITY</h5></div>
-										<div class="filterRange"> 
-											<input type="range" id ="qualityRangeTest" min="0" max="100" value="1" oninput="changeQuality(document.getElementById('qualityRangeTest').value);">
-											<div class="range-value" id="qualityRangeTestDisplay">1</div>
-										</div>
-									</div>
-									<div id="filterGain">
-										<div class="bordered centered filterTitle">Gain :</div>
-										<div class="filterRange"> 
-											<input type="range" id ="gainRangeTest" min="0" max="100" value="0" oninput="changeGain(document.getElementById('gainRangeTest').value);">
-										</div>
-										<div id="valGain"> 0 / 100 </div>
+							<div id="filterPArams">
+								<div id="filterFrequency">
+									<div><h5>FREQUENCY</h5></div>
+									<div class="filterRange"> 
+										<input type="range" id="frequencyRangeTest" min="0" max="3000" value="350" oninput="changeFrequency(document.getElementById('frequencyRangeTest').value);">
+										<div class="range-value" id="frequencyRangeTestDisplay">350</div>
 									</div>
 								</div>
-
+								<div id="filterQuality">
+									<div><h5>QUALITY</h5></div>
+									<div class="filterRange"> 
+										<input type="range" id="qualityRangeTest" min="0" max="100" value="1" oninput="changeQuality(document.getElementById('qualityRangeTest').value);">
+										<div class="range-value" id="qualityRangeTestDisplay">1</div>
+									</div>
+								</div>
+								<div id="filterGain">
+									<div class="bordered centered filterTitle">Gain :</div>
+									<div class="filterRange"> 
+										<input type="range" id="gainRangeTest" min="0" max="100" value="0" oninput="changeGain(document.getElementById('gainRangeTest').value);">
+									</div>
+									<div id="valGain"> 0 / 100 </div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -631,7 +628,7 @@
 				<div>
 					<h5 id="delayRangeTitle">Delay between transitions (sec)</h5>
 					<div class="filterRange"> 
-						<input type="range" id ="delayRangeTest" min="1" max="60" value="10" oninput="setDelayEffectAnim(document.getElementById('delayRangeTest').value);">
+						<input type="range" id="delayRangeTest" min="1" max="60" value="10" oninput="setDelayEffectAnim(document.getElementById('delayRangeTest').value);">
 						<div class="range-value" id="delayRangeTestDisplay">1</div>
 					</div>				
 				</div>
