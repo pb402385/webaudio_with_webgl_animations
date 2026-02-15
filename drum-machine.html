@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-title: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --bg: #0f0f12;
+      --surface: #16161c;
+      --accent: #00d4ff;
+      --accent-dark: #00a0c7;
+      --text: #e0e0ff;
+      --text-muted: #a0a0cc;
+      --led-off: #1e1e2e;
+      --led-border: #2a2a3e;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-family: var(--font-title);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      font-weight: 900;
+    }
+
+    .sequencer {
+      max-width: 960px;
+      margin: 0 auto 2.5rem;
+      width: 90%;
+      /* max-width: 460px; */
+      background: var(--glass);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      border-radius: 24px;
+      padding: 40px 30px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 20px 60px rgba(0, 255, 255, 0.2);
+      /* transform: translateY(100px) scale(0.9); */
+      transition: all 0.5s ease;
+      backdrop-filter: blur(16px);
+    }
+
+    .steps {
+          display: grid;
+    grid-template-columns: repeat(17, minmax(0, 1fr));
+    gap: 10px;
+    padding: 1.5rem;
+    background: transparent;
+    border-radius: 16px;
+    }
+
+    .led {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--led-off);
+      border: 2px solid var(--led-border);
+      transition: all 0.12s ease;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .led.playhead {
+      background: var(--accent) !important;
+      box-shadow: 0 0 24px var(--accent), inset 0 0 12px rgba(0,212,255,0.5);
+      transform: scale(1.08);
+    }
+
+    /* Couleurs par instrument (même éteintes) */
+    .led.kick   { background: #4d001a; border-color: #800033; }
+    .led.kick.on   { background: #ff3366; box-shadow: 0 0 20px #ff3366; }
+
+    .led.snare  { background: #001f33; border-color: #004466; }
+    .led.snare.on   { background: #33ccff; box-shadow: 0 0 20px #33ccff; }
+
+    .led.hihat  { background: #333300; border-color: #666600; }
+    .led.hihat.on   { background: #ffee66; box-shadow: 0 0 20px #ffee66; }
+
+    .led.clap   { background: #330033; border-color: #660066; }
+    .led.clap.on   { background: #cc66ff; box-shadow: 0 0 20px #cc66ff; }
+
+    .led.tom    { background: #4d2600; border-color: #804d00; }
+    .led.tom.on   { background: #ff9933; box-shadow: 0 0 20px #ff9933; }
+
+    .led.ride   { background: #003322; border-color: #006644; }
+    .led.ride.on   { background: #66ff99; box-shadow: 0 0 20px #66ff99; }
+
+    .led.crash  { background: #330000; border-color: #660000; }
+    .led.crash.on   { background: #ff4444; box-shadow: 0 0 32px #ff4444; transform: scale(1.12); }
+
+    .controls {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      padding: 0 1rem;
+    }
+
+    .control-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid #222233;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .control-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      flex: 1;
+      padding: 0.9rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #play { background: #00c853; color: white; }
+    #play:hover { background: #00b140; }
+
+    #stop { background: #d81b60; color: white; }
+    #stop:hover { background: #c2185b; }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .slider-row label {
+      min-width: 110px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent);
+    }
+
+    .value {
+      min-width: 60px;
+      text-align: right;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    @media (max-width: 640px) {
+      .controls { grid-template-columns: 1fr; }
+      h1 { font-size: 1.8rem; }
+      .steps { gap: 6px; padding: 1rem; }
+    }
+
+    
+    .title {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+            position: relative;
+    left: -17px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sequencer">
+    <div class="steps" id="steps"></div>
+  </div>
+
+  <div class="controls">
+    <div class="control-card">
+      <h3>Transport</h3>
+      <div class="btn-group">
+        <button id="play">Play</button>
+        <button id="stop">Stop</button>
+      </div>
+
+      <div class="slider-row">
+        <label>Tempo</label>
+        <input type="range" id="bpm" min="70" max="180" value="120" step="1">
+        <span class="value" id="bpm-value">120 BPM</span>
+      </div>
+    </div>
+
+    <div class="control-card">
+      <h3>Effets Master</h3>
+      <div class="slider-row">
+        <label>Reverb</label>
+        <input type="range" id="reverb" min="0" max="60" value="18" step="1">
+        <span class="value" id="reverb-value">18%</span>
+      </div>
+      <div class="slider-row">
+        <label>Delay</label>
+        <input type="range" id="delay" min="0" max="50" value="12" step="1">
+        <span class="value" id="delay-value">12%</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ────────────────────────────────────────────────
+    //  Drum Machine Pro – Édition manuelle du pattern
+    // ────────────────────────────────────────────────
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    let bpm = 120;
+    let beatDuration = 60 / bpm;
+
+    // Effets (comme avant)
+    const masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.9;
+    masterGain.connect(audioCtx.destination);
+
+    const reverb = audioCtx.createConvolver();
+    reverb.buffer = generateImpulse(1.4, 0.45);
+    const reverbWet = audioCtx.createGain();
+    reverbWet.gain.value = 0.18;
+    reverb.connect(reverbWet);
+    reverbWet.connect(masterGain);
+
+    function generateImpulse(seconds, decay) {
+      const len = audioCtx.sampleRate * seconds;
+      const buf = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+      const l = buf.getChannelData(0);
+      const r = buf.getChannelData(1);
+      for (let i = 0; i < len; i++) {
+        const amp = (Math.random() * 2 - 1) * Math.pow(1 - i/len, decay);
+        l[i] = amp; r[i] = amp;
+      }
+      return buf;
+    }
+
+    const delay = audioCtx.createDelay(0.6);
+    delay.delayTime.value = 0.3;
+    const feedback = audioCtx.createGain();
+    feedback.gain.value = 0.32;
+    const delayWet = audioCtx.createGain();
+    delayWet.gain.value = 0.12;
+    delay.connect(feedback);
+    feedback.connect(delay);
+    delay.connect(delayWet);
+    delayWet.connect(masterGain);
+
+    function connectWithFX(src) {
+      const dry = audioCtx.createGain();
+      dry.gain.value = 1;
+      src.connect(dry); dry.connect(masterGain);
+      src.connect(reverb);
+      src.connect(delay);
+    }
+
+    // Sons (comme avant – je les raccourcis pour la lisibilité)
+    function playKick(t) { /* même code que précédemment */ 
+      const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(180, t); o.frequency.exponentialRampToValueAtTime(55, t + 0.07);
+      g.gain.setValueAtTime(1.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+      o.connect(g); connectWithFX(g); o.start(t); o.stop(t + 0.18);
+    }
+
+    function playSnare(t) { /* même code */ 
+      const n = audioCtx.createBufferSource(); const b = audioCtx.createBuffer(1, audioCtx.sampleRate*0.14, audioCtx.sampleRate);
+      const d = b.getChannelData(0); for (let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+      n.buffer = b; const g = audioCtx.createGain(); const f = audioCtx.createBiquadFilter();
+      f.type='lowpass'; f.frequency.value=2400; g.gain.setValueAtTime(1.0, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+      n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+    }
+
+    function playHiHat(t, closed=true) { /* même code */ 
+      const n = audioCtx.createBufferSource(); const b = audioCtx.createBuffer(1, audioCtx.sampleRate*0.05, audioCtx.sampleRate);
+      const d = b.getChannelData(0); for (let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+      n.buffer = b; const g = audioCtx.createGain(); const f = audioCtx.createBiquadFilter();
+      f.type='highpass'; f.frequency.value = closed?8500:4800;
+      g.gain.setValueAtTime(closed?0.5:0.7, t); g.gain.exponentialRampToValueAtTime(0.001, t+(closed?0.04:0.10));
+      n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+    }
+
+    function playClap(t) { playSnare(t); playHiHat(t+0.004,false); playHiHat(t+0.011,false); }
+    function playTom(t) { /* même code tom */ 
+      const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+      o.type='sine'; o.frequency.setValueAtTime(130,t); o.frequency.exponentialRampToValueAtTime(70,t+0.14);
+      g.gain.setValueAtTime(1.0,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.28);
+      o.connect(g); connectWithFX(g); o.start(t); o.stop(t+0.32);
+    }
+
+    function playRide(t) { /* même code ride */ 
+      const n = audioCtx.createBufferSource(); const b = audioCtx.createBuffer(1, audioCtx.sampleRate*0.7, audioCtx.sampleRate);
+      const d = b.getChannelData(0); for (let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,4);
+      n.buffer = b; const g = audioCtx.createGain(); const f = audioCtx.createBiquadFilter();
+      f.type='bandpass'; f.frequency.value=6200; f.Q.value=3; g.gain.setValueAtTime(0.4,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.7);
+      n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+    }
+
+    function playCrash(t) { playRide(t); }
+
+    // Pattern éditable – objet avec booléens
+    const pattern = {
+      kick:  Array(16).fill(false).map((_,i) => [0,4,8,12,15].includes(i)),
+      snare: Array(16).fill(false).map((_,i) => i%4===2),
+      hihat: Array(16).fill(false).map((_,i) => i%2===0),
+      clap:  Array(16).fill(false).map((_,i) => i%8===6 || i%8===14),
+      tom:   Array(16).fill(false),
+      ride:  Array(16).fill(false).map((_,i) => i%4===3),
+      crash: Array(16).fill(false).map((_,i) => i===0),
+    };
+
+    // Création des LEDs + clic pour toggle
+    const container = document.getElementById('steps');
+    const leds = [];
+    const instruments = ['kick','snare','hihat','clap','tom','ride','crash'];
+
+    instruments.forEach(inst => {
+      const title = document.createElement('div');
+      title.innerHTML = inst;
+      title.className = "title";
+      container.appendChild(title);
+
+      for (let step = 0; step < 16; step++) {
+
+        
+        const led = document.createElement('div');
+       
+        led.classList.add('led', inst);
+        if (pattern[inst][step]) led.classList.add('on');
+        
+        led.addEventListener('click', () => {
+          pattern[inst][step] = !pattern[inst][step];
+          led.classList.toggle('on');
+        });
+
+
+        container.appendChild(led);
+
+        leds.push(led);
+      }
+    });
+
+    // Séquenceur
+    let currentStep = 0;
+    let nextBeatTime = 0;
+    let isPlaying = false;
+
+    function scheduleStep(time) {
+      instruments.forEach((inst, idx) => {
+        
+        const stepIndex = currentStep + idx * 16;
+        if (pattern[inst][currentStep]) {
+          const playFunc = {
+            kick: playKick,
+            snare: playSnare,
+            hihat: playHiHat,
+            clap: playClap,
+            tom: playTom,
+            ride: playRide,
+            crash: playCrash
+          }[inst];
+          
+          if (inst === 'hihat') playFunc(time, true); // closed par défaut
+          else playFunc(time);
+
+          //leds[stepIndex].app(title);
+
+          //leds[stepIndex].classList.add('on'); // flash visuel
+          //setTimeout(() => leds[stepIndex].classList.remove('on'), 120);
+        }
+      });
+
+      leds.forEach((led, i) => {
+        led.classList.toggle('playhead', i % 16 === currentStep);
+      });
+
+      currentStep = (currentStep + 1) % 16;
+    }
+
+    function sequencerLoop() {
+      const now = audioCtx.currentTime;
+      while (nextBeatTime < now + 0.2) {
+        scheduleStep(nextBeatTime);
+        nextBeatTime += beatDuration;
+      }
+      if (isPlaying) requestAnimationFrame(sequencerLoop);
+    }
+
+    function start() {
+      if (isPlaying) return;
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      currentStep = 0;
+      nextBeatTime = audioCtx.currentTime + 0.1;
+      isPlaying = true;
+      sequencerLoop();
+    }
+
+    function stop() {
+      isPlaying = false;
+      leds.forEach(led => led.classList.remove('playhead'));
+    }
+
+    function setBPM(v) { bpm = +v; beatDuration = 60 / bpm; document.getElementById('bpm-value').textContent = bpm + ' BPM'; }
+    function setReverb(v) { reverbWet.gain.value = v / 100; document.getElementById('reverb-value').textContent = v + '%'; }
+    function setDelay(v) { delayWet.gain.value = v / 100; document.getElementById('delay-value').textContent = v + '%'; }
+
+    // Bindings
+    document.getElementById('play').onclick = start;
+    document.getElementById('stop').onclick = stop;
+    document.getElementById('bpm').oninput = e => setBPM(e.target.value);
+    document.getElementById('reverb').oninput = e => setReverb(e.target.value);
+    document.getElementById('delay').oninput = e => setDelay(e.target.value);
+
+  </script>
+</body>
+</html>
