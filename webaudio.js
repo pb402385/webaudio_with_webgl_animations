@@ -2350,14 +2350,15 @@ setTimeout(() => {
       checkbox.addEventListener('click', () => {
         checkElement = document.getElementById("checkbox"+i);
         if (checkElement.checked){
-        checkbox.style.backgroundColor = 'red';
-        checkElement.checked = false;
-        checkbox.parentElement.style.opacity = "0.1";
+          checkbox.style.backgroundColor = 'red';
+          checkElement.checked = false;
+          checkbox.parentElement.style.opacity = "0.1";
         } else {
-        checkbox.style.backgroundColor = 'blue';
-        checkElement.checked = true;
-        checkbox.parentElement.style.opacity = "1.0";
+          checkbox.style.backgroundColor = 'blue';
+          checkElement.checked = true;
+          checkbox.parentElement.style.opacity = "1.0";
         }
+        stepsData[i].enabled = checkElement.checked;
       });
 
       sequencer.appendChild(ctn);

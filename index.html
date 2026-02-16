@@ -800,50 +800,159 @@
 
 		<div class="popin-overlay" id="popinTheremin">
 			<div class="popinTheremin">
-			<h2>Theremin — 16 Steps </h2>
+			<h2>THEREMIN — 16 STEPS </h2>
 			
 			<div class="file-area" id="dropAreaTheremin">
 
+				<div id="sequencerContainer">
+					<button id="play">PLAY LOOP</button>
+					<div class="sequencerTheremin" id="sequencer"></div>			
+				</div>
+
 				<div class="controlsTheremin">
 
-					<button id="play">PLAY LOOP</button>
+					<!--
+					<div id="divVolume">
+							<div><h5 class="h5Volume">VOLUME</h5></div> 
+							<input type="range" id="volumeRange" value="20" max="100" oninput="changeVolume(this);">
+							<div class="range-value" id="volumeRangeDisplay">20</div>
+						</div>
+					-->
 
 					<div class="slider-group">
-					<label>Tempo</label>
-					<input type="range" id="tempo" min="60" max="180" value="130" step="1">
-					<span class="value" id="bpmThereminDisplay">130 BPM</span>
+						<div><h5 class="h5Tempo">TEMPO</h5></div> 
+						<input type="range" id="tempo" min="60" max="180" value="130" step="1"  oninput="changeTempo(this);">
+						<div class="range-value" id="bpmThereminDisplay">130 BPM</div>
 					</div>
 
-					<div class="slider-group">
-					<label>Silence</label>
-					<input type="range" id="silence" min="0" max="70" value="20" step="5">
-					<span class="value" id="silenceDisplay">20%</span>
-					</div>
+					<!-- PARTIE FUTURIST SLIDERS -->
+					<script>
+						const sliderTempo = document.getElementById('tempo');
+
+						const changeTempo = () => {
+							const val = sliderTempo.value;
+							//range 60 à 180 en pourcentage
+							let newVal = ((val - 60) / (180 - 60)) * 100;
+							// CSS custom property pour le remplissage
+							sliderTempo.style.setProperty('--value', `${newVal}%`);
+						};
+
+						sliderTempo.addEventListener('input', changeTempo);
+						changeTempo(); // init
+					</script>
 
 					<div class="slider-group">
-					<label>Delay Mix</label>
-					<input type="range" id="delayMix" min="0" max="60" value="28" step="2">
-					<span class="value" id="delayMixVal">28%</span>
+						<div><h5 class="h5Silence">SILENCE</h5></div> 
+						<input type="range" id="silence" min="0" max="70" value="20" step="5"  oninput="changeSilence(this);">
+						<div class="range-value" id="silenceDisplay">20%</div>
 					</div>
 
-					<div class="slider-group">
-					<label>Delay Feedback</label>
-					<input type="range" id="delayFeedback" min="0" max="75" value="42" step="3">
-					<span class="value" id="delayFbVal">42%</span>
-					</div>
+					<!-- PARTIE FUTURIST SLIDERS -->
+					<script>
+						const sliderSilence = document.getElementById('silence');
+
+						const changeSilence = () => {
+							const val = sliderSilence.value;
+							//range 0 à 70 en pourcentage
+							let newVal = (val/70) * 100;
+							// CSS custom property pour le remplissage
+							sliderSilence.style.setProperty('--value', `${newVal}%`);
+						};
+
+						sliderSilence.addEventListener('input', changeSilence);
+						changeSilence(); // init
+					</script>
+
 
 					<div class="slider-group">
-					<label>Delay Time</label>
-					<input type="range" id="delayTime" min="80" max="800" value="320" step="20">
-					<span class="value" id="delayTimeVal">320 ms</span>
+						<div><h5 class="h5DelayMix">DELAY MIX</h5></div> 
+						<input type="range" id="delayMix" min="0" max="60" value="28" step="2"  oninput="changeDelayMix(this);">
+						<div class="range-value" id="delayMixVal">28%</div>
 					</div>
 
-					<!-- NOUVEAU : REVERB -->
+					<!-- PARTIE FUTURIST SLIDERS -->
+					<script>
+						const sliderDelayMix = document.getElementById('delayMix');
+
+						const changeDelayMix = () => {
+							const val = sliderDelayMix.value;
+							//range 0 à 60 en pourcentage
+							let newVal = (val/60) * 100;
+							// CSS custom property pour le remplissage
+							sliderDelayMix.style.setProperty('--value', `${newVal}%`);
+						};
+
+						sliderDelayMix.addEventListener('input', changeDelayMix);
+						changeDelayMix(); // init
+					</script>
+
+
 					<div class="slider-group">
-					<label>Reverb Mix</label>
-					<input type="range" id="reverbMix" min="0" max="70" value="22" step="2">
-					<span class="value" id="reverbMixVal">22%</span>
+						<div><h5 class="h5DelayFeedback">DELAY FEEDBACK</h5></div> 
+						<input type="range" id="delayFeedback" min="0" max="75" value="42" step="3"  oninput="changeDelayFeedback(this);">
+						<div class="range-value" id="delayFbVal">42%</div>
 					</div>
+
+					<!-- PARTIE FUTURIST SLIDERS -->
+					<script>
+						const sliderDelayFeedback = document.getElementById('delayFeedback');
+
+						const changeDelayFeedback = () => {
+							const val = sliderDelayFeedback.value;
+							//range 0 à 75 en pourcentage
+							let newVal = (val/75) * 100;
+							// CSS custom property pour le remplissage
+							sliderDelayFeedback.style.setProperty('--value', `${newVal}%`);
+						};
+
+						sliderDelayFeedback.addEventListener('input', changeDelayFeedback);
+						changeDelayFeedback(); // init
+					</script>
+
+					<div class="slider-group">
+						<div><h5 class="h5DelayTime">DELAY TIME</h5></div> 
+						<input type="range" id="delayTime" min="80" max="800" value="320" step="20"  oninput="changeDelayTime(this);">
+						<div class="range-value" id="delayTimeVal">320 ms</div>
+					</div>
+
+					<!-- PARTIE FUTURIST SLIDERS -->
+					<script>
+						const sliderDelayTime = document.getElementById('delayTime');
+
+						const changeDelayTime = () => {
+							const val = sliderDelayTime.value;
+							//range 80 à 800 en pourcentage
+							let newVal = ((val - 80) / (800 - 80)) * 100;
+							// CSS custom property pour le remplissage
+							sliderDelayTime.style.setProperty('--value', `${newVal}%`);
+						};
+
+						sliderDelayTime.addEventListener('input', changeDelayTime);
+						changeDelayTime(); // init
+					</script>
+
+
+					<div class="slider-group">
+						<div><h5 class="h5ReverbMix">REVERB MIX</h5></div> 
+						<input type="range" id="reverbMix" min="0" max="70" value="22" step="2"  oninput="changeReverbMix(this);">
+						<div class="range-value" id="reverbMixVal">22%</div>
+					</div>
+
+					<!-- PARTIE FUTURIST SLIDERS -->
+					<script>
+						const sliderReverbMix = document.getElementById('reverbMix');
+
+						const changeReverbMix = () => {
+							const val = sliderReverbMix.value;
+							//range 80 à 800 en pourcentage
+							let newVal = (val/70) * 100;
+							// CSS custom property pour le remplissage
+							sliderReverbMix.style.setProperty('--value', `${newVal}%`);
+						};
+
+						sliderReverbMix.addEventListener('input', changeReverbMix);
+						changeReverbMix(); // init
+					</script>
 
 					<div class="mute-group">
 					<h3>Mute steps</h3>
@@ -851,8 +960,6 @@
 					</div>
 
 				</div>
-
-				<div class="sequencerTheremin" id="sequencer"></div>
 				
 			</div>
 

@@ -35,6 +35,8 @@
     cursor: pointer;
     box-shadow: 0 0 30px var(--accent-glow);
     transition: all 0.3s ease;
+    position: relative;
+    top: -15px;
 }
 
 #play:hover {
@@ -194,4 +196,8 @@ input[type="range"]::-webkit-slider-thumb {
     position: relative;
     z-index: 999999;
     cursor: pointer;
+}
+
+#sequencerContainer {
+    display: block;
 }
