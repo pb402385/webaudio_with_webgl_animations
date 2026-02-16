@@ -137,6 +137,39 @@
     transition: none;
 }
 
+
+.popinDrumMachine {
+    width: 90%;
+    background: var(--glass);
+    border: 1px solid rgba(0,255,255,0.3);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 60px rgba(0,255,255,0.2);
+    transform: none;
+    transition: none;
+    backdrop-filter: blur(16px);
+}
+
+.popinDrumMachine.active {
+    transform: translateY(0) scale(1);
+}
+
+.popinDrumMachine h2 {
+    margin: 0 0 20px;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #00ffff, #0088ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+#dropAreaDrumMachine {
+    transform: none;
+    transition: none;
+}
+
 /* Futuristic file drop zone */
 .file-area {
     border: 3px dashed var(--primary);
@@ -147,6 +180,17 @@
     background: rgba(0,255,255,0.05);
     margin: 20px 0;
 }
+
+.file-area-big {
+    border: 3px dashed var(--primary);
+    border-radius: 20px;
+    padding: 50px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(0,255,255,0.05);
+    margin: 20px 0;
+}
+
 .file-area:hover, .file-area.dragover {
     background: rgba(0,255,255,0.15);
     box-shadow: 0 0 30px rgba(0,255,255,0.4);

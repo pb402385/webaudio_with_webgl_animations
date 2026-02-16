@@ -30,6 +30,7 @@
 		<link href="css/futurist-button-yes-no.css" rel="stylesheet"/>
 		<link href="css/futurist-checklist.css" rel="stylesheet"/>
 		<link href="css/theremin.css" rel="stylesheet"/>
+		<link href="css/drum-machine.css" rel="stylesheet"/>
 
 		<link  href="css/responsive.css" rel="stylesheet"/>
 	</head>
@@ -61,6 +62,11 @@
 						<button class="btn-futur" onclick="openPopinTheremin();" id="btnTheremin">
 							<div class="scan"></div>
 							<span class="glitch">THEREMIN</span>
+						</button>
+
+						<button class="btn-futur" onclick="openPopinDrumMachine();" id="btnDrumMachine">
+							<div class="scan"></div>
+							<span class="glitch">DRUM MACHINE</span>
 						</button>
 					</div>
 
@@ -802,7 +808,7 @@
 			<div class="popinTheremin">
 			<h2>THEREMIN — 16 STEPS </h2>
 			
-			<div class="file-area" id="dropAreaTheremin">
+			<div class="file-area-big" id="dropAreaTheremin">
 
 				<div id="sequencerContainer">
 					<button id="play">PLAY LOOP</button>
@@ -969,6 +975,55 @@
 			</div>
 		</div>
 
+
+
+		<div class="popin-overlay" id="popinDrumMachine">
+			<div class="popinDrumMachine">
+			<h2>DRUM MACHINE</h2>
+			
+			<div class="file-area-big" id="dropAreaDrumMachine">
+
+				<div class="sequencer">
+					<div class="steps" id="steps"></div>
+				</div>
+
+				<div class="controls">
+
+					<div class="btn-group-dm">
+						<button id="playDrumMachine">Play</button>
+						<button id="stopDrumMachine">Stop</button>
+					</div>
+
+
+					<div class="control-card">
+						<h3>Effets Master</h3>
+						<div class="slider-row">
+							<label>Reverb</label>
+							<input type="range" id="reverb" min="0" max="60" value="18" step="1">
+							<span class="value" id="reverb-value">18%</span>
+						</div>
+						<div class="slider-row">
+							<label>Delay</label>
+							<input type="range" id="delay" min="0" max="50" value="12" step="1">
+							<span class="value" id="delay-value">12%</span>
+						</div>
+						<div class="slider-row">
+							<label>Tempo</label>
+							<input type="range" id="bpm" min="70" max="180" value="120" step="1">
+							<span class="value" id="bpm-value">120 BPM</span>
+						</div>
+					</div>
+				</div>
+
+				
+			</div>
+
+			<div class="btn-group">
+				<button class="btn-close" onclick="closePopinDrumMachine()">Close</button>
+			</div>
+			</div>
+		</div>
+
 		<script>
 			var delayAnim = 10;
 			var activatedRandomAnim = false;
@@ -1115,6 +1170,11 @@
 			const popinTheremin = overlayTheremin.querySelector('.popinTheremin');
 			const dropAreaTheremin = document.getElementById('dropAreaTheremin');
 
+			const overlayDrumMachine = document.getElementById('popinDrumMachine');
+			const popinDrumMachine = overlayDrumMachine.querySelector('.popinDrumMachine');
+			const dropAreaDrumMachine = document.getElementById('dropAreaDrumMachine');
+
+
 
 			function openPopinEffectAnim() {
 				overlayEffectAnim.classList.add('active');
@@ -1146,6 +1206,17 @@
 				setTimeout(() => overlayTheremin.classList.remove('active'), 400);
 			}
 
+			function openPopinDrumMachine() {
+				overlayDrumMachine.classList.add('active');
+				setTimeout(() => popinDrumMachine.classList.add('active'), 50);
+			}
+
+			function closePopinDrumMachine(){
+				popinDrumMachine.classList.remove('active');
+				setTimeout(() => overlayDrumMachine.classList.remove('active'), 400);
+			}
+
+
 			// Open / Close
 			function openPopin() {
 				overlay.classList.add('active');
@@ -1171,6 +1242,10 @@
 
 			overlayTheremin.addEventListener('click', e => {
 				if (e.target === overlayTheremin) closePopinTheremin();
+			});
+
+			overlayDrumMachine.addEventListener('click', e => {
+				if (e.target === overlayDrumMachine) closePopinDrumMachine();
 			});
 		</script>
 

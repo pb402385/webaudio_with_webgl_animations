@@ -145,6 +145,7 @@ async function unlockAudio() {
 			// Mets ici tout ce qui a besoin du son
 			initAudioContext2();
 			initAudioGraphTheremin();
+			initAudioGraphDrumMachine();
 		});
 
 	}, { once: true });
@@ -1689,6 +1690,7 @@ async function stopAllSounds(){
 	stopMelodie2 = true;
 	stopMelodieBool = true;
 	stopTheremin();
+	stopDrumMachine();
 }
 
 async function stopAllSounds2(){
@@ -1699,6 +1701,7 @@ async function stopAllSounds2(){
 	stopMelodie = true;
 	stopMelodie2 = true;
 	stopTheremin();
+	stopDrumMachine();
 	if (audioCtx) await audioCtx.close();
 	stopMelodieBool = true;
 	audioCtx = new AudioContext();
@@ -2141,7 +2144,7 @@ function getMousePos(canvas, evt) {
 
 
 
-/** THEREMIN */
+	/** THEREMIN */
 
     // ────────────────────────────────────────────────
     //  NŒUDS AUDIO + EFFETS
@@ -2176,7 +2179,7 @@ function getMousePos(canvas, evt) {
       generateHallImpulse(); // crée l'impulsion de réverb
 
       // Connexions
-      sourceGain.connect(audioCtx.destination);           // dry
+      //sourceGain.connect(audioCtx.destination);           // dry
 
       // Delay send → return
       sourceGain.connect(delayNode);
@@ -2184,12 +2187,24 @@ function getMousePos(canvas, evt) {
       delayFilter.connect(feedbackGain);
       feedbackGain.connect(delayNode);
       delayNode.connect(delayWetGain);
-      delayWetGain.connect(audioCtx.destination);
+      delayWetGain.connect(analyserNode);
 
       // Reverb send → return
       sourceGain.connect(reverbNode);
       reverbNode.connect(reverbWetGain);
       reverbWetGain.connect(analyserNode);
+
+	  sourceGain.connect(lBand);
+	  sourceGain.connect(hBand);
+	  sourceGain.connect(mGain);
+
+	  //delayWetGain.connect(lBand);
+	  //delayWetGain.connect(hBand);
+	  //delayWetGain.connect(mGain);
+//
+	  //reverbWetGain.connect(lBand);
+	  //reverbWetGain.connect(hBand);
+	  //reverbWetGain.connect(mGain);
     }
 
     // Génère une impulse response hall simple (procédurale)
@@ -2484,3 +2499,229 @@ function stopTheremin(){
     isPlayingTheremin = false;
     return;
 }
+
+
+
+
+	/** DRUM MACHINE */
+
+ 	let bpm = 120;
+    let beatDuration = 60 / bpm;
+
+	// Séquenceur
+    let currentStep = 0;
+    let nextBeatTime = 0;
+    let isPlayingDrumMachine = false;
+
+	const leds = [];
+    const instruments = ['kick','snare','hihat','clap','tom','ride','crash'];
+
+	// Pattern éditable – objet avec booléens
+    const pattern = {
+      kick:  Array(16).fill(false).map((_,i) => [0,4,8,12,15].includes(i)),
+      snare: Array(16).fill(false).map((_,i) => i%4===2),
+      hihat: Array(16).fill(false).map((_,i) => i%2===0),
+      clap:  Array(16).fill(false).map((_,i) => i%8===6 || i%8===14),
+      tom:   Array(16).fill(false),
+      ride:  Array(16).fill(false).map((_,i) => i%4===3),
+      crash: Array(16).fill(false).map((_,i) => i===0),
+    };
+
+	let masterGain, reverbWetDM, reverbDM, delayDM, feedbackDM, delayWetDM ;
+
+	function initAudioGraphDrumMachine() {
+		// Effets (comme avant)
+		masterGain = audioCtx.createGain();
+		masterGain.gain.value = 0.9;
+		
+		//masterGain.connect(audioCtx.destination);
+
+		masterGain.connect(lBand);
+	  	masterGain.connect(hBand);
+	  	masterGain.connect(mGain);
+
+		reverbDM = audioCtx.createConvolver();
+		reverbDM.buffer = generateImpulse(1.4, 0.45);
+		reverbWetDM = audioCtx.createGain();
+		reverbWetDM.gain.value = 0.18;
+		reverbDM.connect(reverbWetDM);
+		reverbWetDM.connect(masterGain);
+
+		delayDM = audioCtx.createDelay(0.6);
+		delayDM.delayTime.value = 0.3;
+		feedbackDM = audioCtx.createGain();
+		feedbackDM.gain.value = 0.32;
+		delayWetDM = audioCtx.createGain();
+		delayWetDM.gain.value = 0.12;
+		delayDM.connect(feedbackDM);
+		feedbackDM.connect(delayDM);
+		delayDM.connect(delayWetDM);
+		delayWetDM.connect(masterGain);
+	}
+
+    function generateImpulse(seconds, decay) {
+      const len = audioCtx.sampleRate * seconds;
+      const buf = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+      const l = buf.getChannelData(0);
+      const r = buf.getChannelData(1);
+      for (let i = 0; i < len; i++) {
+        const amp = (Math.random() * 2 - 1) * Math.pow(1 - i/len, decay);
+        l[i] = amp; r[i] = amp;
+      }
+      return buf;
+    }
+
+    function connectWithFX(src) {
+      const dry = audioCtx.createGain();
+      dry.gain.value = 1;
+      src.connect(dry); dry.connect(masterGain);
+      src.connect(reverbDM);
+      src.connect(delayDM);
+    }
+
+    // Sons (comme avant – je les raccourcis pour la lisibilité)
+    function playKick(t) { /* même code que précédemment */ 
+      const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+      o.type = 'sine'; o.frequency.setValueAtTime(180, t); o.frequency.exponentialRampToValueAtTime(55, t + 0.07);
+      g.gain.setValueAtTime(1.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+      o.connect(g); connectWithFX(g); o.start(t); o.stop(t + 0.18);
+    }
+
+    function playSnare(t) { /* même code */ 
+      const n = audioCtx.createBufferSource(); const b = audioCtx.createBuffer(1, audioCtx.sampleRate*0.14, audioCtx.sampleRate);
+      const d = b.getChannelData(0); for (let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+      n.buffer = b; const g = audioCtx.createGain(); const f = audioCtx.createBiquadFilter();
+      f.type='lowpass'; f.frequency.value=2400; g.gain.setValueAtTime(1.0, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+      n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+    }
+
+    function playHiHat(t, closed=true) { /* même code */ 
+      const n = audioCtx.createBufferSource(); const b = audioCtx.createBuffer(1, audioCtx.sampleRate*0.05, audioCtx.sampleRate);
+      const d = b.getChannelData(0); for (let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+      n.buffer = b; const g = audioCtx.createGain(); const f = audioCtx.createBiquadFilter();
+      f.type='highpass'; f.frequency.value = closed?8500:4800;
+      g.gain.setValueAtTime(closed?0.5:0.7, t); g.gain.exponentialRampToValueAtTime(0.001, t+(closed?0.04:0.10));
+      n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+    }
+
+    function playClap(t) { playSnare(t); playHiHat(t+0.004,false); playHiHat(t+0.011,false); }
+    function playTom(t) { /* même code tom */ 
+      const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+      o.type='sine'; o.frequency.setValueAtTime(130,t); o.frequency.exponentialRampToValueAtTime(70,t+0.14);
+      g.gain.setValueAtTime(1.0,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.28);
+      o.connect(g); connectWithFX(g); o.start(t); o.stop(t+0.32);
+    }
+
+    function playRide(t) { /* même code ride */ 
+      const n = audioCtx.createBufferSource(); const b = audioCtx.createBuffer(1, audioCtx.sampleRate*0.7, audioCtx.sampleRate);
+      const d = b.getChannelData(0); for (let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,4);
+      n.buffer = b; const g = audioCtx.createGain(); const f = audioCtx.createBiquadFilter();
+      f.type='bandpass'; f.frequency.value=6200; f.Q.value=3; g.gain.setValueAtTime(0.4,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.7);
+      n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+    }
+
+    function playCrash(t) { playRide(t); }
+
+	function scheduleStep(time) {
+      instruments.forEach((inst, idx) => {
+        
+        const stepIndex = currentStep + idx * 16;
+        if (pattern[inst][currentStep]) {
+          const playFunc = {
+            kick: playKick,
+            snare: playSnare,
+            hihat: playHiHat,
+            clap: playClap,
+            tom: playTom,
+            ride: playRide,
+            crash: playCrash
+          }[inst];
+          
+          if (inst === 'hihat') playFunc(time, true); // closed par défaut
+          else playFunc(time);
+
+          //leds[stepIndex].app(title);
+
+          //leds[stepIndex].classList.add('on'); // flash visuel
+          //setTimeout(() => leds[stepIndex].classList.remove('on'), 120);
+        }
+      });
+
+      leds.forEach((led, i) => {
+        led.classList.toggle('playhead', i % 16 === currentStep);
+      });
+
+      currentStep = (currentStep + 1) % 16;
+    }
+
+    function sequencerLoop() {
+      const now = audioCtx.currentTime;
+      while (nextBeatTime < now + 0.2) {
+        scheduleStep(nextBeatTime);
+        nextBeatTime += beatDuration;
+      }
+      if (isPlayingDrumMachine) requestAnimationFrame(sequencerLoop);
+    }
+
+    function startDrumMachine() {
+      if (isPlayingDrumMachine) return;
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      currentStep = 0;
+      nextBeatTime = audioCtx.currentTime + 0.1;
+      isPlayingDrumMachine = true;
+      sequencerLoop();
+    }
+
+    function stopDrumMachine() {
+      isPlayingDrumMachine = false;
+      leds.forEach(led => led.classList.remove('playhead'));
+    }
+
+    function setBPM(v) { bpm = +v; beatDuration = 60 / bpm; document.getElementById('bpm-value').textContent = bpm + ' BPM'; }
+    function setReverb(v) { reverbWetDM.gain.value = v / 100; document.getElementById('reverb-value').textContent = v + '%'; }
+    function setDelay(v) { delayWetDM.gain.value = v / 100; document.getElementById('delay-value').textContent = v + '%'; }
+
+
+
+	//TODO SET TIMEOUT 2 secondes ici
+	setTimeout(() => {
+
+    // Création des LEDs + clic pour toggle
+    const container = document.getElementById('steps');
+
+    instruments.forEach(inst => {
+      const title = document.createElement('div');
+      title.innerHTML = inst;
+      title.className = "title";
+      container.appendChild(title);
+
+      for (let step = 0; step < 16; step++) {
+
+        
+        const led = document.createElement('div');
+       
+        led.classList.add('led', inst);
+        if (pattern[inst][step]) led.classList.add('on');
+        
+        led.addEventListener('click', () => {
+          pattern[inst][step] = !pattern[inst][step];
+          led.classList.toggle('on');
+        });
+
+
+        container.appendChild(led);
+
+        leds.push(led);
+      }
+    });
+
+    // Bindings
+    document.getElementById('playDrumMachine').onclick = startDrumMachine;
+    document.getElementById('stopDrumMachine').onclick = stopDrumMachine;
+    document.getElementById('bpm').oninput = e => setBPM(e.target.value);
+    document.getElementById('reverb').oninput = e => setReverb(e.target.value);
+    document.getElementById('delay').oninput = e => setDelay(e.target.value);
+
+	}, 2000);
+
+
