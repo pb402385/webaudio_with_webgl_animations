@@ -8,6 +8,7 @@
     --grid: #2a0040;
     --flash: #ff00ee;
     --mute-off: #444455;
+    --selectedGrey: #55667744;
 }
 
 * {
@@ -25,6 +26,12 @@
     margin: 2rem 0;
 }
 
+#actionsTheremin {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
 #play {
     padding: 1rem 3rem;
     font-size: 1.4rem;
@@ -36,16 +43,40 @@
     box-shadow: 0 0 30px var(--accent-glow);
     transition: all 0.3s ease;
     position: relative;
-    top: -15px;
+    top: -5px;
 }
 
 #play:hover {
-    transform: translateY(-3px) scale(1.05);
     box-shadow: 0 0 50px var(--accent-glow);
+    background: var(--accent-glow);
+}
+
+#presetsTheremin {
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
+    background: linear-gradient(145deg, #335566, #444455);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px var(--accent-glow);
+    transition: all 0.3s ease;
+    position: relative;
+    top: -5px;
+}
+
+#presetsTheremin:hover {
+    box-shadow: 0 0 50px var(--accent-glow);
+    background: var(--selectedGrey);
 }
 
 #play.active {
     background: linear-gradient(145deg, #ff3366, #cc0033);
+    box-shadow: 0 0 40px #ff336688;
+}
+
+#play.active:hover {
+    background: #ff336644;
     box-shadow: 0 0 40px #ff336688;
 }
 
@@ -78,27 +109,6 @@
     color: var(--accent);
     text-shadow: 0 0 8px var(--accent-glow);
 }
-
-/*
-input[type="range"] {
-    flex: 1;
-    height: 8px;
-    background: linear-gradient(to right, var(--accent-dark) 0%, var(--accent) 100%);
-    border-radius: 5px;
-    outline: none;
-    box-shadow: 0 0 15px var(--accent-glow);
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 22px;
-    height: 22px;
-    background: var(--accent);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent-glow);
-}
-*/
 
 .value {
     font-size: 1.25rem;
@@ -200,4 +210,6 @@ input[type="range"]::-webkit-slider-thumb {
 
 #sequencerContainer {
     display: block;
+    position: relative;
+    top: 5px;
 }

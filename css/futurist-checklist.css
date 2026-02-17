@@ -13,34 +13,84 @@
       overflow-y: auto;
 }
 
+.containerTheremin, .containerDrumMachine {
+      background: rgba(10, 15, 40, 0.7);
+      padding: 5px 50px;
+      border-radius: 20px;
+      border: 1px solid rgba(100, 200, 255, 0.3);
+      box-shadow: 
+        0 0 30px rgba(0, 200, 255, 0.2),
+        inset 0 0 20px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      overflow-y: auto;
+}
+
+.sizeTheremin {
+      max-height: 70vh;
+      padding: 5px 10px;
+}
+
+.sizeDrumMachine {
+      max-height: 70vh;
+      padding: 5px 10px;    
+}
+
 /* force le css du overflow du navigateur pour les overflow */
-.containerCheckList::-webkit-scrollbar-track
+.containerCheckList::-webkit-scrollbar-track,
+.containerTheremin::-webkit-scrollbar-track,
+.containerDrumMachine::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	border-radius: 10px;
 	background-color: #F5F5F5;
 }
 
-.containerCheckList::-webkit-scrollbar
+.containerCheckList::-webkit-scrollbar,
+.containerTheremin::-webkit-scrollbar,
+.containerDrumMachine::-webkit-scrollbar
 {
 	width: 12px;
 	background-color: #F5F5F5;
 }
 
-.containerCheckList::-webkit-scrollbar-thumb
+.containerCheckList::-webkit-scrollbar-thumb,
+.containerTheremin::-webkit-scrollbar-thumb,
+.containerDrumMachine::-webkit-scrollbar-thumb
 {
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 	background-color: #00ffea;
 }
 
-.containerCheckList::before {
+.containerCheckList::before
+{
       content: '';
       position: absolute;
       top: -50%;
       left: -50%;
       width: 200%;
       height: 200%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(0, 200, 255, 0.03) 10px,
+        rgba(0, 200, 255, 0.03) 20px
+      );
+      pointer-events: none;
+}
+
+.containerTheremin::before,
+.containerDrumMachine::before
+{
+      content: '';
+      position: absolute;
+      top: 0%;
+      left: -50%;
+      width: 200%;
+      height: -webkit-fill-available;
       background: repeating-linear-gradient(
         45deg,
         transparent,
