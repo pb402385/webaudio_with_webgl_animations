@@ -398,7 +398,7 @@ Détails des paramètrages disponibles par effet:
 <a id="drum-machine"></a>
 
 <div align="center">
-    <img src="screenshots/drum-machine.png" alt="audio_params.png" />
+    <img src="screenshots/drum-machine.png" alt="drum-machine.png" />
 </div>
 
 La boîte à rythmes est un instrument électronique conçu pour générer des rythmes percussifs, imitant généralement une batterie ou d'autres instruments de percussion comme les cymbales, le triangle ou le cabasa. Elle combine un séquenceur (pour programmer des motifs rythmiques) et un ou plusieurs générateurs de sons
@@ -421,16 +421,18 @@ Il dispose de 3 effets:
 Il y a également la possibilité de sélectionner des **PRESETS** qui sont des exemples dont je me suis servi pour réaliser des démos (voir capture).
 
 <div align="center">
-    <img src="screenshots/drum-machine-preset.png" alt="audio_params.png" />
+    <img src="screenshots/drum-machine-presets.png" alt="drum-machine-presets.png" />
 </div>
 
 Voici un exemple vidéo de la boite à rythme:
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Le thérémine
 <a id="theremin"></a>
 
 <div align="center">
-    <img src="screenshots/theremin.png" alt="audio_params.png" />
+    <img src="screenshots/theremin.jpeg" alt="theremin.png" />
 </div>
 
 Le thérémine est un instrument de musique électronique inventé en 1920 par le physicien russe Léon Theremin (appelé Lev Termen). Il est joué sans contact physique, en déplaçant les mains près de deux antennes : l'une contrôle la hauteur du son (pitch), l'autre le volume. Le son est produit par la variation des champs électromagnétiques créés par le corps du musicien, qui perturbe les oscillateurs internes du dispositif.
@@ -446,6 +448,8 @@ Il dispose de 6 effets:
 On peut  également charger des PRESETS (aléatoires pour le moment) afin d'exploiter le séquenseur du thérémine, on peut également muter certaines notes afin d'optimiser l'instrument. 
 
 Voici un exemple vidéo du thérémine:
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Explication du code
 <a id="codereview"></a>
