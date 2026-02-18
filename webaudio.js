@@ -2152,6 +2152,27 @@ function getMousePos(canvas, evt) {
     let osc, sourceGain, delayNode, feedbackGain, delayFilter, delayWetGain,
         reverbNode, reverbWetGain;
 
+	// ────────────────────────────────────────────────
+    //  UI + variables (le reste reste identique)
+    // ────────────────────────────────────────────────
+
+    const STEPS = 16;
+    const MIN_FREQ = 80;
+    const MAX_FREQ = 1200;
+
+    let bpmTheremin = 130;
+    let silencePercent = 20;
+    let stepDurationMs = 60000 / bpmTheremin / 4;
+
+    const stepsData = Array(STEPS).fill().map((_, i) => ({
+      freq: 440,
+      vol: 0.7,
+      marker: null,
+      enabled: true
+    }));
+
+    let currentStepTheremin = 0;
+
     function initAudioGraphTheremin() {
       sourceGain = audioCtx.createGain();
       sourceGain.gain.value = 0.72; // headroom
@@ -2227,33 +2248,35 @@ function getMousePos(canvas, evt) {
       reverbNode.buffer = impulse;
     }
 
+	function preset(){
+		for (let i = 0; i < STEPS; i++) {
+			// on recupère l'element
+			let rectElem = document.getElementById('rectStep'+i);
+			let rect = rectElem.getBoundingClientRect();
+			let cx = rect.left + Math.floor(Math.random() * (rect.right - rect.left));
+			let cy = rect.top +Math.floor(Math.random() * (rect.bottom - rect.top));
+			updatePreset(cx, cy, rect, i);
+		}
+	}
+
+	function updatePreset(clientX, clientY, rect, i) {
+        const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+        const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+        stepsData[i].freq = MIN_FREQ + (x / rect.width) * (MAX_FREQ - MIN_FREQ);
+        stepsData[i].vol  = Math.max(0.05, 1 - (y / rect.height));
+		let marker = document.getElementById('marker'+i);
+        marker.style.left = x + 'px';
+        marker.style.top  = y + 'px';
+    }
+
 
 	//TODO SET TIMEOUT 2 secondes ici
 setTimeout(() => {
-    // ────────────────────────────────────────────────
-    //  UI + variables (le reste reste identique)
-    // ────────────────────────────────────────────────
-    const sequencer = document.getElementById('sequencer');
+
+	const sequencer = document.getElementById('sequencer');
     const muteGrid = document.getElementById('muteGrid');
     const muteGrid2 = document.getElementById('muteGrid2');
     const playBtn = document.getElementById('play');
-
-    const STEPS = 16;
-    const MIN_FREQ = 80;
-    const MAX_FREQ = 1200;
-
-    let bpmTheremin = 130;
-    let silencePercent = 20;
-    let stepDurationMs = 60000 / bpmTheremin / 4;
-
-    const stepsData = Array(STEPS).fill().map((_, i) => ({
-      freq: 440,
-      vol: 0.7,
-      marker: null,
-      enabled: true
-    }));
-
-    let currentStepTheremin = 0;
 
     // Mute checkboxes
     for (let i = 0; i < STEPS; i++) {
@@ -2316,10 +2339,12 @@ setTimeout(() => {
     for (let i = 0; i < STEPS; i++) {
       const step = document.createElement('div');
       step.className = 'step';
+	  step.id = 'rectStep'+i;
       step.dataset.index = i;
 
       const marker = document.createElement('div');
       marker.className = 'marker';
+	  marker.id = 'marker'+i;
       step.appendChild(marker);
 
       const midX = 50, midY = 50;
