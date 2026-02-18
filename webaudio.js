@@ -2542,7 +2542,17 @@ function stopTheremin(){
     const instruments = ['kick','snare','hihat','clap','tom','ride','crash'];
 
 	// Pattern éditable – objet avec booléens
-    const pattern = {
+	let patternNull = {
+      kick:  Array(16).fill(false),
+      snare: Array(16).fill(false),
+      hihat: Array(16).fill(false),
+      clap:  Array(16).fill(false),
+      tom:   Array(16).fill(false),
+      ride:  Array(16).fill(false),
+      crash: Array(16).fill(false),
+    };
+
+	let patternBase = {
       kick:  Array(16).fill(false).map((_,i) => [0,4,8,12,15].includes(i)),
       snare: Array(16).fill(false).map((_,i) => i%4===2),
       hihat: Array(16).fill(false).map((_,i) => i%2===0),
@@ -2551,6 +2561,29 @@ function stopTheremin(){
       ride:  Array(16).fill(false).map((_,i) => i%4===3),
       crash: Array(16).fill(false).map((_,i) => i===0),
     };
+
+	let pattern = patternNull;
+
+	function changePattern(id) {
+		if(id==0) pattern = patternBase;
+		initPattern(pattern);
+	}
+
+	function initPattern(pattern){
+		// console.log(pattern);
+		for( let i=0; i < instruments.length; i++ ) {
+			// on récupère les elements du DOM
+			let instrumentDOM = document.getElementsByClassName(instruments[i]);
+			let patternInstrumentValue = pattern[instruments[i]];
+			for( let j=0; j < instrumentDOM.length; j++ ) {
+				if(patternInstrumentValue[j] == true) {
+					instrumentDOM[j].classList.add('on');
+				} else {
+					instrumentDOM[j].classList.remove('on');
+				}
+			}
+		}
+	}
 
 	let masterGain, reverbWetDM, reverbDM, delayDM, feedbackDM, delayWetDM ;
 
@@ -2648,6 +2681,7 @@ function stopTheremin(){
     function playCrash(t) { playRide(t); }
 
 	function scheduleStep(time) {
+
       instruments.forEach((inst, idx) => {
         
         const stepIndex = currentStep + idx * 16;
