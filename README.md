@@ -53,6 +53,8 @@
                 <li><a href="#synthe">Le synthétiseur intégré</a></li>
                 <li><a href="#melody">Les mélodies ou l'upload audio</a></li>
                 <li><a href="#audio-params">Les paramètres audio</a></li>
+                <li><a href="#drum-machine">La boîte à rythmes</a></li>
+                <li><a href="#theremin">Le theremin</a></li>
             </ul>
         </li>
       </ul>
@@ -391,6 +393,59 @@ Détails des paramètrages disponibles par effet:
     * Modificateur de hauteur ±2 octaves préservant les formants
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+#### La boîte à rythmes
+<a id="drum-machine"></a>
+
+<div align="center">
+    <img src="screenshots/drum-machine.png" alt="audio_params.png" />
+</div>
+
+La boîte à rythmes est un instrument électronique conçu pour générer des rythmes percussifs, imitant généralement une batterie ou d'autres instruments de percussion comme les cymbales, le triangle ou le cabasa. Elle combine un séquenceur (pour programmer des motifs rythmiques) et un ou plusieurs générateurs de sons
+
+La séquence est de 16 échantillons par génération de son qui se jouent en cas d'activation de la case, les types de sons sont les suivants:
+
+1. **KICK**: Le Kick (ou Bass Drum) correspond en français à la grosse caisse. Il s’agit de l’élément le plus visible de la batterie : le fût posé à la verticale devant le batteur. C’est lui qui marque le plus souvent le tempo pour l’ensemble du groupe ou de l’orchestre, par des impacts, des coups de percussion dans les graves.
+2. **SNARE**: Le snare correspond à la caisse claire. La caisse claire est l’élément essentiel de la rythmique à la batterie, c’est le fût qui se situe entre les jambes du batteur. On peut l’assimiler au tambour.
+3. **HIHAT**: Le hi-hat ou high-hat correspond en français au charleston ou plus vulgairement « charley ». Le « charley » est le jeu de cymbales traversé par un axe verticale, placé le plus souvent à la gauche du batteur, et jouée grâce à une pédale.
+4. **CLAP**: Le clap correspond à un son aigu, bref et percutant, simulant le bruit produit en claquant des mains.
+5. **TOM**: Il s’agit des autres fûts que la caisse claire et la grosse caisse. Les 3 toms les plus communs sont au nombre de 3 (le tom alto et le tom medium et le tom basse).
+6. **RIDE**: La ride est une cymbale placée à droite du batteur. Elle peut marquer le tempo en lieu et place du charley. Elle se frappe soit au-dessus de la cymbale avec l’olive, soit sur la tranche avec la tranche de la baguette.
+7. **CRASH**: La crash est une cymbale située à la gauche du batteur. Elle sert principalement à accentuer des temps, amener une nouvelle mesure.
+
+Il dispose de 3 effets:
+1. **REVERB**: L'effet de réverbération sur une boîte à rythme permet d'ajouter de la profondeur, de l'espace et de la cohérence à la batterie électronique (valeur comprise entre 0 et 60%).
+2. **DELAY**: L'effet delay sur une boîte à rythme ajoute des répétitions temporisées à certains sons, pour créer de la profondeur ou des motifs rythmiques (valeur comprise entre 0 et 50%).
+3. **TEMPO**: Le tempo sur une boîte à rythme détermine la vitesse du rythme, exprimée en BPM (battements par minute).  Il sert de base temporelle pour synchroniser les sons et les motifs (valeur comprise entre 70 et 180 battements par minute).
+
+Il y a également la possibilité de sélectionner des **PRESETS** qui sont des exemples dont je me suis servi pour réaliser des démos (voir capture).
+
+<div align="center">
+    <img src="screenshots/drum-machine-preset.png" alt="audio_params.png" />
+</div>
+
+Voici un exemple vidéo de la boite à rythme:
+
+#### Le thérémine
+<a id="theremin"></a>
+
+<div align="center">
+    <img src="screenshots/theremin.png" alt="audio_params.png" />
+</div>
+
+Le thérémine est un instrument de musique électronique inventé en 1920 par le physicien russe Léon Theremin (appelé Lev Termen). Il est joué sans contact physique, en déplaçant les mains près de deux antennes : l'une contrôle la hauteur du son (pitch), l'autre le volume. Le son est produit par la variation des champs électromagnétiques créés par le corps du musicien, qui perturbe les oscillateurs internes du dispositif.
+
+Il dispose de 6 effets:
+1. **TEMPO**: Comme pour la boîte à rythme, il sert de base temporelle pour synchroniser les sons et les motifs (valeur comprise entre 60 et 180 battements par minute).
+2. **SILENCE**: Permet contrôle du volume permet de créer des attaques précises, des silences rythmiques et des effets d’articulation, essentiels pour structurer une mélodie (valeur comprise entre 0 et 70%).
+3. **DELAY MIX**: Permet de régler le niveau de mélange entre le signal sec (original) et le signal avec réverbération/délai (valeur comprise entre 0 et 60%).
+4. **DELAY FEEDBACK**: Permet de contrôler le nombre de répétitions de l'écho (valeur comprise entre 0 et 75%).
+5. **DELAY TIME**: Pour un contrôle précis du temps de delay (valeur comprise entre 80 et 800 millisecondes).
+6. **REVERB MIX**: Permet d'ajuster l'intensité de l'effet de réververation (valeur comprise entre 0 et 70%).
+
+On peut  également charger des PRESETS (aléatoires pour le moment) afin d'exploiter le séquenseur du thérémine, on peut également muter certaines notes afin d'optimiser l'instrument. 
+
+Voici un exemple vidéo du thérémine:
 
 ## Explication du code
 <a id="codereview"></a>

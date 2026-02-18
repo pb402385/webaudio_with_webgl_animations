@@ -53,6 +53,8 @@
                 <li><a href="#synthe">The onboard synthesizer</a></li>
                 <li><a href="#melody">The melodies or the audio upload</a></li>
                 <li><a href="#audio-params">Audio settings</a></li>
+                <li><a href="#drum-machine">Drum Machine</a></li>
+                <li><a href="#theremin">Theremin</a></li>
             </ul>
         </li>
       </ul>
