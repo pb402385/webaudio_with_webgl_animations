@@ -69,9 +69,10 @@ body {
 }
 
 .led.playhead {
-    background: var(--accent) !important;
-    box-shadow: 0 0 24px var(--accent), inset 0 0 12px rgba(0, 212, 255, 0.5);
+    /*background: var(--accent) !important;*/
+    box-shadow: 0 0 24px var(--accent), inset 0 0 12px rgba(0, 0, 0, 0.6);
     transform: scale(1.08);
+    opacity: 0.6;
 }
 
 /* Couleurs par instrument (même éteintes) */
