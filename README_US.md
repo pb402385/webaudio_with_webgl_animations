@@ -294,7 +294,6 @@ Clicking this opens a pop-in window displaying the full list of animations. You 
 
 Here is a short presentation video:
 
-//TODO vidéo demo synthé
 [![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
 
 #### The melodies or the audio upload
@@ -305,6 +304,10 @@ Pre-programmed melodies: these are simulated musical sequences, as if a score we
 Two melodies are currently available:  
 - The Imperial March (from Star Wars)  
 - The Sacco and Vanzetti March
+
+The **STOP** button allows you to **kill the entire audio context** (works at any time).
+
+Two other buttons have also been added: the first opens a pop-up with a **Theremin**, and the second opens a pop-up with a **Drum Machine**.
 
 
 <div align="center">

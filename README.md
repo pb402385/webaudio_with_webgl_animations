@@ -282,7 +282,6 @@ Celui-ci nous ouvre une pop-in listant toutes les animations et nous permettant 
 
 Voici une courte vidéo de présentation:
 
-//TODO vidéo demo synthé
 [![Miniature de la vidéo](https://img.youtube.com/vi/amGpBCkkSVQ/hqdefault.jpg)](https://youtu.be/amGpBCkkSVQ)
 
 #### Les mélodies ou l'upload audio
@@ -293,6 +292,10 @@ Les mélodies préprogrammées: il s’agit de séquences musicales simulées, c
 Deux mélodies sont actuellement disponibles:  
 - La Marche impériale (de Star Wars)  
 - La marche de Sacco et Vanzetti
+
+Le bouton **STOP** permet de **tuer tout le contexte Audio** (fonctionne à tout moment)
+
+2 autres boutons ont également été rajoutés, le premier permettant d'ouvrir une popin avec un **Thérémine**, le second permettant d'ouvrir une popin avec une **boîte à rythme**.
 
 
 <div align="center">
