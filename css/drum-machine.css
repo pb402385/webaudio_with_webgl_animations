@@ -9,6 +9,8 @@
     --text-muted: #a0a0cc;
     --led-off: #1e1e2e;
     --led-border: #2a2a3e;
+    --accent-glow: #00f0ff44;
+    --selectedGrey: #55667744;
 }
 
 /*
@@ -31,7 +33,7 @@ body {
 
 .sequencer {
     max-width: 960px;
-    margin: 0 auto 2.5rem;
+    margin: 0 auto 0.5rem;
     width: 90%;
     /* max-width: 460px; */
     background: var(--glass);
@@ -153,33 +155,25 @@ body {
     padding: 0 1rem;
 }
 
-.control-card {
-    background: var(--surface);
-    border-radius: 12px;
-    padding: 1.5rem;
-    border: 1px solid #222233;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.control-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    color: var(--accent);
-    font-weight: 600;
-}
-
-.btn-group-dm {
+.controlsDrumMachine {
     display: flex;
-    gap: 1rem;
-    flex-direction: column;
-    align-items: center;
-    align-content: space-around;
+    flex-wrap: wrap;
     justify-content: center;
-    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 1.8rem 2rem;
+    margin: 2rem 0;
 }
 
-.btn-group-dm > button {
-    width: 100px;
+#sequencerContainerDrumMachine {
+    display: block;
+    position: relative;
+    top: 5px;
+}
+
+#actions-drum-machine {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 button.btnDrumMachine {
@@ -193,23 +187,6 @@ button.btnDrumMachine {
     transition: all 0.2s ease;
 }
 
-#playDrumMachine {
-    background: #00c853;
-    color: white;
-}
-
-#playDrumMachine:hover {
-    background: #00b140;
-}
-
-#stop {
-    background: #d81b60;
-    color: white;
-}
-
-#stop:hover {
-    background: #c2185b;
-}
 
 .slider-row {
     display: flex;
@@ -262,4 +239,61 @@ button.btnDrumMachine {
     left: -17px;
     font-family: 'Orbitron', sans-serif;
     font-weight: 900;
+}
+
+.play-dm {
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
+    background: linear-gradient(145deg, #00d4ff, #0099cc);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px var(--accent-glow);
+    transition: all 0.3s ease;
+    position: relative;
+    top: -5px;
+}
+
+.play-dm:hover {
+    box-shadow: 0 0 50px var(--accent-glow);
+    background: var(--accent-glow);
+}
+
+.stop-dm {
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
+    background: linear-gradient(145deg, #ff3366, #cc0033);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 40px #ff336688;
+    transition: all 0.3s ease;
+    position: relative;
+    top: -5px;
+}
+
+.stop-dm:hover {
+    background: #ff336644;
+    box-shadow: 0 0 40px #ff336688;
+}
+
+#presetsDrumMachine {
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
+    background: linear-gradient(145deg, #335566, #444455);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px var(--accent-glow);
+    transition: all 0.3s ease;
+    position: relative;
+    top: -5px;
+}
+
+#presetsDrumMachine:hover {
+    box-shadow: 0 0 50px var(--accent-glow);
+    background: var(--selectedGrey);
 }

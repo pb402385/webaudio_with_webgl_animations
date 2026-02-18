@@ -2222,7 +2222,7 @@ function getMousePos(canvas, evt) {
 	  //delayWetGain.connect(lBand);
 	  //delayWetGain.connect(hBand);
 	  //delayWetGain.connect(mGain);
-//
+
 	  //reverbWetGain.connect(lBand);
 	  //reverbWetGain.connect(hBand);
 	  //reverbWetGain.connect(mGain);
@@ -2491,14 +2491,14 @@ setTimeout(() => {
 
     playBtn.addEventListener('click', async () => {
       if (isPlayingTheremin) {
-        clearInterval(interval);
-        if (osc) osc.stop();
-        playBtn.textContent = 'PLAY LOOP';
-        playBtn.classList.remove('active');
-        document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
-        isPlayingTheremin = false;
-        return;
-      }
+			clearInterval(interval);
+			if (osc) osc.stop();
+			playBtn.textContent = 'PLAY LOOP';
+			playBtn.classList.remove('active');
+			document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
+			isPlayingTheremin = false;
+			return;
+		}
 
       await audioCtx.resume();
       startOsc();
@@ -2687,9 +2687,18 @@ function stopTheremin(){
       }
       if (isPlayingDrumMachine) requestAnimationFrame(sequencerLoop);
     }
+	
 
     function startDrumMachine() {
-      if (isPlayingDrumMachine) return;
+	  let btn = document.getElementById('playDrumMachine');
+      if (isPlayingDrumMachine){
+		btn.textContent = 'PLAY';
+		btn.className = "play-dm";
+		stopDrumMachine();
+		return;
+	  }
+	  btn.textContent = 'STOP';
+	  btn.className = "stop-dm";
       if (audioCtx.state === 'suspended') audioCtx.resume();
       currentStep = 0;
       nextBeatTime = audioCtx.currentTime + 0.1;
@@ -2742,7 +2751,6 @@ function stopTheremin(){
 
     // Bindings
     document.getElementById('playDrumMachine').onclick = startDrumMachine;
-    document.getElementById('stopDrumMachine').onclick = stopDrumMachine;
     document.getElementById('bpm').oninput = e => setBPM(e.target.value);
     document.getElementById('reverb').oninput = e => setReverb(e.target.value);
     document.getElementById('delay').oninput = e => setDelay(e.target.value);

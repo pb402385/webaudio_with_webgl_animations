@@ -983,37 +983,88 @@
 
 				<div class="containerDrumMachine sizeDrumMachine">
 
-					<div class="sequencer">
-						<div class="steps" id="steps"></div>
-					</div>
+					<div id="sequencerContainerDrumMachine">
 
-					<div class="controls">
-
-						<div class="btn-group-dm">
-							<button id="playDrumMachine">Play</button>
-							<button id="stopDrumMachine">Stop</button>
+						<div id="actions-drum-machine">
+							<button id="playDrumMachine" class="play-dm">PLAY</button>
+							<button id="presetsDrumMachine">LOAD PRESETS</button>
 						</div>
 
-
-						<div class="control-card">
-							<h3>Effets Master</h3>
-							<div class="slider-row">
-								<label>Reverb</label>
-								<input type="range" id="reverb" min="0" max="60" value="18" step="1">
-								<span class="value" id="reverb-value">18%</span>
-							</div>
-							<div class="slider-row">
-								<label>Delay</label>
-								<input type="range" id="delay" min="0" max="50" value="12" step="1">
-								<span class="value" id="delay-value">12%</span>
-							</div>
-							<div class="slider-row">
-								<label>Tempo</label>
-								<input type="range" id="bpm" min="70" max="180" value="120" step="1">
-								<span class="value" id="bpm-value">120 BPM</span>
-							</div>
+						<div class="sequencer">
+							<div class="steps" id="steps"></div>
 						</div>
+
 					</div>
+
+					<div class="controlsDrumMachine">
+
+							<div class="slider-group">
+								<div><h5 class="h5Reverb">Reverb</h5></div> 
+								<input type="range" id="reverb" min="0" max="60" value="18" step="1"  oninput="changeReverbDM(this);">
+								<div class="range-value" id="reverb-value">18%</div>
+							</div>
+
+							<!-- PARTIE FUTURIST SLIDERS -->
+							<script>
+								const sliderReverbDM = document.getElementById('reverb');
+
+								const changeReverbDM = () => {
+									const val = sliderReverbDM.value;
+									//range 60 à 180 en pourcentage
+									let newVal = ((val - 0) / (60 - 0)) * 100;
+									// CSS custom property pour le remplissage
+									sliderReverbDM.style.setProperty('--value', `${newVal}%`);
+								};
+
+								sliderReverbDM.addEventListener('input', changeReverbDM);
+								changeReverbDM(); // init
+							</script>
+
+							<div class="slider-group">
+								<div><h5 class="h5Reverb">Delay</h5></div> 
+								<input type="range" id="delay" min="0" max="50" value="12" step="1"  oninput="changeReverbDM(this);">
+								<div class="range-value" id="delay-value">12%</div>
+							</div>
+
+							<!-- PARTIE FUTURIST SLIDERS -->
+							<script>
+								const sliderDelayDM = document.getElementById('delay');
+
+								const changeDelayDM = () => {
+									const val = sliderDelayDM.value;
+									//range 60 à 180 en pourcentage
+									let newVal = ((val - 0) / (50 - 0)) * 100;
+									// CSS custom property pour le remplissage
+									sliderDelayDM.style.setProperty('--value', `${newVal}%`);
+								};
+
+								sliderDelayDM.addEventListener('input', changeDelayDM);
+								changeDelayDM(); // init
+							</script>
+
+							<div class="slider-group">
+								<div><h5 class="h5Tempo">Tempo</h5></div> 
+								<input type="range" id="bpm" min="70" max="180" value="120" step="1"  oninput="changeTempoDM(this);">
+								<div class="range-value" id="bpm-value">120 BPM</div>
+							</div>
+
+							<!-- PARTIE FUTURIST SLIDERS -->
+							<script>
+								const sliderTempoDM = document.getElementById('bpm');
+
+								const changeTempoDM = () => {
+									const val = sliderTempoDM.value;
+									//range 60 à 180 en pourcentage
+									let newVal = ((val - 70) / (180 - 70)) * 100;
+									// CSS custom property pour le remplissage
+									sliderTempoDM.style.setProperty('--value', `${newVal}%`);
+								};
+
+								sliderTempoDM.addEventListener('input', changeTempoDM);
+								changeTempoDM(); // init
+							</script>
+						</div>
+
 				</div>
 				
 			</div>
