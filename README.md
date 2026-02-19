@@ -843,7 +843,7 @@ Voici une capture d’écran de notre graphe Web Audio, présenté de manière s
     <img src="screenshots/graphe_audio.png" alt="graphe_audio.png" />
 </div>
 
-Depuis que l'on a ajouté la boîte à rythmes ainsi que le thérémine, le nouveau graphe ressemble à ceci:
+Depuis que l'on a ajouté la boîte à rythmes ainsi que le thérémine, le nouveau graphe ressemble à ceci (l'image est en 2 parties car il est beaucoup trop grand pour tenir sur une seule image):
 
 <div align="center">
     <img src="screenshots/graphe_audio_v2_p2.png" alt="graphe_audio_v2_p2.png" />
@@ -852,7 +852,6 @@ Depuis que l'on a ajouté la boîte à rythmes ainsi que le thérémine, le nouv
 <div align="center">
     <img src="screenshots/graphe_audio_v2_p1.png" alt="graphe_audio_v2_p1.png" />
 </div>
-
 
 Notre graphe étant enfin terminé, notre application est opérationnelle! On remarque que l'on a deux fonctions draw qui sont exécutées permettant de dessiner nos courbes en temps réel. Il est à noter un point important, c'est dans la méthode **draw** que nous obtenons le tableau de fréquences (via analyserNode.getByteFrequencyData()) que nous envoyons en temps réel à la partie vidéo/WebGL 3D.
 

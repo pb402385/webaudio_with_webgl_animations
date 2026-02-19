@@ -872,6 +872,16 @@ Here is a screenshot of our Web Audio graph, presented in a simplified way. I ha
     <img src="screenshots/graphe_audio.png" alt="graphe_audio.png" />
 </div>
 
+Since we added the drum machine and the theremin, the new graph looks like this (the image is in 2 parts because it is much too large to fit on a single image):
+
+<div align="center">
+    <img src="screenshots/graphe_audio_v2_p2.png" alt="graphe_audio_v2_p2.png" />
+</div>
+
+<div align="center">
+    <img src="screenshots/graphe_audio_v2_p1.png" alt="graphe_audio_v2_p1.png" />
+</div>
+
 Our audio graph is now complete, and the application is fully operational! We can observe that two draw functions are being executed, allowing us to render our analysis curves in real time.An important detail to note: it is precisely inside this **draw** method that we retrieve the frequency data array (via analyserNode.getByteFrequencyData()) and send it in real time to the 3D video/WebGL part.
 
 ```javascript
