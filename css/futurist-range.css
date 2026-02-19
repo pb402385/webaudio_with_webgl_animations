@@ -1,6 +1,6 @@
   :root {
     --track-h: 6px;               /* épaisseur du rail */
-    --thumb-size: 28px;          /* taille du curseur */
+    --thumb-size: 18px;          /* taille du curseur */
     --glow: 0 0 12px;            /* base du halo */
     --color-primary: #00ffff;    /* cyan néon */
     --color-bg: #0d1117;         /* fond sombre */
@@ -70,7 +70,7 @@
       var(--glow) var(--color-primary),
       0 0 20px rgba(0,255,255,0.5),
       inset 0 0 6px rgba(255,255,255,0.4);
-    transform: translateY(-50%);
+    transform: translateY(0%);
   }
 
   /* remplissage *avant* le curseur */
