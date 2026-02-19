@@ -70,6 +70,7 @@
                 <li><a href="#code-synthe">Code du Le synthétiseur</a></li>
                 <li><a href="#code-melody">Code des mélodies</a></li>
                 <li><a href="#code-audio-params">Code des paramètres/effets audio</a></li>
+                <li><a href="#code-drum-machine-theremin">Code de la boîte à rythmes et du theremin</a></li>
             </ul>
         </li>
       </ul>
@@ -404,7 +405,7 @@ Détails des paramètrages disponibles par effet:
     <img src="screenshots/drum-machine.png" alt="drum-machine.png" />
 </div>
 
-**La boîte à rythmes** est un instrument électronique conçu pour **générer des rythmes percussifs**, imitant généralement une batterie ou d'autres instruments de percussion comme les cymbales, le triangle ou le cabasa. Elle combine un séquenceur (pour programmer des motifs rythmiques) et plusieurs générateurs de sons
+**La boîte à rythmes** est un instrument électronique conçu pour **générer des rythmes percussifs**, imitant généralement une batterie ou d'autres instruments de percussion comme les cymbales, le triangle ou le cabasa. Elle combine un séquenceur (pour programmer des motifs rythmiques) et plusieurs générateurs de sons.
 
 La **séquence est de 16 échantillons** par génération de son qui se jouent en cas d'activation de la case, les types de sons sont les suivants:
 
@@ -1230,7 +1231,113 @@ Ensuite, nous disposons de la fonction **process(inputs, outputs, parameters)**,
 
 Dans l’exemple de l’effet Noise, nous avons trois paramètres: le type, le cutoff et le gain. Nous codons ensuite l’effet proprement dit et, lorsque plusieurs paramètres sont présents, nous utilisons souvent un switch-case pour gérer les différents cas selon la valeur active.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Code de la boîte à rythmes et du theremin
+<a id="code-drum-machine-theremin"></a>
+
+Ces deux instruments ont été codés grâce à **Grok AI**. Je les ai d’abord construits dans des fichiers séparés (theremin.html et drum-machine.html) jusqu’à obtenir des versions satisfaisantes, puis je les ai intégrés dans l’application principale. Pour l’intégration, j’ai divisé le code en trois parties :
+- Une **partie CSS** que l’on retrouve dans le **dossier css**.
+- Une **partie HTML** liée à la vue dans le fichier **index.html**.
+- Une **partie JavaScript**, simplement ajoutée dans le fichier **webaudio.js**.
+
+Bien évidemment, j’ai dû déplacer une partie du code JavaScript afin de le relier correctement à mon graphe Web Audio, en ajoutant les deux méthodes suivantes lors de l’initialisation de mon contexte audio : **initAudioGraphTheremin()** et **initAudioGraphDrumMachine()**.
+
+``` javascript
+  // Start when user clicks or after resume (required on most browsers)
+	document.documentElement.addEventListener('click', () => {
+		if (audioCtx.state === 'suspended') audioCtx.resume();
+		initAudio().then(() => {
+			console.log("AudioContext débloqué et prêt !");
+			isUnlocked = true;
+
+			// Mets ici tout ce qui a besoin du son
+			initAudioContext2();
+			initAudioGraphTheremin();
+			initAudioGraphDrumMachine();
+		});
+
+	}, { once: true });
+
+  .........
+
+```
+
+L’IA n’étant pas encore assez avancée pour me fournir toutes les fonctionnalités que je demandais, j’ai dû les coder moi-même dans le code généré par Grok.
+
+Concernant la boîte à rythmes, j’ai ajouté la possibilité de **créer mes propres PRESETS**, et j’ai également dû corriger plusieurs **problèmes liés à la nature asynchrone du code**. Il est désormais possible d’ajouter autant de patterns que souhaité en créant des variables de pattern et en les rendant accessibles dans la fonction changePattern.
+
+``` javascript
+  let patternNull = {
+      kick:  Array(16).fill(false),
+      snare: Array(16).fill(false),
+      hihat: Array(16).fill(false),
+      clap:  Array(16).fill(false),
+      tom:   Array(16).fill(false),
+      ride:  Array(16).fill(false),
+      crash: Array(16).fill(false),
+    };
+
+	let patternBase = {
+      kick:  Array(16).fill(false).map((_,i) => [0,4,8,12,15].includes(i)),
+      snare: Array(16).fill(false).map((_,i) => i%4===2),
+      hihat: Array(16).fill(false).map((_,i) => i%2===0),
+      clap:  Array(16).fill(false).map((_,i) => i%8===6 || i%8===14),
+      tom:   Array(16).fill(false),
+      ride:  Array(16).fill(false).map((_,i) => i%4===3),
+      crash: Array(16).fill(false).map((_,i) => i===0),
+    };
+
+	let pattern = patternNull;
+
+	function changePattern(id) {
+		if(id==0) pattern = patternBase;
+		initPattern(pattern);
+	}
+
+	function initPattern(pattern){
+		// console.log(pattern);
+		for( let i=0; i < instruments.length; i++ ) {
+			// on récupère les elements du DOM
+			let instrumentDOM = document.getElementsByClassName(instruments[i]);
+			let patternInstrumentValue = pattern[instruments[i]];
+			for( let j=0; j < instrumentDOM.length; j++ ) {
+				if(patternInstrumentValue[j] == true) {
+					instrumentDOM[j].classList.add('on');
+				} else {
+					instrumentDOM[j].classList.remove('on');
+				}
+			}
+		}
+	}
+```
+
+En ce qui concerne le thérémine, j'ai également ajouté la fonction **preset()** pour générer un **PRESET aléatoire**
+
+``` javascript
+  function preset(){
+		for (let i = 0; i < STEPS; i++) {
+			// on recupère l'element
+			let rectElem = document.getElementById('rectStep'+i);
+			let rect = rectElem.getBoundingClientRect();
+			let cx = rect.left + Math.floor(Math.random() * (rect.right - rect.left));
+			let cy = rect.top +Math.floor(Math.random() * (rect.bottom - rect.top));
+			updatePreset(cx, cy, rect, i);
+		}
+	}
+
+	function updatePreset(clientX, clientY, rect, i) {
+        const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+        const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+        stepsData[i].freq = MIN_FREQ + (x / rect.width) * (MAX_FREQ - MIN_FREQ);
+        stepsData[i].vol  = Math.max(0.05, 1 - (y / rect.height));
+		let marker = document.getElementById('marker'+i);
+        marker.style.left = x + 'px';
+        marker.style.top  = y + 'px';
+    }
+```
+
+De plus, j’ai modifié la génération du séquenceur afin de **pouvoir muter certaines notes**, et j’ai ajouté les événements JavaScript correspondants. J’ai également dû résoudre plusieurs **problèmes liés à la nature asynchrone du code**, mais je n’entrerai pas dans les détails ici, je trouve le code assez lisible si l’on a un bon niveau en JavaScript. J’ai aussi mis à jour le CSS des deux instruments pour que leur look and feel soit cohérent avec le reste de mon application.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -1249,10 +1356,10 @@ Voici une liste de points à améliorer pour optimiser cette application:
   * Introduire une vraie chaîne d’effets (tableau d’AudioWorkletNodes ou un processeur multi-effets unique).
   * Ajouter une interface utilisateur pour réordonner les effets, les activer/désactiver, régler le dry/wet par effet, bypass global.
   * Gérer l’insertion/suppression dynamique sans coupures audio (déconnexion/reconnexion propre).
-- Optionnel : ajouter une boîte à rythmes / drum machine / séquenceur pour accompagner le synthétiseur intégré
-  * Patterns simples en 4/4 avec kick, snare, hi-hat, clap/percussion.
-  * Peut être implémenté via un autre AudioWorklet (lecture d’échantillons ou batterie synthétisée) ou avec des nœuds Web Audio classiques (bruit + filtres + enveloppes).
-  * Synchronisation avec le tempo des mélodies (BPM), possibilité d’éditer les patterns ou de charger des grooves prédéfinis.
+- ~~Optionnel : ajouter une boîte à rythmes / drum machine / séquenceur pour accompagner le synthétiseur intégré~~
+  * ~~Patterns simples en 4/4 avec kick, snare, hi-hat, clap/percussion.~~
+  * ~~Peut être implémenté via un autre AudioWorklet (lecture d’échantillons ou batterie synthétisée) ou avec des nœuds Web Audio classiques (bruit + filtres + enveloppes).~~
+  * ~~Synchronisation avec le tempo des mélodies (BPM), possibilité d’éditer les patterns ou de charger des grooves prédéfinis.~~
 
 ## License
 <a id="license"></a>
