@@ -96,6 +96,16 @@
     min-width: 320px;
 }
 
+.slider-group-btn {
+    flex-direction: column;
+}
+
+.slider-group-btn-title {
+    color: white;
+    position: relative;
+    top: -15px;
+}
+
 .mute-group {
     width: 100%;
     max-width: 720px;

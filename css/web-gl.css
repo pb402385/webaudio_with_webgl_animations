@@ -580,7 +580,7 @@ body{
 
 
 #stopAllSounds{
-	background-color: white;
+	background-color: #77000099;
     z-index: 2;
     cursor: pointer;
 }

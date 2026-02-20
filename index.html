@@ -44,30 +44,39 @@
 				<div id="topContainer">	
 					
 					<div id="container_buttons_melodies">
-						<button class="btn-futur" onclick="callMelodie('Star Wars');" id="runMelodieStarWars">
-							<div class="scan"></div>
-							<span class="glitch">RUN MELODY Star Wars</span>
-						</button>
+						
+						<div class="slider-group slider-group-btn">
+							<h5 class="slider-group-btn-title">Melodies:</h5>
 
-						<button class="btn-futur" onclick="callMelodie('La Marche de Sacco et Vanzetti');" id="runMelodie1">
-							<div class="scan"></div>
-							<span class="glitch">RUN MELODY Sacco Vanzetti</span>
-						</button>
+							<button class="btn-futur btn-futur-resize" onclick="callMelodie('Star Wars');" id="runMelodieStarWars">
+								<div class="scan"></div>
+								<span class="glitch glitch-btn">Star Wars</span>
+							</button>
 
-						<button class="btn-futur" onclick="stopAllSounds();" id="stopAllSounds">
+							<button class="btn-futur btn-futur-resize" onclick="callMelodie('La Marche de Sacco et Vanzetti');" id="runMelodie1">
+								<div class="scan"></div>
+								<span class="glitch glitch-btn">Sacco Vanzetti</span>
+							</button>
+						</div>
+
+						<button class="btn-futur btn-futur-stop" onclick="stopAllSounds();" id="stopAllSounds">
 							<div class="scan"></div>
 							<span class="glitch">STOP</span>
 						</button>
 
-						<button class="btn-futur" onclick="openPopinTheremin();" id="btnTheremin">
-							<div class="scan"></div>
-							<span class="glitch">THEREMIN</span>
-						</button>
+						<div class="slider-group slider-group-btn">
+							<h5 class="slider-group-btn-title">Instruments:</h5>
 
-						<button class="btn-futur" onclick="openPopinDrumMachine();" id="btnDrumMachine">
-							<div class="scan"></div>
-							<span class="glitch">DRUM MACHINE</span>
-						</button>
+							<button class="btn-futur btn-futur-resize" onclick="openPopinTheremin();" id="btnTheremin">
+								<div class="scan"></div>
+								<span class="glitch glitch-btn">THEREMIN</span>
+							</button>
+
+							<button class="btn-futur btn-futur-resize" onclick="openPopinDrumMachine();" id="btnDrumMachine">
+								<div class="scan"></div>
+								<span class="glitch glitch-btn">DRUM MACHINE</span>
+							</button>
+						</div>
 					</div>
 
 					<div id="partSound">
@@ -341,7 +350,7 @@
 									const centerY = rect.top + rect.height / 2;
 									return Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
 								}
-								// Touch start
+
 								knob.addEventListener('touchstart', (e) => {
 									e.preventDefault(); // Empêche le défilement
 									isDragging = true;
@@ -349,10 +358,7 @@
 									startAngle = getAngle(touch.clientX, touch.clientY) - currentRotation;
 								});
 
-								// Touch move
-
 								document.addEventListener('touchmove', (e) => {
-
 									if (isDragging) {
 										e.preventDefault(); // Empêche les interactions par défaut
 										const touch = e.touches[0];
@@ -363,17 +369,13 @@
 										knobElement.style.transform = `rotate(${currentRotation}deg)`;
 										knob.dataset.rotation = currentRotation;
 									}
-
 								}, { passive: false }); // Désactive le comportement passif pour preventDefault
-
-								// Touch end
 
 								document.addEventListener('touchend', () => {
 									isDragging = false;
 								});
 
 								// Compatibilité desktop (optionnel)
-
 								knob.addEventListener('mousedown', (e) => {
 									isDragging = true;
 									startAngle = getAngle(e.clientX, e.clientY) - currentRotation;
@@ -464,13 +466,9 @@
 			</div>
 			
 			<script>
+				// initialization du synthé
 				document.getElementById('testNote').innerHTML = strTestNote;
 				document.getElementById('testNoteDiese').innerHTML = strTestNoteDiese;
-				
-				//buidGraph();
-				
-				//setEvenementBoutons();
-				//setDefaultValues();
 			</script>
 
 			<script type="text/javascript">
@@ -487,8 +485,7 @@
 
 			const updateSound = () => {
 				const val = sliderSound.value;
-				displaySliderSound.textContent = val;
-				// CSS custom property pour le remplissage
+				displaySliderSound.textContent = val;				
 				sliderSound.style.setProperty('--value', `${val}%`);
 			};
 
@@ -503,11 +500,9 @@
 			const updateSpeed = () => {
 				const val = sliderSpeed.value;
 				displaySliderSpeed.textContent = val;
-
 				//range 250 à 750 en pourcentage
 				let newVal = val/500;
-				let percent = (val-250)/500 * 100;
-				// CSS custom property pour le remplissage
+				let percent = (val-250)/500 * 100;				
 				sliderSpeed.style.setProperty('--value', `${percent}%`);
 				displaySliderSpeed.innerHTML = "x " + newVal;
 			};
@@ -524,8 +519,7 @@
 				const val = sliderFrequency.value;
 				displaySliderFrequency.textContent = val;
 				//range 0 à 3000 en pourcentage
-				let percent = val/3000*100;
-				// CSS custom property pour le remplissage
+				let percent = val/3000*100;				
 				sliderFrequency.style.setProperty('--value', `${percent}%`);
 			};
 
@@ -539,8 +533,7 @@
 
 			const updateQuality = () => {
 				const val = sliderQuality.value;
-				displaySliderQuality.textContent = val;
-				// CSS custom property pour le remplissage
+				displaySliderQuality.textContent = val;				
 				sliderQuality.style.setProperty('--value', `${val}%`);
 			};
 
@@ -835,8 +828,7 @@
 							const changeTempo = () => {
 								const val = sliderTempo.value;
 								//range 60 à 180 en pourcentage
-								let newVal = ((val - 60) / (180 - 60)) * 100;
-								// CSS custom property pour le remplissage
+								let newVal = ((val - 60) / (180 - 60)) * 100;							
 								sliderTempo.style.setProperty('--value', `${newVal}%`);
 							};
 
@@ -857,8 +849,7 @@
 							const changeSilence = () => {
 								const val = sliderSilence.value;
 								//range 0 à 70 en pourcentage
-								let newVal = (val/70) * 100;
-								// CSS custom property pour le remplissage
+								let newVal = (val/70) * 100;							
 								sliderSilence.style.setProperty('--value', `${newVal}%`);
 							};
 
@@ -880,8 +871,7 @@
 							const changeDelayMix = () => {
 								const val = sliderDelayMix.value;
 								//range 0 à 60 en pourcentage
-								let newVal = (val/60) * 100;
-								// CSS custom property pour le remplissage
+								let newVal = (val/60) * 100;						
 								sliderDelayMix.style.setProperty('--value', `${newVal}%`);
 							};
 
@@ -903,8 +893,7 @@
 							const changeDelayFeedback = () => {
 								const val = sliderDelayFeedback.value;
 								//range 0 à 75 en pourcentage
-								let newVal = (val/75) * 100;
-								// CSS custom property pour le remplissage
+								let newVal = (val/75) * 100;							
 								sliderDelayFeedback.style.setProperty('--value', `${newVal}%`);
 							};
 
@@ -925,8 +914,7 @@
 							const changeDelayTime = () => {
 								const val = sliderDelayTime.value;
 								//range 80 à 800 en pourcentage
-								let newVal = ((val - 80) / (800 - 80)) * 100;
-								// CSS custom property pour le remplissage
+								let newVal = ((val - 80) / (800 - 80)) * 100;							
 								sliderDelayTime.style.setProperty('--value', `${newVal}%`);
 							};
 
@@ -948,8 +936,7 @@
 							const changeReverbMix = () => {
 								const val = sliderReverbMix.value;
 								//range 80 à 800 en pourcentage
-								let newVal = (val/70) * 100;
-								// CSS custom property pour le remplissage
+								let newVal = (val/70) * 100;							
 								sliderReverbMix.style.setProperty('--value', `${newVal}%`);
 							};
 
@@ -1011,8 +998,7 @@
 								const changeReverbDM = () => {
 									const val = sliderReverbDM.value;
 									//range 60 à 180 en pourcentage
-									let newVal = ((val - 0) / (60 - 0)) * 100;
-									// CSS custom property pour le remplissage
+									let newVal = ((val - 0) / (60 - 0)) * 100;									
 									sliderReverbDM.style.setProperty('--value', `${newVal}%`);
 								};
 
@@ -1033,8 +1019,7 @@
 								const changeDelayDM = () => {
 									const val = sliderDelayDM.value;
 									//range 60 à 180 en pourcentage
-									let newVal = ((val - 0) / (50 - 0)) * 100;
-									// CSS custom property pour le remplissage
+									let newVal = ((val - 0) / (50 - 0)) * 100;									
 									sliderDelayDM.style.setProperty('--value', `${newVal}%`);
 								};
 
@@ -1055,8 +1040,7 @@
 								const changeTempoDM = () => {
 									const val = sliderTempoDM.value;
 									//range 60 à 180 en pourcentage
-									let newVal = ((val - 70) / (180 - 70)) * 100;
-									// CSS custom property pour le remplissage
+									let newVal = ((val - 70) / (180 - 70)) * 100;									
 									sliderTempoDM.style.setProperty('--value', `${newVal}%`);
 								};
 
@@ -1196,7 +1180,7 @@
 				const val = sliderDelay.value;
 				displaySliderDelay.textContent = val;
 				let percent = val/60*100;
-				// CSS custom property pour le remplissage
+				
 				sliderDelay.style.setProperty('--value', `${percent}%`);
 			};
 
