@@ -1,3 +1,7 @@
+#container_buttons_melodies2 {
+    display: none;
+}
+
 /* < 1800px — Ultra-wide / Large Desktop */
 @media (max-width: 1800px) {
     #VideoParamsContent {
@@ -47,7 +51,12 @@
     }
 
     #container_buttons_melodies {
-        display: none;
+        width: 270px;
+        max-width: 270px;
+    }
+
+    .slider-group {
+        min-width: 270px;
     }
 
     #divSpeedMelodie {
@@ -63,6 +72,19 @@
         align-items: center;
     }
 
+}
+
+@media (max-width: 1150px) {
+    #container_buttons_melodies {
+        display:none;
+    }
+
+    #container_buttons_melodies2 {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+    }
 }
 
 
@@ -82,7 +104,25 @@
 
     #container_input_file {
         position: absolute;
-        top: 15px;
+        top: 210px;
+    }
+
+    .title {
+        left: -40px;
+    }
+
+    #play, #presetsTheremin{
+        padding: 0.5rem 1.0rem;
+        font-size: 0.9rem;
+    }
+
+    #playDrumMachine, #presetsDrumMachine{
+        padding: 0.5rem 1.0rem;
+        font-size: 0.9rem;
+    }
+
+    .popinTheremin, .popinDrumMachine {
+        width: 98%;
     }
 }
 
@@ -94,6 +134,12 @@
 }
 
 @media (max-width: 760px) {
+
+    .title {
+        top: -4px;
+        font-size: 14px;
+    }
+
     #VideoParamsContent {
         justify-content: center;
     }
@@ -137,6 +183,25 @@
     }
 
 }
+
+@media (max-width: 645px) {
+    #container_btn_melodies {
+        display: none;
+    }
+
+    #container_btn_instruments {
+        display: none;
+    }
+
+    #container_buttons_melodies2 {
+        height: 100px;
+    }
+
+    #container_input_file {
+        top: 130px;
+    }
+}
+
 
 @media (max-width: 550px) {
     #shaderPixelAnim {
