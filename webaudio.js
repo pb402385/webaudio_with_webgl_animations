@@ -2253,8 +2253,9 @@ function getMousePos(canvas, evt) {
 			// on recupère l'element
 			let rectElem = document.getElementById('rectStep'+i);
 			let rect = rectElem.getBoundingClientRect();
-			let cx = rect.left + Math.floor(Math.random() * (rect.right - rect.left));
-			let cy = rect.top + Math.floor(Math.random() * (rect.bottom - rect.top));
+			// -2 pour la taille du curseur
+			let cx = rect.left + Math.floor(Math.random() * (rect.right - rect.left)) - 2;
+			let cy = rect.top + Math.floor(Math.random() * (rect.bottom - rect.top)) - 2;
 			updatePreset(cx, cy, rect, i);
 		}
 	}
@@ -2264,8 +2265,9 @@ function getMousePos(canvas, evt) {
 			// on recupère l'element
 			let rectElem = document.getElementById('rectStep'+i);
 			let rect = rectElem.getBoundingClientRect();
-			let cx = rect.left + (rect.right - rect.left)/2;
-			let cy = rect.top + (rect.bottom - rect.top)/2;
+			// -2 pour la taille du curseur
+			let cx = rect.left + (rect.right - rect.left)/2 - 2;
+			let cy = rect.top + (rect.bottom - rect.top)/2 - 2;
 			updatePreset(cx, cy, rect, i);
 		}
 	}
