@@ -280,7 +280,7 @@ button.btnDrumMachine {
     box-shadow: 0 0 40px #ff336688;
 }
 
-#presetsDrumMachine {
+#presetsDrumMachine, #cleanDrumMachine {
     padding: 1rem 3rem;
     font-size: 1.4rem;
     background: linear-gradient(145deg, #335566, #444455);
@@ -294,7 +294,7 @@ button.btnDrumMachine {
     top: -5px;
 }
 
-#presetsDrumMachine:hover {
+#presetsDrumMachine:hover, #cleanDrumMachine:hover {
     box-shadow: 0 0 50px var(--accent-glow);
     background: var(--selectedGrey);
 }

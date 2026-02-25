@@ -844,6 +844,7 @@
 					<div id="sequencerContainer">
 						<div id="actionsTheremin">
 							<button id="play">PLAY LOOP</button>
+							<button id="cleanTheremin" onclick="cleanPreset()">CLEAN</button>
 							<button id="presetsTheremin" onclick="preset()">LOAD PRESETS</button>
 						</div>
 						<div class="sequencerTheremin" id="sequencer"></div>			
@@ -1010,7 +1011,8 @@
 
 						<div id="actions-drum-machine">
 							<button id="playDrumMachine" class="play-dm">PLAY</button>
-							<button id="presetsDrumMachine" onclick="changePattern(0)">LOAD PRESETS</button>
+							<button id="cleanDrumMachine" onclick="changePattern(1)">CLEAN</button>
+							<button id="presetsDrumMachine" onclick="changePattern(0)">PRESET 1</button>
 						</div>
 
 						<div class="sequencer">

@@ -111,12 +111,12 @@
         left: -40px;
     }
 
-    #play, #presetsTheremin{
+    #play, #presetsTheremin, #cleanTheremin{
         padding: 0.5rem 1.0rem;
         font-size: 0.9rem;
     }
 
-    #playDrumMachine, #presetsDrumMachine{
+    #playDrumMachine, #presetsDrumMachine, #cleanDrumMachine{
         padding: 0.5rem 1.0rem;
         font-size: 0.9rem;
     }

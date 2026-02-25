@@ -2254,7 +2254,18 @@ function getMousePos(canvas, evt) {
 			let rectElem = document.getElementById('rectStep'+i);
 			let rect = rectElem.getBoundingClientRect();
 			let cx = rect.left + Math.floor(Math.random() * (rect.right - rect.left));
-			let cy = rect.top +Math.floor(Math.random() * (rect.bottom - rect.top));
+			let cy = rect.top + Math.floor(Math.random() * (rect.bottom - rect.top));
+			updatePreset(cx, cy, rect, i);
+		}
+	}
+
+	function cleanPreset(){
+		for (let i = 0; i < STEPS; i++) {
+			// on recupère l'element
+			let rectElem = document.getElementById('rectStep'+i);
+			let rect = rectElem.getBoundingClientRect();
+			let cx = rect.left + (rect.right - rect.left)/2;
+			let cy = rect.top + (rect.bottom - rect.top)/2;
 			updatePreset(cx, cy, rect, i);
 		}
 	}
@@ -2566,6 +2577,7 @@ function stopTheremin(){
 
 	function changePattern(id) {
 		if(id==0) pattern = patternBase;
+		if(id==1) pattern = patternNull;
 		initPattern(pattern);
 	}
 
