@@ -100,7 +100,7 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(16, 1fr);
-      gap: 8px;
+      gap: 2px;
       background: var(--glass);
       backdrop-filter: blur(16px);
       border: 1px solid var(--glass-border);
@@ -143,11 +143,15 @@
       from { box-shadow: 0 0 20px var(--neon-magenta); }
       to   { box-shadow: 0 0 45px var(--neon-magenta), 0 0 70px var(--neon-cyan); }
     }
+
+    h5 {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 
-  <h1>NEON SEQ</h1>
+  <h1>SEQUENCER FOR GUITAR / BASS / TRUMPET / SAX</h1>
 
   <div class="controls">
     <button id="play">PLAY / STOP</button>
@@ -157,17 +161,25 @@
     </div>
   </div>
 
+  <h5> GUITAR SEQUENCER </h5>
+
   <div class="grid-container">
     <div class="grid" id="grid-guitar"></div>
   </div>
+
+  <h5> BASS SEQUENCER </h5>
 
   <div class="grid-container">
     <div class="grid" id="grid-bass"></div>
   </div>
 
+  <h5> TRUMPET SEQUENCER </h5>
+
   <div class="grid-container">
     <div class="grid" id="grid-trumpet"></div>
   </div>
+
+  <h5> SAX SEQUENCER </h5>
 
   <div class="grid-container">
     <div class="grid" id="grid-sax"></div>
