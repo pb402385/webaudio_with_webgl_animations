@@ -180,7 +180,19 @@
   </div>
 
   <div class="grid-container">
-    <div class="grid" id="grid"></div>
+    <div class="grid" id="grid-guitar"></div>
+  </div>
+
+  <div class="grid-container">
+    <div class="grid" id="grid-bass"></div>
+  </div>
+
+  <div class="grid-container">
+    <div class="grid" id="grid-trumpet"></div>
+  </div>
+
+  <div class="grid-container">
+    <div class="grid" id="grid-sax"></div>
   </div>
 
   <script>
@@ -188,7 +200,13 @@
 
     const rows = 8;
     const cols = 16;
-    const pattern = Array(rows).fill().map(() => Array(cols).fill(false));
+
+    const instr = ['guitar','bass','trumpet','sax'];
+
+    const pattern_guitar = Array(rows).fill().map(() => Array(cols).fill(false));
+    const pattern_bass = Array(rows).fill().map(() => Array(cols).fill(false));
+    const pattern_trumpet = Array(rows).fill().map(() => Array(cols).fill(false));
+    const pattern_sax = Array(rows).fill().map(() => Array(cols).fill(false));
 
     const notes = ['C5','A4','G4','E4','D4','C4','A3','G3'];
     const noteFreqs = notes.map(note => {
@@ -200,24 +218,41 @@
     });
 
     // Création grille
-    const grid = document.getElementById('grid');
-    for (let row = 0; row < rows; row++) {
-      const label = document.createElement('div');
-      label.className = 'row-label';
-      label.textContent = notes[row];
-      grid.appendChild(label);
+    for (let intr_num = 0; intr_num < instr.length; intr_num++) {
+      let grid = document.getElementById('grid-'+instr[intr_num]);
+      for (let row = 0; row < rows; row++) {
+        const label = document.createElement('div');
+        label.className = 'row-label';
+        label.textContent = notes[row];
+        grid.appendChild(label);
 
-      for (let col = 0; col < cols; col++) {
-        const btn = document.createElement('button');
-        btn.className = 'step';
-        btn.dataset.row = row;
-        btn.dataset.col = col;
-        btn.textContent = notes[row];
-        btn.addEventListener('click', () => {
-          pattern[row][col] = !pattern[row][col];
-          btn.classList.toggle('active', pattern[row][col]);
-        });
-        grid.appendChild(btn);
+        for (let col = 0; col < cols; col++) {
+          const btn = document.createElement('button');
+          btn.className = 'step';
+          btn.dataset.row = row;
+          btn.dataset.col = col;
+          btn.dataset.instr_type = instr[intr_num];
+          btn.textContent = notes[row];
+          btn.addEventListener('click', () => {
+            if(instr[intr_num] == 'guitar') {
+              pattern_guitar[row][col] = !pattern_guitar[row][col];
+              btn.classList.toggle('active', pattern_guitar[row][col]);
+            }
+            if(instr[intr_num] == 'bass') {
+              pattern_bass[row][col] = !pattern_bass[row][col];
+              btn.classList.toggle('active', pattern_bass[row][col]);
+            }
+            if(instr[intr_num] == 'trumpet') {
+              pattern_trumpet[row][col] = !pattern_trumpet[row][col];
+              btn.classList.toggle('active', pattern_trumpet[row][col]);
+            }
+            if(instr[intr_num] == 'sax') {
+              pattern_sax[row][col] = !pattern_sax[row][col];
+              btn.classList.toggle('active', pattern_sax[row][col]);
+            }
+          });
+          grid.appendChild(btn);
+        }
       }
     }
 
@@ -364,8 +399,17 @@
 
       while (nextStepTime < audioCtx.currentTime + scheduleAheadTime) {
         for (let row = 0; row < rows; row++) {
-          if (pattern[row][currentStep]) {
-            playSynthNote(noteFreqs[row], nextStepTime, 0.45, instrument); // durée ~8n à 120bpm
+          if (pattern_guitar[row][currentStep]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'guitar'); // durée ~8n à 120bpm
+          }
+          if (pattern_bass[row][currentStep]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'bass'); // durée ~8n à 120bpm
+          }
+          if (pattern_trumpet[row][currentStep]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'trumpet'); // durée ~8n à 120bpm
+          }
+          if (pattern_sax[row][currentStep]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'sax'); // durée ~8n à 120bpm
           }
         }
         nextNote();
