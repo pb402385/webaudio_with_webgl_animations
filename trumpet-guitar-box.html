@@ -213,7 +213,7 @@
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
           const btn = document.createElement('button');
-          btn.className = 'step';
+          btn.className = 'step col'+col;
           btn.dataset.row = row;
           btn.dataset.col = col;
           btn.dataset.instr_type = instr[intr_num];
@@ -243,18 +243,18 @@
 
     // Scheduling
     let nextStepTime = 0;
-    let currentStep = 0;
-    let tempo = 120;
+    let currentStepSeq = 0;
+    let tempoSeq = 120;
     let lookahead = 0.1;
     let scheduleAheadTime = 0.2;
-    let isPlaying = false;
+    let isPlayingSeq = false;
     let timerID;
 
     function nextNote() {
-      const secondsPerBeat = 60 / tempo;
+      const secondsPerBeat = 60 / tempoSeq;
       const secondsPerStep = secondsPerBeat / 2; // 8n
       nextStepTime += secondsPerStep;
-      currentStep = (currentStep + 1) % cols;
+      currentStepSeq = (currentStepSeq + 1) % cols;
     }
 
     function playSynthNote(freq, startTime, duration, type) {
@@ -379,62 +379,74 @@
       if (osc2) osc2.stop(startTime + duration + 0.1);
     }
 
-    function scheduler() {
+    function schedulerSeq() {
       while (nextStepTime < audioCtx.currentTime + scheduleAheadTime) {
+
+        for(let col = 0; col < cols; col++) {
+          // On annule l'effet sur les autres
+          document.querySelectorAll('.step').forEach(element => {
+            element.style.opacity = "1.0";
+          });
+          // On appliquer un effet sur la colonne currentStepSeq
+          document.querySelectorAll('.step.col'+currentStepSeq).forEach(element => {
+            element.style.opacity = "0.5";
+          });
+        }
+
         for (let row = 0; row < rows; row++) {
-          if (pattern_guitar[row][currentStep]) {
+          if (pattern_guitar[row][currentStepSeq]) {
             playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'guitar'); // durée ~8n à 120bpm
           }
-          if (pattern_bass[row][currentStep]) {
+          if (pattern_bass[row][currentStepSeq]) {
             playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'bass'); // durée ~8n à 120bpm
           }
-          if (pattern_trumpet[row][currentStep]) {
+          if (pattern_trumpet[row][currentStepSeq]) {
             playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'trumpet'); // durée ~8n à 120bpm
           }
-          if (pattern_sax[row][currentStep]) {
+          if (pattern_sax[row][currentStepSeq]) {
             playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'sax'); // durée ~8n à 120bpm
           }
         }
         nextNote();
       }
-      timerID = setTimeout(scheduler, lookahead * 1000);
+      timerID = setTimeout(schedulerSeq, lookahead * 1000);
     }
 
-    function start() {
+    function startSeq() {
       if (audioCtx.state === 'suspended') {
         audioCtx.resume().then(() => {
           console.log('AudioContext resumed');
-          isPlaying = true;
-          currentStep = 0;
+          isPlayingSeq = true;
+          currentStepSeq = 0;
           nextStepTime = audioCtx.currentTime + 0.05;
-          scheduler();
+          schedulerSeq();
         }).catch(err => console.error('Resume failed:', err));
       } else {
-        isPlaying = true;
-        currentStep = 0;
+        isPlayingSeq = true;
+        currentStepSeq = 0;
         nextStepTime = audioCtx.currentTime + 0.05;
-        scheduler();
+        schedulerSeq();
       }
     }
-    function stop() {
-      isPlaying = false;
+    function stopSeq() {
+      isPlayingSeq = false;
       clearTimeout(timerID);
     }
 
     // Contrôles
     document.getElementById('play').onclick = () => {
-      if (isPlaying) {
-        stop();
+      if (isPlayingSeq) {
+        stopSeq();
         document.getElementById('play').textContent = 'PLAY';
       } else {
-        start();
+        startSeq();
         document.getElementById('play').textContent = 'STOP';
       }
     };
 
     document.getElementById('bpm').oninput = (e) => {
-      tempo = +e.target.value;
-      document.getElementById('bpmVal').textContent = tempo;
+      tempoSeq = +e.target.value;
+      document.getElementById('bpmVal').textContent = tempoSeq;
     };
   </script>
 </body>
