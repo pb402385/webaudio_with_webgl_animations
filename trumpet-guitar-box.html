@@ -61,7 +61,6 @@
       border: 1px solid var(--glass-border);
       backdrop-filter: blur(12px);
       border-radius: 16px;
-      padding: 0.8rem 1.8rem;
       color: var(--text);
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
@@ -90,6 +89,7 @@
 
     #play { font-size: 1.4rem; padding: 1rem 3rem; }
     #bpm { width: 180px; accent-color: var(--neon-magenta); }
+    #volumeSeq { width: 180px; accent-color: var(--neon-magenta); }
 
     .grid-container {
       max-width: 1100px;
@@ -110,7 +110,7 @@
       position: relative;
     }
 
-    button.step {
+    button.stepSeq {
       aspect-ratio: 1;
       background: rgba(10, 30, 60, 0.4);
       border: 1px solid rgba(0,240,255,0.15);
@@ -125,13 +125,13 @@
       overflow: hidden;
     }
 
-    button.step:hover {
+    button.stepSeq:hover {
       background: rgba(0,240,255,0.12);
       border-color: var(--neon-cyan);
       box-shadow: 0 0 20px rgba(0,240,255,0.5);
     }
 
-    button.step.active {
+    button.stepSeq.active {
       background: linear-gradient(135deg, var(--neon-magenta), var(--neon-cyan));
       color: #000;
       box-shadow: 0 0 30px var(--neon-magenta), inset 0 0 15px rgba(255,255,255,0.4);
@@ -157,7 +157,12 @@
     <button id="play">PLAY / STOP</button>
     <div>
       <label>BPM: <span id="bpmVal">120</span></label>
-      <input type="range" id="bpm" min="60" max="180" value="120">
+      <input type="range" id="bpmSeq" min="60" max="180" value="120">
+    </div>
+
+    <div>
+      <label>VOLUME: <span id="volumeVal">50</span></label>
+      <input type="range" id="volumeSeq" min="0" max="100" value="50">
     </div>
   </div>
 
@@ -213,7 +218,7 @@
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
           const btn = document.createElement('button');
-          btn.className = 'step col'+col;
+          btn.className = 'stepSeq col'+col;
           btn.dataset.row = row;
           btn.dataset.col = col;
           btn.dataset.instr_type = instr[intr_num];
@@ -245,6 +250,7 @@
     let nextStepTime = 0;
     let currentStepSeq = 0;
     let tempoSeq = 120;
+    let volumeSeq = 50;
     let lookahead = 0.1;
     let scheduleAheadTime = 0.2;
     let isPlayingSeq = false;
@@ -261,14 +267,14 @@
       let osc1, osc2, gainEnv, filter, distortion;
 
       const masterGain = audioCtx.createGain();
-      masterGain.gain.setValueAtTime(0.5, startTime);
+      masterGain.gain.setValueAtTime(volumeSeq/100, startTime);
 
       switch (type) {
         case 'guitar':
           osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
           osc2 = audioCtx.createOscillator(); osc2.type = 'square'; osc2.frequency.value = freq * 0.99; // léger detune
           gainEnv = audioCtx.createGain();
-          gainEnv.gain.setValueAtTime(0.5, startTime);
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
           gainEnv.gain.linearRampToValueAtTime(0.8, startTime + 0.005); // fast attack
           gainEnv.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
 
@@ -294,7 +300,7 @@
           osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
           osc2 = audioCtx.createOscillator(); osc2.type = 'square'; osc2.frequency.value = freq;
           gainEnv = audioCtx.createGain();
-          gainEnv.gain.setValueAtTime(0.5, startTime);
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
           gainEnv.gain.linearRampToValueAtTime(1.0, startTime + 0.01);
           gainEnv.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.6);
 
@@ -312,7 +318,7 @@
         case 'trumpet':
           osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
           gainEnv = audioCtx.createGain();
-          gainEnv.gain.setValueAtTime(0.5, startTime);
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
           gainEnv.gain.linearRampToValueAtTime(0.9, startTime + 0.03);
           gainEnv.gain.linearRampToValueAtTime(0.6, startTime + 0.15);
           gainEnv.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
@@ -341,7 +347,7 @@
           osc1 = audioCtx.createOscillator(); osc1.type = 'triangle'; osc1.frequency.value = freq;
           osc2 = audioCtx.createOscillator(); osc2.type = 'sawtooth'; osc2.frequency.value = freq; osc2.detune.value = -20;
           gainEnv = audioCtx.createGain();
-          gainEnv.gain.setValueAtTime(0.5, startTime);
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
           gainEnv.gain.linearRampToValueAtTime(0.7, startTime + 0.08);
           gainEnv.gain.linearRampToValueAtTime(0.4, startTime + 0.3);
           gainEnv.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
@@ -384,11 +390,11 @@
 
         for(let col = 0; col < cols; col++) {
           // On annule l'effet sur les autres
-          document.querySelectorAll('.step').forEach(element => {
+          document.querySelectorAll('.stepSeq').forEach(element => {
             element.style.opacity = "1.0";
           });
           // On appliquer un effet sur la colonne currentStepSeq
-          document.querySelectorAll('.step.col'+currentStepSeq).forEach(element => {
+          document.querySelectorAll('.stepSeq.col'+currentStepSeq).forEach(element => {
             element.style.opacity = "0.5";
           });
         }
@@ -444,9 +450,14 @@
       }
     };
 
-    document.getElementById('bpm').oninput = (e) => {
+    document.getElementById('bpmSeq').oninput = (e) => {
       tempoSeq = +e.target.value;
       document.getElementById('bpmVal').textContent = tempoSeq;
+    };
+
+    document.getElementById('volumeSeq').oninput = (e) => {
+      volumeSeq = +e.target.value;
+      document.getElementById('volumeVal').textContent = volumeSeq;
     };
   </script>
 </body>
