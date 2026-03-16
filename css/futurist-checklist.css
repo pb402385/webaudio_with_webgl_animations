@@ -13,7 +13,7 @@
       overflow-y: auto;
 }
 
-.containerTheremin, .containerDrumMachine {
+.containerTheremin, .containerDrumMachine, .containerSequencer{
       background: rgba(10, 15, 40, 0.7);
       padding: 5px 50px;
       border-radius: 20px;
@@ -37,10 +37,16 @@
       padding: 5px 10px;    
 }
 
+.sizeSequencer {
+      max-height: 70vh;
+      padding: 5px 10px;    
+}
+
 /* force le css du overflow du navigateur pour les overflow */
 .containerCheckList::-webkit-scrollbar-track,
 .containerTheremin::-webkit-scrollbar-track,
-.containerDrumMachine::-webkit-scrollbar-track
+.containerDrumMachine::-webkit-scrollbar-track,
+.containerSequencer::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	border-radius: 10px;
@@ -49,7 +55,8 @@
 
 .containerCheckList::-webkit-scrollbar,
 .containerTheremin::-webkit-scrollbar,
-.containerDrumMachine::-webkit-scrollbar
+.containerDrumMachine::-webkit-scrollbar,
+.containerSequencer::-webkit-scrollbar
 {
 	width: 12px;
 	background-color: #F5F5F5;
@@ -57,7 +64,8 @@
 
 .containerCheckList::-webkit-scrollbar-thumb,
 .containerTheremin::-webkit-scrollbar-thumb,
-.containerDrumMachine::-webkit-scrollbar-thumb
+.containerDrumMachine::-webkit-scrollbar-thumb,
+.containerSequencer::-webkit-scrollbar-thumb
 {
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
@@ -83,7 +91,8 @@
 }
 
 .containerTheremin::before,
-.containerDrumMachine::before
+.containerDrumMachine::before,
+.containerSequencer::before
 {
       content: '';
       position: absolute;

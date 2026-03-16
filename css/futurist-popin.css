@@ -165,7 +165,39 @@
     color: transparent;
 }
 
+.popinSequencer {
+    width: 90%;
+    background: var(--glass);
+    border: 1px solid rgba(0,255,255,0.3);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 60px rgba(0,255,255,0.2);
+    transform: none;
+    transition: none;
+    backdrop-filter: blur(16px);
+}
+
+.popinSequencer.active {
+    transform: translateY(0) scale(1);
+}
+
+.popinSequencer h2 {
+    margin: 0 0 20px;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #00ffff, #0088ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
 #dropAreaDrumMachine {
+    transform: none;
+    transition: none;
+}
+
+#dropAreaSequencer  {
     transform: none;
     transition: none;
 }
@@ -197,6 +229,11 @@
 }
 
 #dropAreaDrumMachine {
+    padding: 20px 20px;
+    margin: 10px 0; 
+}
+
+#dropAreaSequencer  {
     padding: 20px 20px;
     margin: 10px 0; 
 }

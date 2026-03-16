@@ -31,6 +31,7 @@
 		<link href="css/futurist-checklist.css" rel="stylesheet"/>
 		<link href="css/theremin.css" rel="stylesheet"/>
 		<link href="css/drum-machine.css" rel="stylesheet"/>
+		<link href="css/sequencer.css" rel="stylesheet"/>
 
 		<link  href="css/responsive.css" rel="stylesheet"/>
 	</head>
@@ -70,6 +71,11 @@
 							<button class="btn-futur btn-futur-resize" onclick="openPopinDrumMachine();" id="btnDrumMachine">
 								<div class="scan"></div>
 								<span class="glitch glitch-btn">DRUM MACHINE</span>
+							</button>
+
+							<button class="btn-futur btn-futur-resize" onclick="openPopinSequencer();" id="btnSequencer">
+								<div class="scan"></div>
+								<span class="glitch glitch-btn">SEQUENCER</span>
 							</button>
 						</div>
 					</div>
@@ -111,6 +117,11 @@
 							<button class="btn-futur btn-futur-resize" onclick="openPopinDrumMachine();" id="btnDrumMachine">
 								<div class="scan"></div>
 								<span class="glitch glitch-btn">DRUM MACHINE</span>
+							</button>
+
+							<button class="btn-futur btn-futur-resize" onclick="openPopinSequencer();" id="btnSequencer">
+								<div class="scan"></div>
+								<span class="glitch glitch-btn">SEQUENCER</span>
 							</button>
 						</div>
 					</div>
@@ -1099,6 +1110,70 @@
 			</div>
 		</div>
 
+
+		<div class="popin-overlay" id="popinSequencer">
+			<div class="popinSequencer">
+			<h2>SEQUENCER FOR GUITAR / BASS / TRUMPET / SAX</h2>
+			
+			<div class="file-area-big" id="dropAreaSequencer">
+
+				<div class="containerSequencer sizeSequencer">
+
+					<div id="sequencerContainerSequencer">
+
+						<div class="controlsSeq">
+							<button id="playSeq">PLAY / STOP</button>
+							<div>
+							<label>BPM: <span id="bpmVal">120</span></label>
+							<input type="range" id="bpmSeq" min="60" max="180" value="120">
+							</div>
+
+							<div>
+							<label>VOLUME: <span id="volumeVal">50</span></label>
+							<input type="range" id="volumeSeq" min="0" max="100" value="50">
+							</div>
+
+							<button id="loadFunk">Charger Funk Disco</button>
+							<button id="loadNuDisco">Charger Nu-Disco</button>
+							<button id="loadNull">Charger Null pattern</button>
+						</div>
+
+						<h5 class="h5Seq"> GUITAR SEQUENCER </h5>
+
+						<div class="grid-container">
+							<div class="grid" id="grid-guitar"></div>
+						</div>
+
+						<h5 class="h5Seq"> BASS SEQUENCER </h5>
+
+						<div class="grid-container">
+							<div class="grid" id="grid-bass"></div>
+						</div>
+
+						<h5 class="h5Seq"> TRUMPET SEQUENCER </h5>
+
+						<div class="grid-container">
+							<div class="grid" id="grid-trumpet"></div>
+						</div>
+
+						<h5 class="h5Seq"> SAX SEQUENCER </h5>
+
+						<div class="grid-container">
+							<div class="grid" id="grid-sax"></div>
+						</div>
+
+					</div>
+
+				</div>
+				
+			</div>
+
+			<div class="btn-group">
+				<button class="btn-close" onclick="closePopinSequencer()">Close</button>
+			</div>
+			</div>
+		</div>
+
 		<script>
 			var delayAnim = 10;
 			var activatedRandomAnim = false;
@@ -1249,6 +1324,10 @@
 			const popinDrumMachine = overlayDrumMachine.querySelector('.popinDrumMachine');
 			const dropAreaDrumMachine = document.getElementById('dropAreaDrumMachine');
 
+			const overlaySequencer = document.getElementById('popinSequencer');
+			const popinSequencer = overlaySequencer.querySelector('.popinSequencer');
+			const dropAreaSequencer = document.getElementById('dropAreaSequencer');
+
 
 
 			function openPopinEffectAnim() {
@@ -1291,6 +1370,16 @@
 				setTimeout(() => overlayDrumMachine.classList.remove('active'), 400);
 			}
 
+			function openPopinSequencer() {
+				overlaySequencer.classList.add('active');
+				setTimeout(() => popinSequencer.classList.add('active'), 50);
+			}
+
+			function closePopinSequencer(){
+				popinSequencer.classList.remove('active');
+				setTimeout(() => overlaySequencer.classList.remove('active'), 400);
+			}
+
 
 			// Open / Close
 			function openPopin() {
@@ -1321,6 +1410,10 @@
 
 			overlayDrumMachine.addEventListener('click', e => {
 				if (e.target === overlayDrumMachine) closePopinDrumMachine();
+			});
+
+			overlaySequencer.addEventListener('click', e => {
+				if (e.target === overlaySequencer) closePopinSequencer();
 			});
 		</script>
 

@@ -2461,7 +2461,7 @@ setTimeout(() => {
 			const oldmarkerrect = step.firstChild.getBoundingClientRect();
 			const oldmarker = step.firstChild;
 			console.log('offsetTop =' + oldmarker.offsetTop + 'offsetLeft =' + oldmarker.offsetLeft);
-			debugger;
+			//debugger;
 			const oldx = oldmarkerrect.left;
         	const oldy = oldmarkerrect.top;
 			updateResize(oldx, oldy, oldrect);
@@ -2813,41 +2813,507 @@ setTimeout(() => {
 	//TODO SET TIMEOUT 2 secondes ici
 	setTimeout(() => {
 
-    // Création des LEDs + clic pour toggle
-    const container = document.getElementById('steps');
+		// Création des LEDs + clic pour toggle
+		const container = document.getElementById('steps');
 
-    instruments.forEach(inst => {
-      const title = document.createElement('div');
-      title.innerHTML = inst;
-      title.className = "title";
-      container.appendChild(title);
+		instruments.forEach(inst => {
+		const title = document.createElement('div');
+		title.innerHTML = inst;
+		title.className = "title";
+		container.appendChild(title);
 
-      for (let step = 0; step < 16; step++) {
+		for (let step = 0; step < 16; step++) {
 
-        
-        const led = document.createElement('div');
-       
-        led.classList.add('led', inst);
-        if (pattern[inst][step]) led.classList.add('on');
-        
-        led.addEventListener('click', () => {
-          pattern[inst][step] = !pattern[inst][step];
-          led.classList.toggle('on');
-        });
+			
+			const led = document.createElement('div');
+		
+			led.classList.add('led', inst);
+			if (pattern[inst][step]) led.classList.add('on');
+			
+			led.addEventListener('click', () => {
+			pattern[inst][step] = !pattern[inst][step];
+			led.classList.toggle('on');
+			});
 
 
-        container.appendChild(led);
+			container.appendChild(led);
 
-        leds.push(led);
-      }
-    });
+			leds.push(led);
+		}
+		});
 
-    // Bindings
-    document.getElementById('playDrumMachine').onclick = startDrumMachine;
-    document.getElementById('bpm').oninput = e => setBPM(e.target.value);
-    document.getElementById('reverb').oninput = e => setReverb(e.target.value);
-    document.getElementById('delay').oninput = e => setDelay(e.target.value);
+		// Bindings
+		document.getElementById('playDrumMachine').onclick = startDrumMachine;
+		document.getElementById('bpm').oninput = e => setBPM(e.target.value);
+		document.getElementById('reverb').oninput = e => setReverb(e.target.value);
+		document.getElementById('delay').oninput = e => setDelay(e.target.value);
 
 	}, 2000);
 
 
+
+
+	/** SEQUENCER **/
+    const rows = 8;
+    const cols = 16;
+
+    const instr = ['guitar','bass','trumpet','sax'];
+
+    const pattern_guitar = Array(rows).fill().map(() => Array(cols).fill(false));
+    const pattern_bass = Array(rows).fill().map(() => Array(cols).fill(false));
+    const pattern_trumpet = Array(rows).fill().map(() => Array(cols).fill(false));
+    const pattern_sax = Array(rows).fill().map(() => Array(cols).fill(false));
+
+    // Exemples de patterns prêts à charger
+
+    // 1. Funk / Disco basique
+    const patternFunkGuitar = [
+      [0,1,0,0,1,0,0,0,0,1,0,0,1,0,0,0],
+      [0,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0],
+      [0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
+      [0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0],
+      [0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternFunkBass = [
+      [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternFunkTrumpet = [
+      [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternFunkSax = [
+      [0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],
+      [0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    // 2. Nu-disco / French touch
+    const patternNuDiscoGuitar = [
+      [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
+      [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNuDiscoBass = [
+      [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNuDiscoTrumpet = [
+      [0,0,0,0,1,0,0,1,0,0,0,1,0,0,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNuDiscoSax = [
+      [1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1],
+      [0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0],
+      [0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    // PATTERNS NULL
+    const patternNullGuitar = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNullBass = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNullTrumpet = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNullSax = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const notes = ['C5','A4','G4','E4','D4','C4','A3','G3'];
+    const noteFreqs = notes.map(note => {
+      const match = note.match(/([A-G]#?)([0-9])/);
+      const letter = match[1];
+      const octave = parseInt(match[2]);
+      const semitone = {C:0, 'C#':1, D:2, 'D#':3, E:4, F:5, 'F#':6, G:7, 'G#':8, A:9, 'A#':10, B:11}[letter];
+      return 440 * Math.pow(2, (semitone - 9 + 12 * (octave - 4)) / 12);
+    });
+
+    // Scheduling
+    let nextStepTime = 0;
+    let currentStepSeq = 0;
+    let tempoSeq = 120;
+    let volumeSeq = 50;
+    let lookahead = 0.1;
+    let scheduleAheadTime = 0.2;
+    let isPlayingSeq = false;
+    let timerID;
+
+    function nextNote() {
+      const secondsPerBeat = 60 / tempoSeq;
+      const secondsPerStep = secondsPerBeat / 2; // 8n
+      nextStepTime += secondsPerStep;
+      currentStepSeq = (currentStepSeq + 1) % cols;
+    }
+
+    function playSynthNote(freq, startTime, duration, type) {
+      let osc1, osc2, gainEnv, filterSeq, distortion;
+
+      const masterGainSeq = audioCtx.createGain();
+      masterGainSeq.gain.setValueAtTime(volumeSeq/100, startTime);
+
+      switch (type) {
+        case 'guitar':
+          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
+          osc2 = audioCtx.createOscillator(); osc2.type = 'square'; osc2.frequency.value = freq * 0.99; // léger detune
+          gainEnv = audioCtx.createGain();
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
+          gainEnv.gain.linearRampToValueAtTime(0.8, startTime + 0.005); // fast attack
+          gainEnv.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+          filterSeq = audioCtx.createBiquadFilter();
+          filterSeq.type = 'bandpass';
+          filterSeq.frequency.value = freq * 3;
+          filterSeq.Q.value = 2;
+
+          distortion = audioCtx.createWaveShaper();
+          distortion.curve = new Float32Array(65536).map((_, i) => {
+            const x = (i - 32768) / 32768;
+            return Math.tanh(x * 3); // soft clip
+          });
+
+          osc1.connect(distortion);
+          osc2.connect(distortion);
+          distortion.connect(filterSeq);
+          filterSeq.connect(gainEnv);
+          gainEnv.connect(masterGainSeq);
+          break;
+
+        case 'bass':
+          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
+          osc2 = audioCtx.createOscillator(); osc2.type = 'square'; osc2.frequency.value = freq;
+          gainEnv = audioCtx.createGain();
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
+          gainEnv.gain.linearRampToValueAtTime(1.0, startTime + 0.01);
+          gainEnv.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.6);
+
+          filterSeq = audioCtx.createBiquadFilter();
+          filterSeq.type = 'lowpass';
+          filterSeq.frequency.value = freq * 4;
+          filterSeq.Q.value = 1;
+
+          osc1.connect(filterSeq);
+          osc2.connect(filterSeq);
+          filterSeq.connect(gainEnv);
+          gainEnv.connect(masterGainSeq);
+          break;
+
+        case 'trumpet':
+          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
+          gainEnv = audioCtx.createGain();
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
+          gainEnv.gain.linearRampToValueAtTime(0.9, startTime + 0.03);
+          gainEnv.gain.linearRampToValueAtTime(0.6, startTime + 0.15);
+          gainEnv.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+          filterSeq = audioCtx.createBiquadFilter();
+          filterSeq.type = 'peaking';
+          filterSeq.frequency.value = freq * 2.5;
+          filterSeq.gain.value = 8;
+          filterSeq.Q.value = 3;
+
+          const vibrato = audioCtx.createOscillator();
+          vibrato.type = 'sine';
+          vibrato.frequency.value = 5;
+          const vibratoGain = audioCtx.createGain();
+          vibratoGain.gain.value = 8;
+          vibrato.connect(vibratoGain);
+          vibratoGain.connect(osc1.frequency);
+          vibrato.start(startTime);
+
+          osc1.connect(filterSeq);
+          filterSeq.connect(gainEnv);
+          gainEnv.connect(masterGainSeq);
+          break;
+
+        case 'sax':
+          osc1 = audioCtx.createOscillator(); osc1.type = 'triangle'; osc1.frequency.value = freq;
+          osc2 = audioCtx.createOscillator(); osc2.type = 'sawtooth'; osc2.frequency.value = freq; osc2.detune.value = -20;
+          gainEnv = audioCtx.createGain();
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
+          gainEnv.gain.linearRampToValueAtTime(0.7, startTime + 0.08);
+          gainEnv.gain.linearRampToValueAtTime(0.4, startTime + 0.3);
+          gainEnv.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+          filterSeq = audioCtx.createBiquadFilter();
+          filterSeq.type = 'bandpass';
+          filterSeq.frequency.value = freq * 1.8;
+          filterSeq.Q.value = 4;
+
+          // Breath noise
+          const noise = audioCtx.createBufferSource();
+          const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+          const data = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+          noise.buffer = noiseBuffer;
+          const noiseGain = audioCtx.createGain();
+          noiseGain.gain.value = 0.08;
+          noise.connect(noiseGain);
+          noiseGain.connect(filterSeq);
+
+          osc1.connect(filterSeq);
+          osc2.connect(filterSeq);
+          filterSeq.connect(gainEnv);
+          gainEnv.connect(masterGainSeq);
+          noise.start(startTime);
+          noise.stop(startTime + duration);
+          break;
+      }
+
+      //masterGain.connect(audioCtx.destination);
+	  masterGainSeq.connect(lBand);
+	  masterGainSeq.connect(hBand);
+	  masterGainSeq.connect(mGain);
+
+      if (osc1) osc1.start(startTime);
+      if (osc2) osc2.start(startTime);
+      if (osc1) osc1.stop(startTime + duration + 0.1);
+      if (osc2) osc2.stop(startTime + duration + 0.1);
+    }
+
+    function schedulerSeq() {
+      while (nextStepTime < audioCtx.currentTime + scheduleAheadTime) {
+
+        for(let col = 0; col < cols; col++) {
+          // On annule l'effet sur les autres
+          document.querySelectorAll('.stepSeq').forEach(element => {
+            element.style.opacity = "1.0";
+          });
+          // On appliquer un effet sur la colonne currentStepSeq
+          document.querySelectorAll('.stepSeq.col'+currentStepSeq).forEach(element => {
+            element.style.opacity = "0.5";
+          });
+        }
+
+        for (let row = 0; row < rows; row++) {
+          if (pattern_guitar[row][currentStepSeq]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'guitar'); // durée ~8n à 120bpm
+          }
+          if (pattern_bass[row][currentStepSeq]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'bass'); // durée ~8n à 120bpm
+          }
+          if (pattern_trumpet[row][currentStepSeq]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'trumpet'); // durée ~8n à 120bpm
+          }
+          if (pattern_sax[row][currentStepSeq]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'sax'); // durée ~8n à 120bpm
+          }
+        }
+        nextNote();
+      }
+      timerID = setTimeout(schedulerSeq, lookahead * 1000);
+    }
+
+    function startSeq() {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().then(() => {
+          console.log('AudioContext resumed');
+          isPlayingSeq = true;
+          currentStepSeq = 0;
+          nextStepTime = audioCtx.currentTime + 0.05;
+          schedulerSeq();
+        }).catch(err => console.error('Resume failed:', err));
+      } else {
+        isPlayingSeq = true;
+        currentStepSeq = 0;
+        nextStepTime = audioCtx.currentTime + 0.05;
+        schedulerSeq();
+      }
+    }
+    function stopSeq() {
+      isPlayingSeq = false;
+      clearTimeout(timerID);
+    }
+
+    // Fonction helper pour charger un pattern et mettre à jour les boutons
+    function loadPattern(sourcePattern, targetPattern, instrType) {
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          targetPattern[row][col] = !!sourcePattern[row][col];
+        }
+      }
+    }
+
+    // Fonction pour rafraîchir visuellement les boutons (optionnel mais recommandé)
+    function updateGridVisuals() {
+      document.querySelectorAll('.stepSeq').forEach(btn => {
+        const row = parseInt(btn.dataset.row);
+        const col = parseInt(btn.dataset.col);
+        const instr = btn.dataset.instr_type;
+        
+        let active = false;
+        if (instr === 'guitar') active = pattern_guitar[row][col];
+        if (instr === 'bass')   active = pattern_bass[row][col];
+        if (instr === 'trumpet') active = pattern_trumpet[row][col];
+        if (instr === 'sax')    active = pattern_sax[row][col];
+        
+        btn.classList.toggle('active', active);
+      });
+    }
+
+
+	//TODO SET TIMEOUT 2 secondes ici
+	setTimeout(() => {
+
+		// Création grille
+		for (let intr_num = 0; intr_num < instr.length; intr_num++) {
+		let grid = document.getElementById('grid-'+instr[intr_num]);
+		for (let row = 0; row < rows; row++) {
+			for (let col = 0; col < cols; col++) {
+			const btn = document.createElement('button');
+			btn.className = 'stepSeq col'+col;
+			btn.dataset.row = row;
+			btn.dataset.col = col;
+			btn.dataset.instr_type = instr[intr_num];
+			btn.textContent = notes[row];
+			btn.addEventListener('click', () => {
+				if(instr[intr_num] == 'guitar') {
+				pattern_guitar[row][col] = !pattern_guitar[row][col];
+				btn.classList.toggle('active', pattern_guitar[row][col]);
+				}
+				if(instr[intr_num] == 'bass') {
+				pattern_bass[row][col] = !pattern_bass[row][col];
+				btn.classList.toggle('active', pattern_bass[row][col]);
+				}
+				if(instr[intr_num] == 'trumpet') {
+				pattern_trumpet[row][col] = !pattern_trumpet[row][col];
+				btn.classList.toggle('active', pattern_trumpet[row][col]);
+				}
+				if(instr[intr_num] == 'sax') {
+				pattern_sax[row][col] = !pattern_sax[row][col];
+				btn.classList.toggle('active', pattern_sax[row][col]);
+				}
+			});
+			grid.appendChild(btn);
+			}
+		}
+		}
+
+
+		// Contrôles
+		document.getElementById('playSeq').onclick = () => {
+		if (isPlayingSeq) {
+			stopSeq();
+			document.getElementById('playSeq').textContent = 'PLAY';
+		} else {
+			startSeq();
+			document.getElementById('playSeq').textContent = 'STOP';
+		}
+		};
+
+		document.getElementById('bpmSeq').oninput = (e) => {
+		tempoSeq = +e.target.value;
+		document.getElementById('bpmVal').textContent = tempoSeq;
+		};
+
+		document.getElementById('volumeSeq').oninput = (e) => {
+		volumeSeq = +e.target.value;
+		document.getElementById('volumeVal').textContent = volumeSeq;
+		};
+
+		document.getElementById('loadFunk').onclick = () => {
+		loadPattern(patternFunkGuitar, pattern_guitar, 'guitar');
+		loadPattern(patternFunkBass, pattern_bass, 'bass');
+		loadPattern(patternFunkTrumpet, pattern_trumpet, 'trumpet');
+		loadPattern(patternFunkSax, pattern_sax, 'sax');
+		updateGridVisuals();  // à créer (voir ci-dessous)
+		};
+
+		document.getElementById('loadNuDisco').onclick = () => {
+		loadPattern(patternNuDiscoGuitar, pattern_guitar, 'guitar');
+		loadPattern(patternNuDiscoBass, pattern_bass, 'bass');
+		loadPattern(patternNuDiscoTrumpet, pattern_trumpet, 'trumpet');
+		loadPattern(patternNuDiscoSax, pattern_sax, 'sax');
+		updateGridVisuals();
+		};
+
+		document.getElementById('loadNull').onclick = () => {
+		loadPattern(patternNullGuitar, pattern_guitar, 'guitar');
+		loadPattern(patternNullBass, pattern_bass, 'bass');
+		loadPattern(patternNullTrumpet, pattern_trumpet, 'trumpet');
+		loadPattern(patternNullSax, pattern_sax, 'sax');
+		updateGridVisuals();
+		};
+
+	}, 2000);

@@ -121,7 +121,7 @@
         font-size: 0.9rem;
     }
 
-    .popinTheremin, .popinDrumMachine {
+    .popinTheremin, .popinDrumMachine, .popinSequencer {
         width: 98%;
     }
 }

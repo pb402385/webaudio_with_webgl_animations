@@ -171,6 +171,12 @@ body {
     top: 5px;
 }
 
+#sequencerContainerSequencer {
+    display: block;
+    position: relative;
+    top: 5px;
+}
+
 #actions-drum-machine {
     display: flex;
     flex-direction: row;

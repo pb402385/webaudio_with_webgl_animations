@@ -597,6 +597,12 @@ body{
     cursor: pointer;
 }
 
+#btnSequencer{
+	background-color: white;
+    z-index: 2;
+    cursor: pointer;
+}
+
 .pPiano{
 	font-size: 50%;
 	font-weight: bold;
