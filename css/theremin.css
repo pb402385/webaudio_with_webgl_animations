@@ -161,7 +161,7 @@
 }
 
 .marker {
-    position: absolute;
+    position: relative;
     width: 18px;
     height: 18px;
     background: var(--accent);

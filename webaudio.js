@@ -2435,6 +2435,7 @@ setTimeout(() => {
         update(cx, cy, rect);
       };
 
+
       step.addEventListener('mousedown', e => start(e));
       step.addEventListener('touchstart', e => { e.preventDefault(); start(e, true); }, {passive:false});
 
@@ -2446,11 +2447,33 @@ setTimeout(() => {
         update(cx, cy, rect);
       };
 
+	  const updateResize = (clientX, clientY, rect) => {
+        const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+        const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+        stepsData[i].freq = MIN_FREQ + (x / rect.width) * (MAX_FREQ - MIN_FREQ);
+        stepsData[i].vol  = Math.max(0.05, 1 - (y / rect.height));
+        marker.style.left = x + 'px';
+        marker.style.top  = y + 'px';
+      };
+
+	  const resize = (e) => {
+			const oldrect = step.getBoundingClientRect();
+			const oldmarkerrect = step.firstChild.getBoundingClientRect();
+			const oldmarker = step.firstChild;
+			console.log('offsetTop =' + oldmarker.offsetTop + 'offsetLeft =' + oldmarker.offsetLeft);
+			debugger;
+			const oldx = oldmarkerrect.left;
+        	const oldy = oldmarkerrect.top;
+			updateResize(oldx, oldy, oldrect);
+      };
+
       document.addEventListener('mousemove', e => move(e));
       document.addEventListener('touchmove', e => move(e, true), {passive:false});
 
       document.addEventListener('mouseup', () => isDraggingTheremin = false);
       document.addEventListener('touchend', () => isDraggingTheremin = false);
+
+	  //window.addEventListener('resize', e => resize(e));
     }
 
     function startOsc() {
