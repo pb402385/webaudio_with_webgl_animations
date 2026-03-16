@@ -164,6 +164,10 @@
       <label>VOLUME: <span id="volumeVal">50</span></label>
       <input type="range" id="volumeSeq" min="0" max="100" value="50">
     </div>
+
+    <button id="loadFunk">Charger Funk Disco</button>
+    <button id="loadNuDisco">Charger Nu-Disco</button>
+    <button id="loadNull">Charger Null pattern</button>
   </div>
 
   <h5> GUITAR SEQUENCER </h5>
@@ -202,6 +206,143 @@
     const pattern_bass = Array(rows).fill().map(() => Array(cols).fill(false));
     const pattern_trumpet = Array(rows).fill().map(() => Array(cols).fill(false));
     const pattern_sax = Array(rows).fill().map(() => Array(cols).fill(false));
+
+    // Exemples de patterns prêts à charger
+
+    // 1. Funk / Disco basique
+    const patternFunkGuitar = [
+      [0,1,0,0,1,0,0,0,0,1,0,0,1,0,0,0],
+      [0,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0],
+      [0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
+      [0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0],
+      [0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternFunkBass = [
+      [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternFunkTrumpet = [
+      [0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternFunkSax = [
+      [0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],
+      [0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    // 2. Nu-disco / French touch
+    const patternNuDiscoGuitar = [
+      [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
+      [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNuDiscoBass = [
+      [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNuDiscoTrumpet = [
+      [0,0,0,0,1,0,0,1,0,0,0,1,0,0,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNuDiscoSax = [
+      [1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1],
+      [0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0],
+      [0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    // PATTERNS NULL
+    const patternNullGuitar = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNullBass = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNullTrumpet = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+
+    const patternNullSax = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
 
     const notes = ['C5','A4','G4','E4','D4','C4','A3','G3'];
     const noteFreqs = notes.map(note => {
@@ -459,6 +600,56 @@
       volumeSeq = +e.target.value;
       document.getElementById('volumeVal').textContent = volumeSeq;
     };
+
+    document.getElementById('loadFunk').onclick = () => {
+      loadPattern(patternFunkGuitar, pattern_guitar, 'guitar');
+      loadPattern(patternFunkBass, pattern_bass, 'bass');
+      loadPattern(patternFunkTrumpet, pattern_trumpet, 'trumpet');
+      loadPattern(patternFunkSax, pattern_sax, 'sax');
+      updateGridVisuals();  // à créer (voir ci-dessous)
+    };
+
+    document.getElementById('loadNuDisco').onclick = () => {
+      loadPattern(patternNuDiscoGuitar, pattern_guitar, 'guitar');
+      loadPattern(patternNuDiscoBass, pattern_bass, 'bass');
+      loadPattern(patternNuDiscoTrumpet, pattern_trumpet, 'trumpet');
+      loadPattern(patternNuDiscoSax, pattern_sax, 'sax');
+      updateGridVisuals();
+    };
+
+    document.getElementById('loadNull').onclick = () => {
+      loadPattern(patternNullGuitar, pattern_guitar, 'guitar');
+      loadPattern(patternNullBass, pattern_bass, 'bass');
+      loadPattern(patternNullTrumpet, pattern_trumpet, 'trumpet');
+      loadPattern(patternNullSax, pattern_sax, 'sax');
+      updateGridVisuals();
+    };
+
+    // Fonction helper pour charger un pattern et mettre à jour les boutons
+    function loadPattern(sourcePattern, targetPattern, instrType) {
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          targetPattern[row][col] = !!sourcePattern[row][col];
+        }
+      }
+    }
+
+    // Fonction pour rafraîchir visuellement les boutons (optionnel mais recommandé)
+    function updateGridVisuals() {
+      document.querySelectorAll('.stepSeq').forEach(btn => {
+        const row = parseInt(btn.dataset.row);
+        const col = parseInt(btn.dataset.col);
+        const instr = btn.dataset.instr_type;
+        
+        let active = false;
+        if (instr === 'guitar') active = pattern_guitar[row][col];
+        if (instr === 'bass')   active = pattern_bass[row][col];
+        if (instr === 'trumpet') active = pattern_trumpet[row][col];
+        if (instr === 'sax')    active = pattern_sax[row][col];
+        
+        btn.classList.toggle('active', active);
+      });
+    }
   </script>
 </body>
 </html>
