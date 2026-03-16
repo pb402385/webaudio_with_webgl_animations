@@ -2473,7 +2473,7 @@ setTimeout(() => {
       document.addEventListener('mouseup', () => isDraggingTheremin = false);
       document.addEventListener('touchend', () => isDraggingTheremin = false);
 
-	  //window.addEventListener('resize', e => resize(e));
+	  window.addEventListener('resize', e => resize(e));
     }
 
     function startOsc() {
@@ -2536,30 +2536,30 @@ setTimeout(() => {
 			return;
 		}
 
-      await audioCtx.resume();
-      startOsc();
-      currentStepTheremin = 0;
-      playNextStep();
+		await audioCtx.resume();
+		startOsc();
+		currentStepTheremin = 0;
+		playNextStep();
 
-      interval = setInterval(playNextStep, stepDurationMs);
+		interval = setInterval(playNextStep, stepDurationMs);
 
-      playBtn.textContent = 'STOP';
-      playBtn.classList.add('active');
-      isPlayingTheremin = true;
-    });
+		playBtn.textContent = 'STOP';
+		playBtn.classList.add('active');
+		isPlayingTheremin = true;
+		});
 
-}, 2000);
+	}, 2000);
 
-function stopTheremin(){
-	clearInterval(interval);
-    if (osc) osc.stop();
-	let playBtnEl = document.getElementById("play");
-    playBtnEl.textContent = 'PLAY LOOP';
-    playBtnEl.classList.remove('active');
-    document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
-    isPlayingTheremin = false;
-    return;
-}
+	function stopTheremin(){
+		clearInterval(interval);
+		if (osc) osc.stop();
+		let playBtnEl = document.getElementById("play");
+		playBtnEl.textContent = 'PLAY LOOP';
+		playBtnEl.classList.remove('active');
+		document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
+		isPlayingTheremin = false;
+		return;
+	}
 
 
 
@@ -2578,7 +2578,7 @@ function stopTheremin(){
     const instruments = ['kick','snare','hihat','clap','tom','ride','crash'];
 
 	// Pattern éditable – objet avec booléens
-	let patternNull = {
+	const patternNull = {
       kick:  Array(16).fill(false),
       snare: Array(16).fill(false),
       hihat: Array(16).fill(false),
@@ -2588,7 +2588,7 @@ function stopTheremin(){
       crash: Array(16).fill(false),
     };
 
-	let patternBase = {
+	const patternBase = {
       kick:  Array(16).fill(false).map((_,i) => [0,4,8,12,15].includes(i)),
       snare: Array(16).fill(false).map((_,i) => i%4===2),
       hihat: Array(16).fill(false).map((_,i) => i%2===0),
@@ -2598,11 +2598,33 @@ function stopTheremin(){
       crash: Array(16).fill(false).map((_,i) => i===0),
     };
 
+	const patternFunkDisco = {
+		kick:   [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],          // Four-on-the-floor pur
+		snare:  [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],          // Snare sur 2 et 4
+		hihat:  [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],          // 16th notes fermées constantes (très typique disco)
+		clap:   [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,1],          // Clap sur 2 et 4 + petit accent sur le dernier 16th du 4
+		tom:    [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],          // Pas de toms ici (optionnel)
+		ride:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],          // Pas utilisé
+		crash:  [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]           // Crash sur le 1 pour marquer le début de boucle
+	};
+
+	const patternNuDisco = {
+		kick:   [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],          // Four-on-the-floor obligatoire
+		snare:  [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],          // Snare/clap sur 2 & 4
+		hihat:  [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],          // 8th notes ouvertes/fermées alternées (plus "housey")
+		clap:   [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,1],          // Clap principal + petit layer sur le "uh" du 4
+		tom:    [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],          // Pas de toms
+		ride:   [0,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],          // Ride subtil sur le 9 (accent disco moderne)
+		crash:  [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]           // Crash sur le 1
+	};
+
 	let pattern = patternNull;
 
 	function changePattern(id) {
 		if(id==0) pattern = patternBase;
 		if(id==1) pattern = patternNull;
+		if(id==2) pattern = patternFunkDisco;
+		if(id==3) pattern = patternNuDisco;
 		initPattern(pattern);
 	}
 
