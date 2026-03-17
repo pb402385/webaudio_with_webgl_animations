@@ -460,7 +460,7 @@ Voici un exemple vidéo du thérémine:
 <a id="sequencer"></a>
 
 <div align="center">
-    <img src="screenshots/sequencer.jpeg" alt="sequencer.png" />
+    <img src="screenshots/sequencer.jpg" alt="sequencer.png" />
 </div>
 
 Le **séquenceur** est une sorte de de boîte à rythme mais qui simule des notes de différents instruments de musique (guitare, basse, trompette et saxophone). Les notes jouées correspondent aux fréquences suivantes dans la gamme tempérée:
@@ -1272,7 +1272,7 @@ Dans l’exemple de l’effet Noise, nous avons trois paramètres: le type, le c
 ### Code de la boîte à rythmes et du theremin
 <a id="code-drum-machine-theremin"></a>
 
-Ces deux instruments ont été codés grâce à **Grok AI**. Je les ai d’abord construits dans des fichiers séparés (theremin.html et drum-machine.html) jusqu’à obtenir des versions satisfaisantes, puis je les ai intégrés dans l’application principale. Pour l’intégration, j’ai divisé le code en trois parties :
+Ces trois instruments ont été codés grâce à **Grok AI**. Je les ai d’abord construits dans des fichiers séparés (theremin.html et drum-machine.html) jusqu’à obtenir des versions satisfaisantes, puis je les ai intégrés dans l’application principale. Pour l’intégration, j’ai divisé le code en trois parties :
 - Une **partie CSS** que l’on retrouve dans le **dossier css**.
 - Une **partie HTML** liée à la vue dans le fichier **index.html**.
 - Une **partie JavaScript**, simplement ajoutée dans le fichier **webaudio.js**.
@@ -1375,6 +1375,182 @@ En ce qui concerne le thérémine, j'ai également ajouté la fonction **preset(
 
 De plus, j’ai modifié la génération du séquenceur afin de **pouvoir muter certaines notes**, et j’ai ajouté les événements JavaScript correspondants. J’ai également dû résoudre plusieurs **problèmes liés à la nature asynchrone du code**, mais je n’entrerai pas dans les détails ici, je trouve le code assez lisible si l’on a un bon niveau en JavaScript. J’ai aussi mis à jour le CSS des deux instruments pour que leur look and feel soit cohérent avec le reste de mon application.
 
+Le **séquenceur lui ne nécessite pas d'initialisation du graphe** car chaque note est liée à un oscillateur que l'on utilise qu'une seule fois, on le recrée à chaque fois que l'on a besoin de jouer une note. Le gros de l'instrument se situe dans la fonction **playSynthNote(freq, startTime, duration, type)**, la séquence s'enchaine s'implement grâce à un **setTimeout** via l'appel de la fonction **schedulerSeq()**
+
+``` javascript
+    function playSynthNote(freq, startTime, duration, type) {
+      let osc1, osc2, gainEnv, filterSeq, distortion;
+
+      const masterGainSeq = audioCtx.createGain();
+      masterGainSeq.gain.setValueAtTime(volumeSeq/100, startTime);
+
+      switch (type) {
+        case 'guitar':
+          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
+          osc2 = audioCtx.createOscillator(); osc2.type = 'square'; osc2.frequency.value = freq * 0.99; // léger detune
+          gainEnv = audioCtx.createGain();
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
+          gainEnv.gain.linearRampToValueAtTime(0.8, startTime + 0.005); // fast attack
+          gainEnv.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+          filterSeq = audioCtx.createBiquadFilter();
+          filterSeq.type = 'bandpass';
+          filterSeq.frequency.value = freq * 3;
+          filterSeq.Q.value = 2;
+
+          distortion = audioCtx.createWaveShaper();
+          distortion.curve = new Float32Array(65536).map((_, i) => {
+            const x = (i - 32768) / 32768;
+            return Math.tanh(x * 3); // soft clip
+          });
+
+          osc1.connect(distortion);
+          osc2.connect(distortion);
+          distortion.connect(filterSeq);
+          filterSeq.connect(gainEnv);
+          gainEnv.connect(masterGainSeq);
+          break;
+
+        case 'bass':
+          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
+          osc2 = audioCtx.createOscillator(); osc2.type = 'square'; osc2.frequency.value = freq;
+          gainEnv = audioCtx.createGain();
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
+          gainEnv.gain.linearRampToValueAtTime(1.0, startTime + 0.01);
+          gainEnv.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.6);
+
+          filterSeq = audioCtx.createBiquadFilter();
+          filterSeq.type = 'lowpass';
+          filterSeq.frequency.value = freq * 4;
+          filterSeq.Q.value = 1;
+
+          osc1.connect(filterSeq);
+          osc2.connect(filterSeq);
+          filterSeq.connect(gainEnv);
+          gainEnv.connect(masterGainSeq);
+          break;
+
+        case 'trumpet':
+          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
+          gainEnv = audioCtx.createGain();
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
+          gainEnv.gain.linearRampToValueAtTime(0.9, startTime + 0.03);
+          gainEnv.gain.linearRampToValueAtTime(0.6, startTime + 0.15);
+          gainEnv.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+          filterSeq = audioCtx.createBiquadFilter();
+          filterSeq.type = 'peaking';
+          filterSeq.frequency.value = freq * 2.5;
+          filterSeq.gain.value = 8;
+          filterSeq.Q.value = 3;
+
+          const vibrato = audioCtx.createOscillator();
+          vibrato.type = 'sine';
+          vibrato.frequency.value = 5;
+          const vibratoGain = audioCtx.createGain();
+          vibratoGain.gain.value = 8;
+          vibrato.connect(vibratoGain);
+          vibratoGain.connect(osc1.frequency);
+          vibrato.start(startTime);
+
+          osc1.connect(filterSeq);
+          filterSeq.connect(gainEnv);
+          gainEnv.connect(masterGainSeq);
+          break;
+
+        case 'sax':
+          osc1 = audioCtx.createOscillator(); osc1.type = 'triangle'; osc1.frequency.value = freq;
+          osc2 = audioCtx.createOscillator(); osc2.type = 'sawtooth'; osc2.frequency.value = freq; osc2.detune.value = -20;
+          gainEnv = audioCtx.createGain();
+          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
+          gainEnv.gain.linearRampToValueAtTime(0.7, startTime + 0.08);
+          gainEnv.gain.linearRampToValueAtTime(0.4, startTime + 0.3);
+          gainEnv.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+          filterSeq = audioCtx.createBiquadFilter();
+          filterSeq.type = 'bandpass';
+          filterSeq.frequency.value = freq * 1.8;
+          filterSeq.Q.value = 4;
+
+          // Breath noise
+          const noise = audioCtx.createBufferSource();
+          const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+          const data = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+          noise.buffer = noiseBuffer;
+          const noiseGain = audioCtx.createGain();
+          noiseGain.gain.value = 0.08;
+          noise.connect(noiseGain);
+          noiseGain.connect(filterSeq);
+
+          osc1.connect(filterSeq);
+          osc2.connect(filterSeq);
+          filterSeq.connect(gainEnv);
+          gainEnv.connect(masterGainSeq);
+          noise.start(startTime);
+          noise.stop(startTime + duration);
+          break;
+      }
+
+      //masterGain.connect(audioCtx.destination);
+	  masterGainSeq.connect(lBand);
+	  masterGainSeq.connect(hBand);
+	  masterGainSeq.connect(mGain);
+
+      if (osc1) osc1.start(startTime);
+      if (osc2) osc2.start(startTime);
+      if (osc1) osc1.stop(startTime + duration + 0.1);
+      if (osc2) osc2.stop(startTime + duration + 0.1);
+    }
+
+    function schedulerSeq() {
+      while (nextStepTime < audioCtx.currentTime + scheduleAheadTime) {
+
+        for(let col = 0; col < cols; col++) {
+          // On annule l'effet sur les autres
+          document.querySelectorAll('.stepSeq').forEach(element => {
+            element.style.opacity = "1.0";
+          });
+          // On appliquer un effet sur la colonne currentStepSeq
+          document.querySelectorAll('.stepSeq.col'+currentStepSeq).forEach(element => {
+            element.style.opacity = "0.5";
+          });
+        }
+
+        for (let row = 0; row < rows; row++) {
+          if (pattern_guitar[row][currentStepSeq]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'guitar'); // durée ~8n à 120bpm
+          }
+          if (pattern_bass[row][currentStepSeq]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'bass'); // durée ~8n à 120bpm
+          }
+          if (pattern_trumpet[row][currentStepSeq]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'trumpet'); // durée ~8n à 120bpm
+          }
+          if (pattern_sax[row][currentStepSeq]) {
+            playSynthNote(noteFreqs[row], nextStepTime, 0.45, 'sax'); // durée ~8n à 120bpm
+          }
+        }
+        nextNote();
+      }
+      timerID = setTimeout(schedulerSeq, lookahead * 1000);
+    }
+```
+
+En ce qui concerne les presets, on se sert simplement d'un tableau qui contient 8 tableaux (1 par note) et le nombre de séquences souhaitées (16 dans notre cas), la valeur de l'élément du tableau est à 1 si la note est jouée, 0 sinon. Cela permet d'avoir un pattern pour un instrument, dans les presets que j'utilise, j'ai 1 pattern par instrument donc 4 patterns pour 1 preset.
+
+``` javascript
+    const patternFunkGuitar = [
+      [0,1,0,0,1,0,0,0,0,1,0,0,1,0,0,0],
+      [0,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0],
+      [0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0],
+      [0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0],
+      [0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Points à améliorer
