@@ -1691,6 +1691,7 @@ async function stopAllSounds(){
 	stopMelodieBool = true;
 	stopTheremin();
 	stopDrumMachine();
+	stopSeq();
 }
 
 async function stopAllSounds2(){
@@ -1702,6 +1703,7 @@ async function stopAllSounds2(){
 	stopMelodie2 = true;
 	stopTheremin();
 	stopDrumMachine();
+	stopSeq();
 	if (audioCtx) await audioCtx.close();
 	stopMelodieBool = true;
 	audioCtx = new AudioContext();
@@ -2637,7 +2639,7 @@ setTimeout(() => {
       if (isPlayingTheremin) {
 			clearInterval(interval);
 			if (osc) osc.stop();
-			playBtn.textContent = 'PLAY LOOP';
+			playBtn.textContent = 'PLAY';
 			playBtn.classList.remove('active');
 			document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
 			isPlayingTheremin = false;
@@ -2662,7 +2664,7 @@ setTimeout(() => {
 		clearInterval(interval);
 		if (osc) osc.stop();
 		let playBtnEl = document.getElementById("play");
-		playBtnEl.textContent = 'PLAY LOOP';
+		playBtnEl.textContent = 'PLAY';
 		playBtnEl.classList.remove('active');
 		document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
 		isPlayingTheremin = false;
@@ -2893,8 +2895,6 @@ setTimeout(() => {
     function startDrumMachine() {
 	  let btn = document.getElementById('playDrumMachine');
       if (isPlayingDrumMachine){
-		btn.textContent = 'PLAY';
-		btn.className = "play-dm";
 		stopDrumMachine();
 		return;
 	  }
@@ -2910,6 +2910,9 @@ setTimeout(() => {
     function stopDrumMachine() {
       isPlayingDrumMachine = false;
       leds.forEach(led => led.classList.remove('playhead'));
+	  let btn = document.getElementById('playDrumMachine');
+	  btn.textContent = 'PLAY';
+	  btn.className = "play-dm";
     }
 
     function setBPM(v) { bpm = +v; beatDuration = 60 / bpm; document.getElementById('bpm-value').textContent = bpm + ' BPM'; }
@@ -3312,6 +3315,9 @@ setTimeout(() => {
     function stopSeq() {
       isPlayingSeq = false;
       clearTimeout(timerID);
+	  let btn = document.getElementById('playSeq');
+	  btn.textContent = 'PLAY';
+	  btn.className = "play-dm";
     }
 
     // Fonction helper pour charger un pattern et mettre à jour les boutons
@@ -3384,9 +3390,6 @@ setTimeout(() => {
 		document.getElementById('playSeq').onclick = () => {
 			if (isPlayingSeq) {
 				stopSeq();
-				let btn = document.getElementById('playSeq');
-				btn.textContent = 'PLAY';
-				btn.className = "play-dm";
 			} else {
 				startSeq();
 				let btn = document.getElementById('playSeq');
