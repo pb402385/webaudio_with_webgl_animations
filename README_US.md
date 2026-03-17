@@ -1440,6 +1440,8 @@ I would also like to thank the developers whose work inspired me and from whom I
 * Thanks to **Shane** from whom I adapted the 3D Sierpinski Mobius animation, original link: https://www.shadertoy.com/view/XsGXDV  
 * Thanks once again to **Shane** from whom I adapted the Mandelbrot Decoration animation, original link: https://www.shadertoy.com/view/ttscWn
 
+Concerning the 3 new instruments (drum machine, theremin and sequencer), I developed them using **the Grok AI (xAI)**, I then modified the code and the design so that it corresponded to my needs and I then divided the code into 3 parts (CSS/HTML/JS) for integration into the application.
+
 Finally, for the other animations, I was mainly assisted by **Grok (xAI)** and to a lesser extent by **ChatGPT**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

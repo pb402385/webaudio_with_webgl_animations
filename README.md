@@ -1408,6 +1408,8 @@ Je souhaite également remercier les développeurs dont j’ai pu m’inspirer e
 * Remerciements à **Shane** de qui j'ai pu récupérer l'animation **3D Sierpinski Mobius** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/XsGXDV
 * Remerciements une seconde fois à  **Shane** de qui j'ai pu récupérer l'animation **Mandelbrot Decoration** dont le lien original de l'animation se situe à l'addresse suivante: https://www.shadertoy.com/view/ttscWn
 
+Concernant les 3 nouveaux instruments (boîte à rythme, thérémine et séquenceur), je les ai développé grâce à **l'IA Grok (xAI)**, j'ai ensuite modifié le code et le design afin qu'il corresponde à mes besoins et j'ai ensuite divisé le code en 3 parties (CSS/HTML/JS) pour l'intégration dans l'application.
+
 Enfin, pour les autres animations, j’ai été principalement aidé par **l'IA Grok (xAI)** et un peu également de **ChatGPT**.
 
 
