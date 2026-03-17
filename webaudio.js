@@ -2164,12 +2164,97 @@ function getMousePos(canvas, evt) {
     let silencePercent = 20;
     let stepDurationMs = 60000 / bpmTheremin / 4;
 
-    const stepsData = Array(STEPS).fill().map((_, i) => ({
+    let stepsData = Array(STEPS).fill().map((_, i) => ({
       freq: 440,
       vol: 0.7,
       marker: null,
       enabled: true
     }));
+
+	// PRESET FUNK DISCO
+	const stepsDataFunkDisco = Array(STEPS).fill().map((_, i) => {
+		let enabled = false;
+		let freq = 440;
+		let vol = 0.7;
+
+		// Kick / basse pulse sur chaque beat (four-on-the-floor)
+		if (i % 4 === 0) {
+			enabled = true;
+			freq = 90;   // très bas
+			vol = 0.9;
+		}
+
+		// Snare / clap accent sur 2 et 4 (beat 4,8,12,0 → positions 4,8,12,0)
+		if ([4,8,12].includes(i) || i === 0) {  // 2 et 4 de chaque mesure
+			enabled = true;
+			freq = 320;  // mid punchy
+			vol = 0.85;
+		}
+
+		// Hi-hat constant 16th (toutes les positions paires pour 8th, ou plus dense)
+		if (i % 2 === 0) {  // 8th notes (dense mais pas full 16th pour éviter fatigue)
+			enabled = enabled || true;  // overlay si déjà activé
+			freq = 880 + (i % 8) * 40;  // variation légère pour shimmer
+			vol = 0.45;
+		}
+
+		// Ouverture hi-hat occasionnelle (pea-soup disco feel sur "and" de 2 et 4)
+		if (i % 8 === 2 || i % 8 === 6) {
+			freq = 1100;  // plus haut / ouvert
+			vol = 0.6;
+		}
+
+		// Petit crash/ride accent début de boucle
+		if (i === 0) {
+			freq = 650;
+			vol = 1.0;
+		}
+
+		return { freq, vol, marker: null, enabled };
+	});
+
+	// PRESET NU-DISCO
+	const stepsDataNuDisco = Array(STEPS).fill().map((_, i) => {
+		let enabled = false;
+		let freq = 440;
+		let vol = 0.7;
+
+		// Kick solide mais avec petit skip
+		if (i % 4 === 0 || (i % 16 === 11)) {
+			enabled = true;
+			freq = 90;     // clampé safe
+			vol = 0.95;
+		}
+
+		// Snare/clap sur 2 & 4 + petit layer
+		if ([4,8,12].includes(i) || i === 0 || i % 16 === 13) {
+			enabled = true;
+			freq = 380;
+			vol = 0.88;
+		}
+
+		// Hi-hat pattern bouncy
+		const hatPattern = [1,1,0,1, 1,0,1,0, 1,1,0,1, 0,1,0,1];
+		if (hatPattern[i]) {
+			enabled = true;
+			freq = 950 + (i % 4) * 60;  // max ~1190 Hz → reste dans 1200
+			vol = 0.38 + (i % 4 === 0 ? 0.15 : 0);
+		}
+
+		// Ride/open hat subtil (fréquence baissée pour rester dans la zone)
+		if (i % 8 === 3 || i % 8 === 7) {
+			freq = 1050;   // au lieu de 1400
+			vol = 0.52;
+		}
+
+		// Accent air début boucle
+		if (i === 0 || i === 8) {
+			freq = 680;
+			vol = 0.78;
+		}
+
+		return { freq, vol, marker: null, enabled };
+	});
 
     let currentStepTheremin = 0;
 
@@ -2281,6 +2366,29 @@ function getMousePos(canvas, evt) {
         marker.style.left = x + 'px';
         marker.style.top  = y + 'px';
     }
+
+	function updatePresetFunkDiscoOrNuDisco(type){
+		// Type Funk Disco
+		if( type === 1 ) {
+			stepsData = stepsDataFunkDisco.map(s => ({...s}));
+		}
+
+		// Type Nu-Disco
+		if( type === 2 ) {
+			stepsData = stepsDataNuDisco.map(s => ({...s}));
+		}
+
+		stepsData.forEach((step, i) => {
+			const pctX = (step.freq - MIN_FREQ) / (MAX_FREQ - MIN_FREQ);
+			const pctY = 1 - step.vol;
+			const stepEl = document.querySelector(`.step[data-index="${i}"]`);
+			if (stepEl) {
+				const marker = stepEl.querySelector('.marker');
+				marker.style.left = (pctX * 100) + '%';
+				marker.style.top  = (pctY * 100) + '%';
+			}
+		});
+	}
 
 
 	//TODO SET TIMEOUT 2 secondes ici
