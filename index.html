@@ -1131,14 +1131,48 @@
 						</div>
 
 						<div id="controlsSequencer" class="controlsSeq">
-							<div>
-								<label>BPM: <span id="bpmVal">120</span></label>
-								<input type="range" id="bpmSeq" min="60" max="180" value="120">
+
+							<div class="slider-group">
+								<div><h5 class="h5bpm">BPM</h5></div> 
+								<input type="range" id="bpmSeq" min="60" max="180" value="120" step="1"  oninput="changeBPMseq(this);">
+								<div class="range-value" id="bpm-seq-value">120</div>
 							</div>
-							<div>
-								<label>VOLUME: <span id="volumeVal">50</span></label>
-								<input type="range" id="volumeSeq" min="0" max="100" value="50">
+
+							<!-- PARTIE FUTURIST SLIDERS -->
+							<script>
+								const sliderBPMseq = document.getElementById('bpmSeq');
+
+								const changeBPMseq = () => {
+									const val = sliderBPMseq.value;
+									//range 60 à 180 en pourcentage
+									let newVal = ((val - 60) / (180 - 60)) * 100;									
+									sliderBPMseq.style.setProperty('--value', `${newVal}%`);
+								};
+
+								sliderBPMseq.addEventListener('input', changeBPMseq);
+								changeBPMseq(); // init
+							</script>
+
+							<div class="slider-group">
+								<div><h5 class="h5volume">VOLUME</h5></div> 
+								<input type="range" id="volumeSeq" min="0" max="100" value="50" step="1"  oninput="changeVolumeSeq(this);">
+								<div class="range-value" id="volume-seq-value">50</div>
 							</div>
+
+							<!-- PARTIE FUTURIST SLIDERS -->
+							<script>
+								const sliderVolumeSeq = document.getElementById('volumeSeq');
+
+								const changeVolumeSeq = () => {
+									const val = sliderVolumeSeq.value;
+									//range 60 à 180 en pourcentage
+									let newVal = ((val - 0) / (100 - 0)) * 100;									
+									sliderVolumeSeq.style.setProperty('--value', `${newVal}%`);
+								};
+
+								sliderVolumeSeq.addEventListener('input', changeVolumeSeq);
+								changeVolumeSeq(); // init
+							</script>
 						</div>
 
 						<h5 class="h5Seq"> GUITAR SEQUENCER </h5>

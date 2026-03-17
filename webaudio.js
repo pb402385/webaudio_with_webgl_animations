@@ -3403,13 +3403,13 @@ setTimeout(() => {
 		};
 
 		document.getElementById('bpmSeq').oninput = (e) => {
-		tempoSeq = +e.target.value;
-		document.getElementById('bpmVal').textContent = tempoSeq;
+			tempoSeq = +e.target.value;
+			document.getElementById('bpm-seq-value').textContent = tempoSeq;
 		};
 
 		document.getElementById('volumeSeq').oninput = (e) => {
-		volumeSeq = +e.target.value;
-		document.getElementById('volumeVal').textContent = volumeSeq;
+			volumeSeq = +e.target.value;
+			document.getElementById('volume-seq-value').textContent = volumeSeq;
 		};
 
 		document.getElementById('loadFunk').onclick = () => {
