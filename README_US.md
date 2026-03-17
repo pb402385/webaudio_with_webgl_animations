@@ -481,7 +481,32 @@ It features **6 effects**:
 5. **DELAY TIME**: Provides precise control over the delay time (value **between 80 and 800 milliseconds**).
 6. **REVERB MIX**: Adjusts the intensity of the reverb effect (value **between 0 and 70%**).
 
-You can also **load PRESETS** (currently random) to take advantage of the theremin's sequencer. Additionally, you can **mute certain notes** to optimize the instrument.Here is an example video of the theremin:
+You can also **load PRESETS** to take advantage of the theremin's sequencer. Additionally, you can **mute certain notes** to optimize the instrument.Here is an example video of the theremin:
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+#### Sequencer
+<a id="sequencer"></a>
+
+<div align="center">
+    <img src="screenshots/sequencer.jpeg" alt="sequencer.png" />
+</div>
+
+The **sequencer** is a kind of drum machine but which simulates notes from different musical instruments (guitar, bass, trumpet and saxophone). The notes played correspond to the following frequencies in the tempered scale:
+- C5: 523.25 Hz
+- A4: 440 Hz (standard pitch)
+- G4: 392Hz
+- E4: 329.63 Hz
+- D4: 293.66 Hz
+- C4: 261.63 Hz (middle C)
+- A3: 220Hz
+- G3: 196Hz
+
+It has **2 effects**:
+1. **BPM**: As with the drum machine, it serves as a time base to synchronize the sounds (value between **between 60 and 180 beats per minute**).
+2. **Volume**: Allows volume control, common to the 4 instruments (value between **between 0 and 100%**).
+
+You can also **load PRESETS** (useful for quick tests)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

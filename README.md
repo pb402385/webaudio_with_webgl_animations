@@ -450,9 +450,34 @@ Il dispose de **6 effets**:
 5. **DELAY TIME**: Pour un contrôle précis du temps de delay (valeur comprise **entre 80 et 800 millisecondes**).
 6. **REVERB MIX**: Permet d'ajuster l'intensité de l'effet de réververation (valeur comprise **entre 0 et 70%**).
 
-On peut  également **charger des PRESETS** (aléatoires pour le moment) afin d'exploiter le séquenseur du thérémine, on peut également **muter certaines notes** afin d'optimiser l'instrument. 
+On peut  également **charger des PRESETS** afin d'exploiter le séquenseur du thérémine, on peut également **muter certaines notes** afin d'optimiser l'instrument. 
 
 Voici un exemple vidéo du thérémine:
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+#### Le Séquenceur
+<a id="sequencer"></a>
+
+<div align="center">
+    <img src="screenshots/sequencer.jpeg" alt="sequencer.png" />
+</div>
+
+Le **séquenceur** est une sorte de de boîte à rythme mais qui simule des notes de différents instruments de musique (guitare, basse, trompette et saxophone). Les notes jouées correspondent aux fréquences suivantes dans la gamme tempérée:
+- C5 : 523,25 Hz
+- A4 : 440 Hz (diapason standard)
+- G4 : 392 Hz
+- E4 : 329,63 Hz
+- D4 : 293,66 Hz
+- C4 : 261,63 Hz (do central)
+- A3 : 220 Hz
+- G3 : 196 Hz
+
+Il dispose de **2 effets**:
+1. **BPM**: Comme pour la boîte à rythme, il sert de base temporelle pour synchroniser les sons (valeur comprise **entre 60 et 180 battements par minute**).
+2. **Volume**: Permet le contrôle du volume, commun aux 4 instruments (valeur comprise **entre 0 et 100%**).
+
+On peut  également **charger des PRESETS** (pratique pour des tests rapides)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
