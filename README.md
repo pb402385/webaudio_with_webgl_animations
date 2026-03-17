@@ -55,6 +55,7 @@
                 <li><a href="#audio-params">Les paramètres audio</a></li>
                 <li><a href="#drum-machine">La boîte à rythmes</a></li>
                 <li><a href="#theremin">Le theremin</a></li>
+                <li><a href="#sequencer">Le séquenceur</a></li>
             </ul>
         </li>
       </ul>
@@ -70,7 +71,7 @@
                 <li><a href="#code-synthe">Code du Le synthétiseur</a></li>
                 <li><a href="#code-melody">Code des mélodies</a></li>
                 <li><a href="#code-audio-params">Code des paramètres/effets audio</a></li>
-                <li><a href="#code-drum-machine-theremin">Code de la boîte à rythmes et du theremin</a></li>
+                <li><a href="#code-drum-machine-theremin">Code de la boîte à rythmes, du theremin et du séquenceur</a></li>
             </ul>
         </li>
       </ul>
@@ -296,7 +297,7 @@ Deux mélodies sont actuellement disponibles:
 
 Le bouton **STOP** permet de **tuer tout le contexte Audio** (fonctionne à tout moment)
 
-2 autres boutons ont également été rajoutés, le premier permettant d'ouvrir une popin avec un **Thérémine**, le second permettant d'ouvrir une popin avec une **boîte à rythme**.
+3 autres boutons ont également été rajoutés, le premier permettant d'ouvrir une popin avec un **Thérémine**, le second permettant d'ouvrir une popin avec une **boîte à rythme**, enfin le troisième bouton permet d'ouvrir une popin avec un **Sequencer** de 4 instruments (guitare, basse, trompette et saxophone).
 
 
 <div align="center">

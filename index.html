@@ -1124,20 +1124,21 @@
 					<div id="sequencerContainerSequencer">
 
 						<div class="controlsSeq">
-							<button id="playSeq">PLAY / STOP</button>
-							<div>
-							<label>BPM: <span id="bpmVal">120</span></label>
-							<input type="range" id="bpmSeq" min="60" max="180" value="120">
-							</div>
-
-							<div>
-							<label>VOLUME: <span id="volumeVal">50</span></label>
-							<input type="range" id="volumeSeq" min="0" max="100" value="50">
-							</div>
-
+							<button id="playSeq" class="play-seq">PLAY</button>
 							<button id="loadFunk">Charger Funk Disco</button>
 							<button id="loadNuDisco">Charger Nu-Disco</button>
 							<button id="loadNull">Charger Null pattern</button>
+						</div>
+
+						<div id="controlsSequencer" class="controlsSeq">
+							<div>
+								<label>BPM: <span id="bpmVal">120</span></label>
+								<input type="range" id="bpmSeq" min="60" max="180" value="120">
+							</div>
+							<div>
+								<label>VOLUME: <span id="volumeVal">50</span></label>
+								<input type="range" id="volumeSeq" min="0" max="100" value="50">
+							</div>
 						</div>
 
 						<h5 class="h5Seq"> GUITAR SEQUENCER </h5>

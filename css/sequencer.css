@@ -18,16 +18,70 @@
 
 .controlsSeq {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    padding: 1.5rem;
-    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
-#playSeq {
-    font-size: 1.4rem;
+#controlsSequencer {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.play-seq {
     padding: 1rem 3rem;
+    font-size: 1.4rem;
+    background: linear-gradient(145deg, #00d4ff, #0099cc);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px var(--accent-glow);
+    transition: all 0.3s ease;
+    position: relative;
+    top: -5px;
+}
+
+.play-seq:hover {
+    box-shadow: 0 0 50px var(--accent-glow);
+    background: var(--accent-glow);
+}
+
+.stop-seq {
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
+    background: linear-gradient(145deg, #ff3366, #cc0033);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 40px #ff336688;
+    transition: all 0.3s ease;
+    position: relative;
+    top: -5px;
+}
+
+.stop-seq:hover {
+    background: #ff336644;
+    box-shadow: 0 0 40px #ff336688;
+}
+
+#loadFunk, #loadNuDisco, #loadNull {
+    padding: 1rem 3rem;
+    font-size: 1.4rem;
+    background: linear-gradient(145deg, #335566, #444455);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px var(--accent-glow);
+    transition: all 0.3s ease;
+    position: relative;
+    top: -5px;
+}
+
+#loadFunk:hover, #loadNuDisco:hover, #loadNull:hover {
+    box-shadow: 0 0 50px var(--accent-glow);
+    background: var(--selectedGrey);
 }
 
 #bpmSeq {

@@ -3337,6 +3337,7 @@ setTimeout(() => {
         if (instr === 'sax')    active = pattern_sax[row][col];
         
         btn.classList.toggle('active', active);
+		btn.classList.toggle('btn-futur', active);
       });
     }
 
@@ -3381,13 +3382,17 @@ setTimeout(() => {
 
 		// Contrôles
 		document.getElementById('playSeq').onclick = () => {
-		if (isPlayingSeq) {
-			stopSeq();
-			document.getElementById('playSeq').textContent = 'PLAY';
-		} else {
-			startSeq();
-			document.getElementById('playSeq').textContent = 'STOP';
-		}
+			if (isPlayingSeq) {
+				stopSeq();
+				let btn = document.getElementById('playSeq');
+				btn.textContent = 'PLAY';
+				btn.className = "play-dm";
+			} else {
+				startSeq();
+				let btn = document.getElementById('playSeq');
+				btn.textContent = 'STOP';
+				btn.className = "stop-dm";
+			}
 		};
 
 		document.getElementById('bpmSeq').oninput = (e) => {

@@ -55,6 +55,7 @@
                 <li><a href="#audio-params">Audio settings</a></li>
                 <li><a href="#drum-machine">Drum Machine</a></li>
                 <li><a href="#theremin">Theremin</a></li>
+                <li><a href="#sequencer">Sequencer</a></li>
             </ul>
         </li>
       </ul>
@@ -70,7 +71,7 @@
                 <li><a href="#code-synthe">Synthesizer implementation</a></li>
                 <li><a href="#code-melody">Melodies Implementation</a></li>
                 <li><a href="#code-audio-params">Audio Parameters and Effects implementation</a></li>
-                <li><a href="#code-drum-machine-theremin">Drum Machine and Theremin implementation</a></li>
+                <li><a href="#code-drum-machine-theremin">Drum Machine, Theremin and Sequencer implementation</a></li>
             </ul>
         </li>
       </ul>
@@ -308,7 +309,7 @@ Two melodies are currently available:
 
 The **STOP** button allows you to **kill the entire audio context** (works at any time).
 
-Two other buttons have also been added: the first opens a pop-up with a **Theremin**, and the second opens a pop-up with a **Drum Machine**.
+Two other buttons have also been added: the first opens a pop-in with a **Theremin**, and the second opens a pop-in with a **Drum Machine**, finally the third button allows you to open a pop-in with a **Sequencer** of 4 instruments (guitar, bass, trumpet and saxophone).
 
 
 <div align="center">
