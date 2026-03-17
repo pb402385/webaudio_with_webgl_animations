@@ -3366,18 +3366,22 @@ setTimeout(() => {
 				if(instr[intr_num] == 'guitar') {
 				pattern_guitar[row][col] = !pattern_guitar[row][col];
 				btn.classList.toggle('active', pattern_guitar[row][col]);
+				btn.classList.toggle('btn-futur', pattern_guitar[row][col]);
 				}
 				if(instr[intr_num] == 'bass') {
 				pattern_bass[row][col] = !pattern_bass[row][col];
 				btn.classList.toggle('active', pattern_bass[row][col]);
+				btn.classList.toggle('btn-futur', pattern_bass[row][col]);
 				}
 				if(instr[intr_num] == 'trumpet') {
 				pattern_trumpet[row][col] = !pattern_trumpet[row][col];
 				btn.classList.toggle('active', pattern_trumpet[row][col]);
+				btn.classList.toggle('btn-futur', pattern_trumpet[row][col]);
 				}
 				if(instr[intr_num] == 'sax') {
 				pattern_sax[row][col] = !pattern_sax[row][col];
 				btn.classList.toggle('active', pattern_sax[row][col]);
+				btn.classList.toggle('btn-futur', pattern_sax[row][col]);
 				}
 			});
 			grid.appendChild(btn);
