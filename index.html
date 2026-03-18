@@ -492,13 +492,6 @@
 										<div class="range-value" id="frequencyRangeTestDisplay">350</div>
 									</div>
 								</div>
-								<div id="filterQuality">
-									<div><h5>QUALITY</h5></div>
-									<div class="filterRange"> 
-										<input type="range" id="qualityRangeTest" min="0" max="100" value="1" oninput="changeQuality(document.getElementById('qualityRangeTest').value);">
-										<div class="range-value" id="qualityRangeTestDisplay">1</div>
-									</div>
-								</div>
 								<div id="filterGain">
 									<div class="bordered centered filterTitle">Gain :</div>
 									<div class="filterRange"> 
@@ -573,21 +566,6 @@
 			sliderFrequency.addEventListener('input', updateFrequency);
 			updateFrequency(); // init
 		</script>
-
-		<script>
-			const sliderQuality = document.getElementById('qualityRangeTest');
-			const displaySliderQuality = document.getElementById('qualityRangeTestDisplay');
-
-			const updateQuality = () => {
-				const val = sliderQuality.value;
-				displaySliderQuality.textContent = val;				
-				sliderQuality.style.setProperty('--value', `${val}%`);
-			};
-
-			sliderQuality.addEventListener('input', updateQuality);
-			updateQuality(); // init
-		</script>
-
 
 		<script>
 			// Prevenir le warning de l'initialisation de l'api web audio

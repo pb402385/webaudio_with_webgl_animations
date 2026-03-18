@@ -1,6 +1,5 @@
-
 /**
-	Functions CSS
+	CSS Functions
 **/
 var buttonsAnimDisabled = false;
 
@@ -20,7 +19,6 @@ function setCursorHoverDisable(element,nb){
 			}
 		}
 	}
-
 }
 
 function setBackgroundColor(element,color){
@@ -52,88 +50,19 @@ function setPianoHover(i,typeTouche,on){
 	}
 }
 
-function setHoverElement(element){
-	if(element.id == buttonEffectSelected){
-		//Do not touch a selected button
-	}else if(element.id == "runMelodie1" && stopMelodie == false){
-		//same
-	}else if(element.id == "runMelodieStarWars" && stopMelodie2 == false){
-		//same
-	}else if(element.id == "runMelodie1"){
-		//same
-	}else if(element.id == "runMelodieStarWars"){
-		//same
-	}else{
-		element.style.backgroundColor = "yellow";
-	}
-}
-
-function unsetHoverElement(element){
-	if(element.id == buttonEffectSelected){
-		//Do not touch a selected button
-	}else if(element.id == "runMelodie1" && stopMelodie == false){
-		//same
-	}else if(element.id == "runMelodieStarWars" && stopMelodie2 == false){
-		//same
-	}else{
-		element.style.backgroundColor = "white";
-	}
-}
-
-function setEvenementBoutons(){
-	var id = [];
-
-	//part sound
-	id[0] = "stopAllSounds";
-	id[1] = "buttonTypeSound";
-	id[2] = "filterTest";
-	id[3] = "buttonGenerateSound0";
-	id[4] = "buttonGenerateSound1";
-	id[5] = "buttonGenerateSound2";
-	id[6] = "runMelodie1";
-	id[7] = "buttonGenerateSound3";
-	id[8] = "buttonGenerateSound4";
-	id[9] = "runMelodieStarWars";
-	
-	//part anim 
-	id[10] = "buttonTypeTextureAnim";
-	id[11] = "buttonFreqAnim";
-	id[12] = "buttonTypeAnim";
-	id[13] = "buttonInfinityAnim";
-	id[14] = "buttonEffectAnim";
-
-	var elem;
-	for(var i = 0; i<id.length; i++){
-		elem = document.getElementById(id[i]);
-		// Attention � la closure pour que �a marche pour tous les elements et pas juste le dernier
-		(function(i,elem) {
-			elem.onmouseover = function(){setHoverElement(elem)};
-			elem.onmouseout = function(){unsetHoverElement(elem)};
-		})(i,elem);
-	}
-
-}
-
-
-
-
 
 /** PART SOUND **/
-//context audio
 let audioCtx;
 let isUnlocked = false;
 let isPlayingTheremin = false;
 let interval = null;
 
-// Fonction à appeler sur le premier clic/touch de l’utilisateur
+// Function to be called on the user's first click/touch
 async function unlockAudio() {
     if (isUnlocked) return;
 
-    // Crée ou reprend l’AudioContext
+    // Create the AudioContext
     audioCtx = new AudioContext();
-
-	//initAudio();
-
 
 	// Start when user clicks or after resume (required on most browsers)
 	document.documentElement.addEventListener('click', () => {
@@ -142,15 +71,14 @@ async function unlockAudio() {
 			console.log("AudioContext débloqué et prêt !");
 			isUnlocked = true;
 
-			// Mets ici tout ce qui a besoin du son
-			initAudioContext2();
+			initAudioContext();
 			initAudioGraphTheremin();
 			initAudioGraphDrumMachine();
 		});
 
 	}, { once: true });
 
-    // Nettoyage : on ne veut appeler ça qu’une seule fois
+    // Cleaning: we only want to call it that once
     document.removeEventListener('click', unlockAudio);
     document.removeEventListener('touchstart', unlockAudio);
     document.removeEventListener('keydown', unlockAudio);
@@ -246,8 +174,8 @@ async function initAudio() {
 	  console.log("AudioWorkletNode created and connected (reverb-effect-processor)");
 
 	  tremoloEffectNode = new AudioWorkletNode(audioCtx, 'tremolo', {
-		  outputChannelCount: [2],           // indispensable
-		  channelCount: 2,                   // force 2 canaux en sortie
+		  outputChannelCount: [2],           // mandatory
+		  channelCount: 2,                   // force 2 channels output
 		  channelCountMode: 'explicit',
 		  channelInterpretation: 'speakers'
 	  });
@@ -390,33 +318,32 @@ function setCompressorParams(val) {
 
 function setTremoloParams(val) {
 	if( val === '0' ) {
-		// Exemples de contrôles rapides
+		// Examples of quick checks
 	    tremoloEffectNode.parameters.get('rate').setValueAtTime(4, audioCtx.currentTime);
 	    tremoloEffectNode.parameters.get('depth').setValueAtTime(0.6, audioCtx.currentTime);
 	    tremoloEffectNode.parameters.get('shape').setValueAtTime(0, audioCtx.currentTime); // sinus
 		tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.9, audioCtx.currentTime);
 	}
 	if( val === '1' ) {
-		// 2. Auto-pan large et lent (0.33 Hz)
+		// Wide, slow auto-pan (0.33 Hz)
 		tremoloEffectNode.parameters.get('rate').setValueAtTime(0.33, audioCtx.currentTime);
 		tremoloEffectNode.parameters.get('depth').setValueAtTime(1, audioCtx.currentTime);
 		tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.9, audioCtx.currentTime);
 		tremoloEffectNode.parameters.get('shape').setValueAtTime(0, audioCtx.currentTime);
 	}
 	if( val === '2' ) {
-	  // 3. Carré 8 Hz ultra-nerveux (style dub/techno)
+	  // Ultra-nervous 8 Hz square wave (dub/techno style)
 	  tremoloEffectNode.parameters.get('rate').setValueAtTime(8, audioCtx.currentTime);
 	  tremoloEffectNode.parameters.get('shape').setValueAtTime(2, audioCtx.currentTime);
 	  tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.7, audioCtx.currentTime); // adoucit le carré
 	  tremoloEffectNode.parameters.get('depth').setValueAtTime(0.5, audioCtx.currentTime);
 	}
-
 }
 
 
-//Volume node
+// Volume node
 var gainNode;
-//Oscillator node;
+// Oscillator nodes;
 var oscillator;
 var oscillator1;
 var oscillator2;
@@ -460,7 +387,7 @@ tabKeyNotes[76] = 14;//l
 tabKeyNotes[77] = 15;//m
 
 
-//param egaliseur
+// params equalizer
 var hBand;
 var lBand;
 var lGain;
@@ -469,14 +396,14 @@ var hGain;
 var bandSplit = [360,3600];
 var gainDb = -40.0;
 
-//un buffer pour les effets
+// a buffer for effects
 var bufferSize = 4096;
 
 var boolEventMouse = false;
 
-function initAudioContext2(){
-	try{
-		
+function initAudioContext(){
+	try{		
+		debugger;
 		//We connect the sound's node
 		gainNode = audioCtx.createGain();
 		gainNode.gain.value = (20/100) * (20/100);
@@ -493,18 +420,7 @@ function initAudioContext2(){
 		
 		//We create a node to analyze as well as a javascript node
 		analyser = audioCtx.createAnalyser();
-		
-		/**
-		javascriptNode = audioCtx.createScriptProcessor(1024, 1, 1);
-		javascriptNode.onaudioprocess = function () {
-					//retrieve sound information here!!!!!!
-					//alert('audioProcess');
-					draw(analyser);
-					drawWave(analyser);
-		};
-		**/
-		
-		
+	
 		//Creation of oscillators
 		oscillator = audioCtx.createOscillator();
 		oscillator1 = audioCtx.createOscillator();
@@ -621,7 +537,6 @@ function buidGraph(){
 		lBand.gain.value = gainDb;
 		lBand.connect(lGain);
 		hBand.connect(hGain);
-
 
 		// Connect the sound sample to its volume node
 		lGain.connect(gainNode);
@@ -792,20 +707,14 @@ function changeGainEg(string,type)
 	if(type.indexOf("lGain") > -1){
 		type = "lGain";
 		value = parseFloat(string);
-		//Upate screen egaliseur H
-		//document.getElementById('lGainInputValue').innerHTML = value + " / 100"
 	}
 	if(type.indexOf("mGain") > -1){
 		type = "mGain";
 		value = parseFloat(string);
-		//Upate screen egaliseur H
-		//document.getElementById('mGainInputValue').innerHTML = value + " / 100"
 	}
 	if(type.indexOf("hGain") > -1){
 		type = "hGain";
 		value = parseFloat(string);
-		//Upate screen egaliseur H
-		//document.getElementById('hGainInputValue').innerHTML = value + " / 100"
 	}
 
 	switch(type)
@@ -813,23 +722,21 @@ function changeGainEg(string,type)
 		case 'lGain': lGain.gain.value = value; break;
 		case 'mGain': mGain.gain.value = value; break;
 		case 'hGain': hGain.gain.value = value; break;
-	}
-			
+	}			
 }
 
 //Params filter (frequency)
 function changeFrequency(freq) {
-	//alert(parseInt(freq));
 	filter.frequency.value = parseInt(freq);
 }
+
 //Params filter (quality)
-function changeQuality(qual) {
-	//alert(parseInt(qual));
+function changeQuality(qual) {;
 	filter.Q.value = parseInt(qual);
 }
+
 //Params filter (gain)
 function changeGain(gainVal) {
-	//alert(parseInt(gainVal));
 	filter.gain.value = parseInt(gainVal);
 	document.getElementById('valGain').innerHTML = gainVal + " / 100";
 }
@@ -844,13 +751,11 @@ function domIdIsExist(name) {
 
 //Params filter (type)
 function changeEffect(name) {
-	//alert(name);
+
 	if(domIdIsExist('gainRangeTest')) document.getElementById('gainRangeTest').style.display = 'none';
 	if(domIdIsExist('txtGain')) document.getElementById('txtGain').style.display = 'none';
 	if(domIdIsExist('valGain')) document.getElementById('valGain').style.display = 'none';
-	if(domIdIsExist('qualityRangeTest')) document.getElementById('qualityRangeTest').style.display = 'none';
-	if(domIdIsExist('txtQuality')) document.getElementById('txtQuality').style.display = 'none';
-	if(domIdIsExist('valQuality')) document.getElementById('valQuality').style.display = 'none';
+
 
 	let frequencyRange = document.getElementById('frequencyRangeTest');
 
@@ -872,7 +777,6 @@ function changeEffect(name) {
 		manualUpdateFrequency(120);
 		filter.Q.value = 1;
 		filter.gain.value = 0;    // boost graves
-		//NO GAIN
 	}else if (name == "bandpass"){
 		filter.type = name;
 
@@ -882,7 +786,6 @@ function changeEffect(name) {
 		manualUpdateFrequency(800);
 		filter.Q.value = 8;             // assez étroit
 		filter.gain.value = 0;
-		//NO GAIN
 	}else if (name == "lowshelf"){
 		filter.type = name;
 
@@ -892,10 +795,7 @@ function changeEffect(name) {
 		manualUpdateFrequency(180);
 		filter.gain.value = 4;    // boost graves
 		filter.Q.value = 0;
-		//NO QUALITY
-		if(domIdIsExist('qualityRangeTest')) document.getElementById('qualityRangeTest').style.display = 'none';
-		if(domIdIsExist('txtQuality')) document.getElementById('txtQuality').style.display = 'none';
-		if(domIdIsExist('valQuality')) document.getElementById('valQuality').style.display = 'none';
+
 		if(domIdIsExist('gainRangeTest')) document.getElementById('gainRangeTest').style.display = 'inherit';
 		if(domIdIsExist('txtGain')) document.getElementById('txtGain').style.display = 'inherit';
 		if(domIdIsExist('valGain')) document.getElementById('valGain').style.display = 'inherit';
@@ -909,10 +809,6 @@ function changeEffect(name) {
 		filter.gain.value = 5; // un peu d'air
 		filter.Q.value = 0;
 
-		//NO QUALITY
-		if(domIdIsExist('qualityRangeTest')) document.getElementById('qualityRangeTest').style.display = 'none';
-		if(domIdIsExist('txtQuality')) document.getElementById('txtQuality').style.display = 'none';
-		if(domIdIsExist('valQuality')) document.getElementById('valQuality').style.display = 'none';
 		if(domIdIsExist('gainRangeTest')) document.getElementById('gainRangeTest').style.display = 'inherit';
 		if(domIdIsExist('txtGain')) document.getElementById('txtGain').style.display = 'inherit';
 		if(domIdIsExist('valGain')) document.getElementById('valGain').style.display = 'inherit';
@@ -1708,7 +1604,7 @@ async function stopAllSounds2(){
 	stopMelodieBool = true;
 	audioCtx = new AudioContext();
   	if (audioCtx.state === 'suspended') await audioCtx.resume();
-	initAudioContext2();
+	initAudioContext();
 	paused = true;
 	restartMp3IconColor();
 	elapsedTimeSinceStart = 0;
@@ -1746,7 +1642,6 @@ function setDefaultValues(){
 	var typeFiltre = document.getElementById('filterTest').value;
 	changeEffect(typeFiltre);
 	changeFrequency(document.getElementById('frequencyRangeTest').value);
-	changeQuality(document.getElementById('qualityRangeTest').value);
 	changeGain(document.getElementById('gainRangeTest').value);
 	
 	//EQUALIZER

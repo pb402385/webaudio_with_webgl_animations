@@ -390,14 +390,8 @@ body{
 	display: none;
 }
 
-.filterRange, .filterQuality {
+.filterRange {
 	min-width: 250px;
-}
-
-#filterQuality {
-	position: relative;
-    left: 25px;
-	display: none;
 }
 
 #filterPArams{

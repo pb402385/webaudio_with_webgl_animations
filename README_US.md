@@ -663,7 +663,7 @@ async function unlockAudio() {
             isUnlocked = true;
 
             // Mets ici tout ce qui a besoin du son
-            initAudioContext2();
+            initAudioContext();
         });
 
     }, { once: true });
@@ -795,7 +795,7 @@ console.log("AudioWorkletNode created and connected (fft-fx-effect-processor)");
 Here we finally reach the stage where we can create the necessary nodes to build our audio graph.
 
 ```javascript
-function initAudioContext2(){
+function initAudioContext(){
     try{
         
         //We connect the sound's node
@@ -1317,7 +1317,7 @@ Of course, I had to move some of the JavaScript code to connect it properly to m
 			isUnlocked = true;
 
 			// Mets ici tout ce qui a besoin du son
-			initAudioContext2();
+			initAudioContext();
 			initAudioGraphTheremin();
 			initAudioGraphDrumMachine();
 		});

@@ -63,10 +63,6 @@
         display: none;
     }
 
-    #filterQuality {
-        display: none;
-    }
-
     #divFiltre {
         flex-direction: column;
         align-items: center;
