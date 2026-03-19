@@ -1,4 +1,3 @@
-// Version Pink + Lowpass intégré (très demandé)
 class PinkNoiseWithFilterProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
     return [{
@@ -13,7 +12,7 @@ class PinkNoiseWithFilterProcessor extends AudioWorkletProcessor {
   constructor() {
     super();
     this.b0=this.b1=this.b2=this.b3=this.b4=this.b5=this.b6=0;
-    this.z = 0; // filtre lowpass
+    this.z = 0; // lowpass filter
   }
 
   process(inputs, outputs, parameters) {
@@ -37,7 +36,7 @@ class PinkNoiseWithFilterProcessor extends AudioWorkletProcessor {
 
         let pink = (this.b0 + this.b1 + this.b2 + this.b3 + this.b4 + this.b5 + this.b6 + white * 0.5362) * 0.11;
 
-        // One-pole lowpass doux
+        // One-pole lowpass soft
         const c = Math.max(0.001, cutoff[i] || cutoff[0]) / sampleRate * 4;
         z += c * (pink - z);
 

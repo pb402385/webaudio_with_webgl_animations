@@ -1,4 +1,3 @@
-// fft-fx-processor.js  –  Version finale 2025 (overlap 75%, window Hann, zéro craquement)
 class FFTFxProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
     return [
@@ -14,17 +13,17 @@ class FFTFxProcessor extends AudioWorkletProcessor {
     super();
     this.sampleRate = 48000;
     this.fftSize = 1024;
-    this.hopSize = this.fftSize / 4;           // 75% overlap → très propre
+    this.hopSize = this.fftSize / 4;           // 75% overlap → very clean
     this.window = new Float32Array(this.fftSize);
     this.buffer = new Float32Array(this.fftSize * 2).fill(0); // ring buffer
     this.writePos = 0;
 
-    // Pré-calcul fenêtre de Hann
+    // Pre-calculation of Hann window
     for (let i = 0; i < this.fftSize; i++) {
       this.window[i] = 0.5 * (1 - Math.cos(2 * Math.PI * i / this.fftSize));
     }
 
-    // Buffers FFT/iFFT (réutilisés)
+    // Buffers FFT/iFFT (reused)
     this.inputBuf  = new Float32Array(this.fftSize);
     this.magn      = new Float32Array(this.fftSize);
     this.phase     = new Float32Array(this.fftSize);
@@ -34,7 +33,7 @@ class FFTFxProcessor extends AudioWorkletProcessor {
 
     // Pour freeze & delay
     this.frozenMagn = null;
-    this.spectralDelayBuf = []; // ring de magnitudes
+    this.spectralDelayBuf = []; // ring of magnitudes
     this.delayFrames = 16;      // ~85 ms à 48000
     for (let i = 0; i < this.delayFrames; i++) this.spectralDelayBuf.push(new Float32Array(this.fftSize));
     this.delayRead = 0;
@@ -51,29 +50,29 @@ class FFTFxProcessor extends AudioWorkletProcessor {
     const freezeTrig = parameters.freeze[0] > 0.5;
     const wet = parameters.wet;
 
-    // Mono ou stéréo → on traite le canal 0 (ou moyenne)
+    // Mono or stereo → we process channel 0 (or average)
     let sample = input[0][0];
     if (input.length > 1) sample = (input[0][0] + input[1][0]) * 0.5;
 
-    // === Écriture dans le ring buffer ===
+    // === Writing to the ring buffer ===
     this.buffer[this.writePos] = sample;
     this.buffer[this.writePos + this.fftSize] = sample;
     this.writePos = (this.writePos + 1) % this.fftSize;
 
-    // === Quand on a assez de samples → analyse ===
+    // === When we have enough samples → analysis ===
     if (this.writePos % this.hopSize === 0) {
-      // Copie + fenêtrage
+      // Copy + windowing
       for (let i = 0; i < this.fftSize; i++) {
         this.inputBuf[i] = this.buffer[(this.writePos + i) % this.fftSize] * this.window[i];
       }
 
-      // FFT réelle (en place)
+      // Actual FFT (in place)
       this.realFFT(this.inputBuf);
 
       // Magnitude + phase
       this.cartesianToPolar(this.inputBuf, this.magn, this.phase);
 
-      // === Traitement spectral selon mode ===
+      // === Spectral processing according to mode ===
       let outMagn = this.magn.slice();
       let outPhase = this.phase.slice();
 
@@ -106,7 +105,7 @@ class FFTFxProcessor extends AudioWorkletProcessor {
           this.delayRead = (this.delayRead + 1) % this.delayFrames;
           break;
 
-        case 3: // Pitch Shift (phase vocoder haute qualité)
+        case 3: // Pitch Shift (high-quality vocoder phase)
           const ratio = pitch.length > 1 ? pitch[0] : pitch[0];
           for (let bin = 0; bin < this.fftSize; bin++) {
             const expectedPhase = this.prevPhase[bin] + 2 * Math.PI * bin * this.hopSize / this.fftSize * ratio;
@@ -116,7 +115,7 @@ class FFTFxProcessor extends AudioWorkletProcessor {
           }
           break;
 
-        case 4: // Bin Shifting (déplacement fréquentiel)
+        case 4: // Bin Shifting (frequency shift)
           const shift = Math.round((pitch[0] - 1) * 48); // ±4 octaves
           const shifted = new Float32Array(this.fftSize);
           for (let bin = 0; bin < this.fftSize; bin++) {
@@ -129,20 +128,20 @@ class FFTFxProcessor extends AudioWorkletProcessor {
           break;
       }
 
-      // Phase advance pour prochaine frame
+      // Phase advance for the next frame
       this.prevPhase = outPhase.slice();
 
-      // Retour cartesian + iFFT
+      // Cartesian return + iFFT
       this.polarToCartesian(outMagn, outPhase, this.inputBuf);
       this.realIFFT(this.inputBuf);
 
-      // Overlap-add dans le buffer de sortie
+      // Overlap-add in the output buffer
       for (let i = 0; i < this.fftSize; i++) {
         this.outputBuf[this.outputPos + i] += this.inputBuf[i] * this.window[i];
       }
     }
 
-    // === Lecture avec overlap-add ===
+    // === Reading with overlap-add ===
     for (let chan = 0; chan < output.length; chan++) {
       for (let i = 0; i < 128; i++) {
         const outSample = this.outputBuf[this.outputPos + i];
@@ -152,7 +151,7 @@ class FFTFxProcessor extends AudioWorkletProcessor {
       }
     }
 
-    // Avance pointeurs
+    // Advance pointers
     this.outputPos = (this.outputPos + this.hopSize) % this.outputBuf.length;
     for (let i = 0; i < this.hopSize; i++) {
       this.outputBuf[this.outputPos + i] = 0;
@@ -161,16 +160,16 @@ class FFTFxProcessor extends AudioWorkletProcessor {
     return true;
   }
 
-  // FFT réelle rapide (en place) – version bit-reversal + butterfly
+  // Fast real FFT (in place) – bit-reversal + butterfly version
   realFFT(buf) {
-    // (implémentation complète de FFT réelle serait trop longue ici,
-    //  mais tu peux copier/coller celle-ci : https://github.com/corbanbrook/dsp.js/blob/master/dsp.js#L104
-    //  ou utiliser la version intégrée de Tone.js : Tone.FFT)
-    // Pour un projet réel, je te conseille d’importer une FFT optimisée (ojalgo, kissfft-wasm, etc.)
-    // Ici on simule juste pour que le code compile :
+    // (A full implementation of a real FFT would be too long here,
+    // but you can copy/paste this one: https://github.com/corbanbrook/dsp.js/blob/master/dsp.js#L104
+    // or use the built-in version from Tone.js: Tone.FFT)
+    // For a real project, I recommend importing an optimized FFT (ojalgo, kissfft-wasm, etc.)
+    // Here we're just simulating it so the code compiles:
     for (let i = 0; i < buf.length; i++) buf[i] *= 1;
   }
-  realIFFT(buf) { /* même chose */ }
+  realIFFT(buf) { /* same */ }
   cartesianToPolar(real, magn, phase) {
     for (let i = 0; i < real.length; i += 2) {
       magn[i/2] = Math.sqrt(real[i]**2 + real[i+1]**2);

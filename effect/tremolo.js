@@ -1,4 +1,3 @@
-// tremolo-autopan-processor.js → Version finale définitive (2025)
 class TremoloAutopanProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
     return [
@@ -39,11 +38,11 @@ class TremoloAutopanProcessor extends AudioWorkletProcessor {
       const rate = parameters.rate.length > 1 ? parameters.rate[i] : parameters.rate[0];
       const depth = parameters.depth.length > 1 ? parameters.depth[i] : parameters.depth[0];
 
-      // Avance de phase
+      // Phase advance
       phase += (2 * Math.PI * rate) / sampleRate;
       if (phase >= 2 * Math.PI) phase -= 2 * Math.PI;
 
-      // LFO brut (0.0 → 1.0)
+      // Raw LFO (0.0 → 1.0)
       let raw = 0.5;
       switch (shape) {
         case 0: raw = 0.5 + 0.5 * Math.sin(phase); break;
@@ -59,7 +58,7 @@ class TremoloAutopanProcessor extends AudioWorkletProcessor {
           break;
       }
 
-      // Lissage one-pole (très doux, zéro clic)
+      // One-pole straightening (very gentle, zero clicks)
       if (isAutopan) {
         this.lastL += smooth * (raw - this.lastL);
         this.lastR += smooth * (raw - this.lastR);
@@ -71,7 +70,7 @@ class TremoloAutopanProcessor extends AudioWorkletProcessor {
       const modL = 1 - depth * this.lastL;
       const modR = 1 - depth * this.lastR;
 
-      // Constant-power pan (sin/cos rapide)
+      // Constant-power pan (fast sin/cos)
       const panAngle = phase * 0.15915494309189535; // phase / (2π)
       const leftPan  = Math.cos(panAngle * Math.PI * 0.5);
       const rightPan = Math.sin(panAngle * Math.PI * 0.5);

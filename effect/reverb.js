@@ -1,4 +1,3 @@
-// 1. Fichier : algorithmic-reverb-processor.js
 class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
     return [
@@ -15,7 +14,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
     super();
     this.sampleRate = 44100;
 
-    // === Tailles des delays en samples (prime numbers = bonne diffusion) ===
+    // === Delay sizes in samples (prime numbers = good diffusion) ===
     const sr = this.sampleRate;
     this.delayLengths = {
       preDelay:    Math.floor(0.030 * sr), // 30 ms
@@ -33,7 +32,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
       outR:        11299
     };
 
-    // Buffers circulaires
+    // Circular buffers
     this.buffers = {};
     Object.keys(this.delayLengths).forEach(key => {
       this.buffers[key] = new Float32Array(this.delayLengths[key]).fill(0);
@@ -41,7 +40,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
     this.writePos = {};
     Object.keys(this.delayLengths).forEach(key => this.writePos[key] = 0);
 
-    // États des filtres passe-bas (damping) et allpass
+    // Low-pass filter states (damping) and allpass
     this.dampState = {
       damp1L: 0, damp1R: 0,
       damp2L: 0, damp2R: 0,
@@ -50,7 +49,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
     };
   }
 
-  // One-pole lowpass pour le damping
+  // One-pole lowpass for damping
   onePoleLP(input, prev, coeff) {
     return prev + coeff * (input - prev);
   }
@@ -80,13 +79,13 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
     const freeze = parameters.freeze[0] > 0.5;
 
     for (let i = 0; i < blockSize; i++) {
-      // Paramètres a-rate ou k-rate
+      // Settings a-rate or k-rate
       const curRoom = room.length > 1 ? room[i] : room[0];
       const curDamp = damp.length > 1 ? damp[i] : damp[0];
       const curWet  = wet.length > 1 ? wet[i] : wet[0];
       const curDry  = dry.length > 1 ? dry[i] : dry[0];
 
-      // Somme des canaux d'entrée (pré-delay)
+      // Sum of input channels (pre-delay)
       let inL = input[0][i];
       let inR = channels > 1 ? input[1][i] : inL;
       let monoIn = (inL + inR) * 0.5;
@@ -97,7 +96,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
       const preDelayed = this.buffers.preDelay[(pdPos + this.delayLengths.preDelay - Math.floor(0.03 * this.sampleRate)) % this.delayLengths.preDelay];
       this.writePos.preDelay = (pdPos + 1) % this.delayLengths.preDelay;
 
-      // Injection dans les deux tanks
+      // Injection into both tanks
       let tankL = preDelayed;
       let tankR = preDelayed;
 
@@ -119,7 +118,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
         this.writePos[`damp${j}`] = (dampWp + 1) % this.delayLengths[`damp${j}`];
       }
 
-      // === TANK RIGHT === (même structure, longueurs différentes)
+      // === TANK RIGHT === (same structure, different lengths)
       tankR = this.allpass(this.buffers.tankIn2, this.writePos.tankIn2, this.delayLengths.tankIn2, tankR, 0.6);
       this.writePos.tankIn2 = (this.writePos.tankIn2 + 1) % this.delayLengths.tankIn2;
 
@@ -133,7 +132,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
         tankR = damped;
       }
 
-      // === Sorties finales (taps multiples pour densité) ===
+      // === Final outputs (multiple taps for density) ===
       let wetL = 0;
       let wetR = 0;
 
@@ -167,7 +166,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
         output[0][i] = output[0][i]; // mono
       }
 
-      // Recirculation dans les grands buffers de sortie
+      // Recirculation in large output buffers
       this.buffers.outL[this.writePos.outL] = tankL * (freeze ? 1.0 : curRoom);
       this.buffers.outR[this.writePos.outR] = tankR * (freeze ? 1.0 : curRoom);
       this.writePos.outL = (this.writePos.outL + 1) % this.delayLengths.outL;

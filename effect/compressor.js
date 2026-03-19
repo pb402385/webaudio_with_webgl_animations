@@ -1,4 +1,3 @@
-// compressor-ota.js — Compresseur feed-forward ultra-léger et musical
 class CompressorProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
     return [
@@ -14,11 +13,11 @@ class CompressorProcessor extends AudioWorkletProcessor {
 
   constructor() {
     super();
-    this.level = 0;           // niveau lissé (ballistique)
-    this.gainReduction = 1;  // gain de réduction courant
+    this.level = 0;           // smoothed level (ballistics)
+    this.gainReduction = 1;  // current reduction gain
   }
 
-  // Conversion dB ↔ linéaire ultra-rapide (pré-calculée si besoin)
+  // Ultra-fast dB to linear conversion (pre-calculated if needed)
   dbToLin(db) { return Math.exp(db * 0.115129254); } // ≈ db/8.685889638
   linToDb(lin) { return Math.log(lin) * 8.685889638; }
 
@@ -39,7 +38,7 @@ class CompressorProcessor extends AudioWorkletProcessor {
       const inp = input[ch];
       const out = output[ch];
 
-      // Coefficients d’attaque/release (calculés par sample pour a-rate parfait)
+      // Attack/release coefficients (calculated per sample for perfect a-rate)
       for (let i = 0; i < out.length; ++i) {
         const thresh = threshold.length > 1 ? threshold[i] : threshold[0];
         const rat    = Math.max(1, ratio.length > 1 ? ratio[i] : ratio[0]);
@@ -56,21 +55,21 @@ class CompressorProcessor extends AudioWorkletProcessor {
         let gainDb = 0;
         if (kn > 0 && peakDb > thresh - kn/2) {
           const x = (peakDb - (thresh - kn/2)) / kn; // 0 → 1
-          gainDb = (1 - 1/rat) * kn/2 * (x * x);     // courbe parabolique douce
+          gainDb = (1 - 1/rat) * kn/2 * (x * x);     // gentle parabolic curve
         } else if (peakDb > thresh) {
           gainDb = (peakDb - thresh) * (1 - 1/rat);
         }
 
         const targetGain = this.dbToLin(-gainDb);
 
-        // === Ballistique attaque/release (one-pole) ===
+        // === Ballistics attack/release (one-pole) ===
         const alphaA = att  === 0 ? 1 : Math.exp(-1 / (sampleRate * att  * 0.001));
         const alphaR = rel  === 0 ? 1 : Math.exp(-1 / (sampleRate * rel  * 0.001));
         const alpha = targetGain < this.gainReduction ? alphaA : alphaR;
 
         this.gainReduction = this.gainReduction + alpha * (targetGain - this.gainReduction);
 
-        // === Application ===
+        // === Appliance ===
         const dry = inp[i];
         const wet = dry * this.gainReduction * this.dbToLin(make);
         out[i] = dry * (1 - mx) + wet * mx;

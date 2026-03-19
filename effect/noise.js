@@ -1,4 +1,3 @@
-// White, Pink, Brownian, Blue, Violet + filtre passe-bas premier ordre contrôlable
 class NoiseProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
     return [
@@ -10,15 +9,15 @@ class NoiseProcessor extends AudioWorkletProcessor {
         automationRate: 'a-rate'
       },
       {
-        name: 'cutoff',         // fréquence de coupure du filtre passe-bas (Hz), 0 = pas de filtre
+        name: 'cutoff',         // Low-pass filter cutoff frequency (Hz), 0 = no filter
         defaultValue: 800,
         minValue: 0,
-        maxValue: 22050,        // un peu au-dessus de Nyquist
+        maxValue: 22050,        // a little above Nyquist
         automationRate: 'a-rate'
       },
       {
         name: 'gain',
-        defaultValue: 0.25,     // niveau de sortie global
+        defaultValue: 0.25,     // overall output level
         minValue: 0,
         maxValue: 1,
         automationRate: 'a-rate'
@@ -29,21 +28,21 @@ class NoiseProcessor extends AudioWorkletProcessor {
   constructor() {
     super();
     
-    // État pour chaque type de bruit
+    // State for each type of noise
     this.pinkB0 = this.pinkB1 = this.pinkB2 = this.pinkB3 = this.pinkB4 = this.pinkB5 = this.pinkB6 = 0;
     this.brown = 0;
     
-    // Pour blue (+3 dB/oct) : simple différentiateur
+    // For blue (+3 dB/oct): simple differentiator
     this.lastWhite = 0;
     
-    // Pour violet (+6 dB/oct) : seconde différence
+    // For violet (+6 dB/oct): second difference
     this.whiteM1 = 0;
     this.whiteM2 = 0;
     
-    // Filtre passe-bas 1er ordre (exponentiel moving average)
+    // First-order low-pass filter (exponential moving average)
     this.z = 0;
     
-    // Dernière valeur de cutoff pour détecter les changements
+    // Last cutoff value to detect changes
     this.lastCutoff = 0;
   }
 
@@ -52,24 +51,24 @@ class NoiseProcessor extends AudioWorkletProcessor {
     const typeParam = parameters.type;
     const cutoffParam = parameters.cutoff;
     const gainParam = parameters.gain;
-    const applyFilter = cutoffParam[0] > 20; // on ignore les très basses fréquences
+    const applyFilter = cutoffParam[0] > 20; // Very low frequencies are ignored.
 
     for (let channel = 0; channel < output.length; ++channel) {
       const out = output[channel];
 
       for (let i = 0; i < out.length; ++i) {
-        // Récupération des paramètres (a-rate support)
+        // Retrieving parameters (a-rate support)
         const type = Math.round(typeParam.length > 1 ? typeParam[i] : typeParam[0]) | 0;
         const cutoff = cutoffParam.length > 1 ? cutoffParam[i] : cutoffParam[0];
         const gain = gainParam.length > 1 ? gainParam[i] : gainParam[0];
 
-        let noise = Math.random() * 2 - 1; // bruit blanc [-1, 1]
+        let noise = Math.random() * 2 - 1; // white noise [-1, 1]
 
         switch (type) {
-          case 0: // White - rien à faire
+          case 0: // White - nothing to do
             break;
 
-          case 1: // Pink - méthode Voss (7 accumulateurs)
+          case 1: // Pink - Voss method (7 accumulators)
             this.pinkB0 = this.pinkB0 * 0.99886 + noise * 0.055;
             this.pinkB1 = this.pinkB1 * 0.99332 + noise * 0.075;
             this.pinkB2 = this.pinkB2 * 0.96900 + noise * 0.153;
@@ -88,21 +87,21 @@ class NoiseProcessor extends AudioWorkletProcessor {
             noise = this.brown;
             break;
 
-          case 3: // Blue - différentiateur simple
+          case 3: // Blue - simple differentiator
             noise = noise - this.lastWhite;
-            this.lastWhite = noise * 0.5 + this.lastWhite * 0.5; // léger lissage pour éviter l'explosion
-            noise *= 4.0; // compensation de gain
+            this.lastWhite = noise * 0.5 + this.lastWhite * 0.5; // light smoothing to prevent explosion
+            noise *= 4.0; // compensation for gain
             break;
 
-          case 4: // Violet - seconde différence
+          case 4: // Violet - second difference
             const secondDiff = noise - 2 * this.whiteM1 + this.whiteM2;
             this.whiteM2 = this.whiteM1;
             this.whiteM1 = noise;
-            noise = secondDiff * 8.0; // compensation de gain
+            noise = secondDiff * 8.0; // compensation for gain
             break;
         }
 
-        // Filtre passe-bas 1er ordre (si cutoff > 20 Hz)
+        // 1st order low pass filter (if cutoff > 20 Hz)
         if (applyFilter && cutoff > 20) {
           const normalizedCutoff = Math.min(cutoff / (sampleRate * 0.5), 0.99);
           const alpha = normalizedCutoff < 0.001 ? 0.001 : 1 - Math.exp(-2 * Math.PI * normalizedCutoff * 0.1);

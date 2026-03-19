@@ -1,5 +1,3 @@
-// audio-worklet-simple-lowpass.js — Version définitive 2025
-// One-pole lowpass ultra-stable, musical et CPU-friendly
 class SimpleLowpassProcessor extends AudioWorkletProcessor {
   static get parameterDescriptors() {
     return [
@@ -7,16 +5,16 @@ class SimpleLowpassProcessor extends AudioWorkletProcessor {
         name: "cutoff",
         defaultValue: 800,      // Hz
         minValue: 20,
-        maxValue: 20000,        // on monte un peu plus haut (Nyquist safe)
-        automationRate: "a-rate" // indispensable pour des sweeps doux
+        maxValue: 20000,        // We're going a little higher (Nyquist safe)
+        automationRate: "a-rate" // essential for soft sweeps
       }
     ];
   }
 
   constructor() {
     super();
-    // Un registre z par canal (stéréo, 5.1, etc.)
-    this._z = [0, 0, 0, 0, 0, 0, 0, 0]; // 8 canaux max (largement assez)
+    // One z-register per channel (stereo, 5.1, etc.)
+    this._z = [0, 0, 0, 0, 0, 0, 0, 0]; // 8 channels max (more than enough)
   }
 
   process(inputs, outputs, parameters) {
@@ -34,7 +32,7 @@ class SimpleLowpassProcessor extends AudioWorkletProcessor {
       let z = this._z[ch];
 
       if (isA_Rate) {
-        // Version a-rate (sweeps parfaits)
+        // A-rate version (perfect sweeps)
         for (let i = 0; i < blockSize; i++) {
           const c = Math.max(0.0001, 2 * Math.PI * cutoff[i] / sampleRate);
           const sample = inp ? inp[i] : 0;
@@ -42,7 +40,7 @@ class SimpleLowpassProcessor extends AudioWorkletProcessor {
           out[i] = z;
         }
       } else {
-        // Version k-rate (un seul coeff pour le bloc → plus rapide)
+        // K-rate version (single coefficient for the block → faster)
         const c = Math.max(0.0001, 2 * Math.PI * cutoff[0] / sampleRate);
         for (let i = 0; i < blockSize; i++) {
           const sample = inp ? inp[i] : 0;
@@ -50,10 +48,10 @@ class SimpleLowpassProcessor extends AudioWorkletProcessor {
           out[i] = z;
         }
       }
-      this._z[ch] = z; // sauvegarde état pour le prochain bloc
+      this._z[ch] = z; // save state for the next block
     }
 
-    return true; // garde le noeud vivant
+    return true; // keep the node alive
   }
 }
 

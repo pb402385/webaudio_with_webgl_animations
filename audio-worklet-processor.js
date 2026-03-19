@@ -1,4 +1,4 @@
-// audio-worklet-processor.js — version ZÉRO allocation mémoire
+// audio-worklet-processor.js — ZERO version memory allocation
 class MyAudioProcessor extends AudioWorkletProcessor {
 constructor() {
     super();
@@ -15,16 +15,16 @@ constructor() {
     if (input && input[0] && output) {
       const samples = input[0];
 
-      // Ton traitement (exemple gain)
+      // Treatment
       for (let i = 0; i < samples.length; i++) {
         output[0][i] = samples[i] * this.volume;
         if (output[1]) output[1][i] = samples[i] * this.volume; // stéréo si besoin
       }
 
-      // Envoi SANS transfert → zéro risque de detached buffer
+      // Sending WITHOUT transfer → zero risk of detached buffer
       this.port.postMessage({
         type: 'audio',
-        samples: samples // référence directe, mais pas transférée → OK
+        samples: samples // direct reference, but not transferred → OK
       });
     }
 
