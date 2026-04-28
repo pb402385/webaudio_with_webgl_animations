@@ -1,11 +1,11 @@
   :root {
-    --track-h: 6px;               /* épaisseur du rail */
-    --thumb-size: 18px;          /* taille du curseur */
-    --glow: 0 0 12px;            /* base du halo */
-    --color-primary: #00ffff;    /* cyan néon */
-    --color-bg: #0d1117;         /* fond sombre */
-    --color-track: #1e293b;      /* rail */
-    --color-fill: #00ffff;       /* remplissage */
+    --track-h: 6px;               /* track thickness */
+    --thumb-size: 18px;          /* cursor size */
+    --glow: 0 0 12px;            /* halo's base */
+    --color-primary: #00ffff;    /* cyan neon */
+    --color-bg: #0d1117;         /* dark background */
+    --color-track: #1e293b;      /* track */
+    --color-fill: #00ffff;       /* filling */
   }
 
   .range-wrapper {
@@ -14,16 +14,16 @@
     margin: 2rem;
   }
 
-  /* ==== RAIL ==== */
+  /* ==== TRACK ==== */
   input[type="range"] {
-    -webkit-appearance: none;   /* obligatoire */
+    -webkit-appearance: none;   /* mandatory */
     appearance: none;
     width: 100%;
     background: transparent;
     margin: calc(var(--thumb-size) / 2) 0;
   }
 
-  /* rail (track) */
+  /* input (track) */
   input[type="range"]::-webkit-slider-runnable-track {
     height: var(--track-h);
     background: var(--color-track);
@@ -43,7 +43,7 @@
       0 0 8px var(--color-primary);
   }
 
-  /* remplissage avant le curseur */
+  /* filling before the cursor */
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -73,7 +73,7 @@
     transform: translateY(0%);
   }
 
-  /* remplissage *avant* le curseur */
+  /* filling *before* the cursor */
   input[type="range"]::-webkit-slider-runnable-track {
     background: linear-gradient(to right,
       var(--color-fill) 0%,
@@ -100,7 +100,7 @@
     transform: translateY(-50%) scale(0.95);
   }
 
-  /* ==== Valeur affichée en temps réel ==== */
+  /* ==== Value displayed in real time ==== */
   .range-value {
     position: absolute;
     top: -2.2rem;
@@ -116,7 +116,7 @@
     top: -2px;
   }
 
-  /* ==== Animation de fond ==== */
+  /* ==== Background Animation ==== */
   .range-wrapper::before {
     content: "";
     position: absolute;

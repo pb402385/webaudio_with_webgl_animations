@@ -99,7 +99,7 @@ body{
 	position: relative;
 }
 
-/** PARAM ANIM WEB GL CSS **/
+/** PARAMETERS ANIM WEB GL CSS **/
 #shaderPixelAnim{
 	width: 500px;
     height: 500px;
@@ -155,7 +155,7 @@ body{
 
 
 
-/** CSS SOUND **/
+/** CSS Part SOUND **/
 #partSound{
 	display: flex;
 	flex-direction: column;

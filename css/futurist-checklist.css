@@ -42,7 +42,7 @@
       padding: 5px 10px;    
 }
 
-/* force le css du overflow du navigateur pour les overflow */
+/* Force the browser's overflow CSS for overflows */
 .containerCheckList::-webkit-scrollbar-track,
 .containerTheremin::-webkit-scrollbar-track,
 .containerDrumMachine::-webkit-scrollbar-track,

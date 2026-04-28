@@ -13,29 +13,10 @@
     --selectedGrey: #55667744;
 }
 
-/*
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-family: var(--font-title);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2rem 1rem;
-    font-weight: 900;
-}
-*/
-
 .sequencer {
     max-width: 960px;
     margin: 0 auto 0.5rem;
     width: 90%;
-    /* max-width: 460px; */
     background: var(--glass);
     border: 1px solid rgba(0, 255, 255, 0.3);
     border-radius: 24px;
@@ -43,7 +24,6 @@ body {
     text-align: center;
     color: white;
     box-shadow: 0 20px 60px rgba(0, 255, 255, 0.2);
-    /* transform: translateY(100px) scale(0.9); */
     transition: all 0.5s ease;
     backdrop-filter: blur(16px);
 }
@@ -69,13 +49,12 @@ body {
 }
 
 .led.playhead {
-    /*background: var(--accent) !important;*/
     box-shadow: 0 0 24px var(--accent), inset 0 0 12px rgba(0, 0, 0, 0.6);
     transform: scale(1.08);
     opacity: 0.6;
 }
 
-/* Couleurs par instrument (même éteintes) */
+/* Colors by instrument (even when switched off) */
 .led.kick {
     background: #4d001a;
     border-color: #800033;

@@ -33,7 +33,7 @@
     background-color: white;
   }
 
-  /* bordure + glow */
+  /* border + glow */
   .select-wrapper::before {
     content: "";
     position: absolute;

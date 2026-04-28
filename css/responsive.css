@@ -30,7 +30,7 @@
 
 @media (max-width: 1200px) {
     :root {
-        --thumb-size: 18px;          /* taille du curseur */
+        --thumb-size: 18px;          /* cursor size */
     }
 
     .btn-futur {

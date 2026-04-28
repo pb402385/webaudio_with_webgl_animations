@@ -6,8 +6,8 @@
     align-items: center;
     min-height: 100vh;
     background: #2b2b2b;
-    overflow: hidden; /* Empêche le défilement */
-    touch-action: none; /* Désactive les gestes par défaut */
+    overflow: hidden; /* Prevents scrolling */
+    touch-action: none; /* Disable default touch actions */
 }
 
 .amp-container {
@@ -20,11 +20,11 @@
 
 .amp-knob {
     position: relative;
-    width: 80px; /* Taille adaptée pour mobile */
+    width: 80px; /* Size suitable for mobile */
     height: 80px;
     cursor: pointer;
     user-select: none;
-    -webkit-tap-highlight-color: transparent; /* Supprime le surlignage au tap */
+    -webkit-tap-highlight-color: transparent; /* Remove highlighting by tap */
 }
 
 .knob {
@@ -35,7 +35,7 @@
     position: relative;
     transition: transform 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.2);
-    touch-action: none; /* Empêche le zoom/pan */
+    touch-action: none; /* Disable default touch actions */
 }
 
 .pointer {

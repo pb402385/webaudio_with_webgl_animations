@@ -1,7 +1,7 @@
   :root {
-    --neon: #00ffff;           /* cyan néon */
-    --neon-alt: #ff00ff;       /* magenta secondaire */
-    --bg: #0a0e17;             /* fond ultra-sombre */
+    --neon: #00ffff;           /* cyan neon */
+    --neon-alt: #ff00ff;       /* magenta secondary */
+    --bg: #0a0e17;             /* ultra-dark background */
     --text: #e0f7fa;
     --radius: 12px;
     --glow: 0 0 15px;
@@ -34,7 +34,7 @@
     width: 100%;
   }
 
-  /* === BORDURE NÉON GRADIENT === */
+  /* === BORDER NEON GRADIENT === */
   .btn-futur::before {
     content: "";
     position: absolute;
@@ -61,7 +61,7 @@
     to { transform: rotate(360deg); }
   }
 
-  /* === FOND INTERNE + GLOW === */
+  /* === INTERNAL BACKGROUND + GLOW === */
   .btn-futur::after {
     content: "";
     position: absolute;
@@ -81,7 +81,7 @@
       var(--glow) var(--neon-red);
   }
 
-  /* === ÉTAT HOVER === */
+  /* === HOVER STATE === */
   .btn-futur:hover {
     color: #fff;
     text-shadow: 0 0 15px #fff, 0 0 25px var(--neon);
@@ -110,13 +110,13 @@
       var(--glow-strong) var(--neon-red);
   }
 
-  /* === ÉTAT ACTIVE (click) === */
+  /* === ACTIVE STATE (click) === */
   .btn-futur:active {
     transform: translateY(1px);
     filter: brightness(1.3);
   }
 
-  /* === SCAN LINE ANIMÉE === */
+  /* === ANIMATED SCAN LINE  === */
   .btn-futur > .scan {
     position: absolute;
     top: 0; left: -100%;
@@ -135,7 +135,7 @@
     100% { left: 100%; }
   }
 
-  /* === GLITCH TEXT (sur hover) === */
+  /* === GLITCH TEXT (when hover) === */
   .btn-futur:hover > .glitch {
     animation: glitch 0.4s infinite;
   }
@@ -159,13 +159,13 @@
     }
   }
 
-  /* === TEXTE === */
+  /* === TEXT === */
   .btn-futur > span {
     position: relative;
     z-index: 2;
   }
 
-  /* === FOND GLOBAL PULSANT === */
+  /* === PULSING GLOBAL BACKGROUND === */
   body::before {
     content: "";
     position: absolute;
