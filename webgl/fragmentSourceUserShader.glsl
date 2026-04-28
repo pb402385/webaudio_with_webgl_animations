@@ -2150,3 +2150,97 @@ void mainImageMandelbrotDecoration(out vec4 fragColor, in vec2 fragCoord ){
     
 	fragColor = vec4(sqrt(max(col, 0.)), 1.0 );
 }
+
+
+
+
+
+
+
+
+
+// ──────────────────────────────────────────────────────────────
+// YING YANG FRACTAL
+// source : https://www.shadertoy.com/view/WsGGDd
+// created by Jarazz
+// ──────────────────────────────────────────────────────────────
+/*
+
+	YING YANG FRACTAL
+
+*/
+#define t iGlobalTime*PI/4.
+ 
+vec2 cartesian2polar(vec2 cartesian){
+	return vec2(atan(cartesian.x,cartesian.y),length(cartesian.xy));
+}
+
+vec2 polar2cartesian(vec2 polar){
+	return polar.y*vec2(cos(polar.x),sin(polar.x));
+}
+
+vec2 rotate2D(vec2 coords, float amount){
+	return polar2cartesian(cartesian2polar(coords)+vec2(amount,0.));
+}
+
+void mainImageYingYangFractal( out vec4 fragColor, in vec2 fragCoord )
+{ 
+    vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
+
+	if(uIntFreq == 2) {
+		uv = rotate2D(uv, t);
+	}
+	if(uIntFreq == 4) {
+		uv = rotate2D(uv, t*225.0);
+	}
+	if(uIntFreq == 8) {
+		uv = rotate2D(uv, t*270.0);
+	}
+	if(uIntFreq == 12) {
+		uv = rotate2D(uv, t*315.0);
+	}
+	if(uIntFreq == 16) {
+		uv = rotate2D(uv, t*360.0);
+	}	
+ 
+    vec3 col = vec3(.3);
+    
+    int iterationID = 0; 
+    //float iterations =  max(2. + (-4.*cos(t/2.)-PI/2.),0.);		//how many layers, you can manually just enter 5.0 or 20.0 and see what happens
+   	const int iterations = 20;
+	float circleRadius = .25;
+    
+    for(int i = 0; i< iterations; i++){               //loop for KIFS fractal, keep transforming the uvs inside the inner circles into the uv of the whole circle
+ 	float distToInner = length(abs(uv)-vec2(0,circleRadius));
+    	if(distToInner<circleRadius){			//inner circle
+       	uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
+        uv*=2.;
+        iterationID++;
+    	uv = rotate2D(uv,-PI/2. + t * float(iterationID)  );
+       	}
+   	
+    }
+     
+ 	float distToInner = length(abs(uv)-vec2(0,circleRadius));
+    	//if(distToInner<circleRadius*fract(iterations) ){			//inner circle
+		if(distToInner<circleRadius*fract(float(iterations)) ){
+       	uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
+        uv*=2.;
+        iterationID++;
+    	uv = rotate2D(uv,-PI/2. +  t * float(iterationID)  );
+       	}
+    
+    if(length(uv)<.5){
+    col = vec3(step(0.,uv.x));
+        
+        float distToInner = length(abs(uv)-vec2(0,.25));
+    	if(distToInner<circleRadius){			//inner circle
+        	col = vec3(step(0.,uv.y) ); 
+           
+            if(distToInner>circleRadius/2.){ 	//final most inner circle/iris
+        		 col = vec3( -col.x +1.); 
+            }
+    	} 
+    }
+    fragColor = vec4(col,1.0);
+}

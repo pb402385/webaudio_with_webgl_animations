@@ -79,5 +79,9 @@ void main( void ){
 		mainImageSierpinskiInfinite( color, gl_FragCoord.xy );
 	}
 
+	if(uIntEffect == 22){
+		mainImageYingYangFractal( color, gl_FragCoord.xy );
+	}
+
 	gl_FragColor = color;
 }
