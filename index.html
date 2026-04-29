@@ -1216,6 +1216,7 @@
 			arrayRandomAnim['cb19']=[false,19];
 			arrayRandomAnim['cb20']=[false,20];
 			arrayRandomAnim['cb21']=[false,21];
+			arrayRandomAnim['cb22']=[false,22];
 
 			var arrayRandomAnimIsRunning = false;
 
@@ -1224,7 +1225,7 @@
 			function emulateRandomAnimNb(id) {
 				if( arrayRandomAnimIsRunning ) {
 					if( !id ) id = 1;
-					for( let i = id; i < 22; i++) {
+					for( let i = id; i < 23; i++) {
 						// on verifie si l'animation est selectionnée
 						if( arrayRandomAnim['cb'+i][0] == true ) {
 							//on lance l'animation et la prochaine itération
@@ -1252,8 +1253,8 @@
 			var selectionAll = false;
 
 			function selectAll(){
-				for (let i = 1; i < 22; i++){
-					if( i !== 2 && i !==3 && i!==4 ) {
+				for (let i = 1; i < 23; i++){
+					if( i !== 2 && i !==3 && i!==4 && i!==22 ) {
 						let el = document.getElementById('cb'+i);
 						if( selectionAll == false ) {
 							el.checked = true;

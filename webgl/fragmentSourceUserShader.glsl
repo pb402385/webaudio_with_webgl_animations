@@ -2169,7 +2169,7 @@ void mainImageMandelbrotDecoration(out vec4 fragColor, in vec2 fragCoord ){
 	YING YANG FRACTAL
 
 */
-#define t iGlobalTime*PI/4.
+#define t iGlobalTime/3.0*PI/4.
  
 vec2 cartesian2polar(vec2 cartesian){
 	return vec2(atan(cartesian.x,cartesian.y),length(cartesian.xy));
@@ -2187,47 +2187,94 @@ void mainImageYingYangFractal( out vec4 fragColor, in vec2 fragCoord )
 { 
     vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
 
-	if(uIntFreq == 2) {
-		uv = rotate2D(uv, t);
-	}
-	if(uIntFreq == 4) {
-		uv = rotate2D(uv, t*225.0);
-	}
-	if(uIntFreq == 8) {
-		uv = rotate2D(uv, t*270.0);
-	}
-	if(uIntFreq == 12) {
-		uv = rotate2D(uv, t*315.0);
-	}
-	if(uIntFreq == 16) {
-		uv = rotate2D(uv, t*360.0);
-	}	
+	uv = rotate2D(uv, t * mod(iGlobalTime, 360.0) );
  
     vec3 col = vec3(.3);
     
     int iterationID = 0; 
     //float iterations =  max(2. + (-4.*cos(t/2.)-PI/2.),0.);		//how many layers, you can manually just enter 5.0 or 20.0 and see what happens
-   	const int iterations = 20;
+   	const int iterationsA = 1;
+	const int iterationsB = 2;
+	const int iterationsC = 4;
+	const int iterationsD = 8;
+	const int iterationsE = 20;
 	float circleRadius = .25;
-    
-    for(int i = 0; i< iterations; i++){               //loop for KIFS fractal, keep transforming the uvs inside the inner circles into the uv of the whole circle
- 	float distToInner = length(abs(uv)-vec2(0,circleRadius));
-    	if(distToInner<circleRadius){			//inner circle
-       	uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
-        uv*=2.;
-        iterationID++;
-    	uv = rotate2D(uv,-PI/2. + t * float(iterationID)  );
-       	}
-   	
-    }
+
+	float iterationsFract = 0.;
+
+	if(uIntFreq == 2) {
+		for(int i = 0; i< iterationsA; i++){               //loop for KIFS fractal, keep transforming the uvs inside the inner circles into the uv of the whole circle
+			float distToInner = length(abs(uv)-vec2(0,circleRadius));
+			if(distToInner<circleRadius){			//inner circle
+				uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
+				uv*=2.;
+				iterationID++;
+				uv = rotate2D(uv,-PI/2. );
+			}
+		
+		}
+		iterationsFract = fract(float(iterationsA));
+	}
+	if(uIntFreq == 4) {
+		for(int i = 0; i< iterationsB; i++){               //loop for KIFS fractal, keep transforming the uvs inside the inner circles into the uv of the whole circle
+			float distToInner = length(abs(uv)-vec2(0,circleRadius));
+			if(distToInner<circleRadius){			//inner circle
+				uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
+				uv*=2.;
+				iterationID++;
+				uv = rotate2D(uv,-PI/2. + t * float(iterationID)  );
+			}
+		
+		}
+		iterationsFract = fract(float(iterationsB));
+	}
+	if(uIntFreq == 8) {
+		for(int i = 0; i< iterationsC; i++){               //loop for KIFS fractal, keep transforming the uvs inside the inner circles into the uv of the whole circle
+			float distToInner = length(abs(uv)-vec2(0,circleRadius));
+			if(distToInner<circleRadius){			//inner circle
+				uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
+				uv*=2.;
+				iterationID++;
+				uv = rotate2D(uv,-PI/2. + t * float(iterationID)  );
+			}
+		
+		}
+		iterationsFract = fract(float(iterationsC));
+	}
+	if(uIntFreq == 12) {
+		for(int i = 0; i< iterationsD; i++){               //loop for KIFS fractal, keep transforming the uvs inside the inner circles into the uv of the whole circle
+			float distToInner = length(abs(uv)-vec2(0,circleRadius));
+			if(distToInner<circleRadius){			//inner circle
+				uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
+				uv*=2.;
+				iterationID++;
+				uv = rotate2D(uv,-PI/2. + float(iterationID)  );
+			}
+		
+		}
+		iterationsFract = fract(float(iterationsD));
+	}
+	if(uIntFreq == 16) {
+		for(int i = 0; i< iterationsE; i++){               //loop for KIFS fractal, keep transforming the uvs inside the inner circles into the uv of the whole circle
+		float distToInner = length(abs(uv)-vec2(0,circleRadius));
+			if(distToInner<circleRadius){			//inner circle
+				uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
+				uv*=2.;
+				iterationID++;
+				uv = rotate2D(uv,-PI/2. + t );
+			}
+		
+		}
+		iterationsFract = fract(float(iterationsE));
+	}
      
  	float distToInner = length(abs(uv)-vec2(0,circleRadius));
     	//if(distToInner<circleRadius*fract(iterations) ){			//inner circle
-		if(distToInner<circleRadius*fract(float(iterations)) ){
-       	uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
-        uv*=2.;
-        iterationID++;
-    	uv = rotate2D(uv,-PI/2. +  t * float(iterationID)  );
+		if(distToInner<circleRadius*iterationsFract ){
+			uv.y = (uv.y>=0.)?(uv.y-circleRadius):(uv.y+circleRadius);
+			uv*=2.;
+			iterationID++;
+			uv = rotate2D(uv,-PI/2. +  t * float(iterationID)  );
        	}
     
     if(length(uv)<.5){
@@ -2242,5 +2289,15 @@ void mainImageYingYangFractal( out vec4 fragColor, in vec2 fragCoord )
             }
     	} 
     }
+
+
+	vec4 fragColorTexture = texture2D(iChannel0, iResolution.xy);
+	// l'operation que l'on souhaite réaliser
+    vec3 values = vec3(min(1.0,fragColorTexture.x), min(0.2,fragColorTexture.y), min(0.8,fragColorTexture.z));
+    // Avec anti-aliasing adaptatif
+    vec3 aa = fwidth(values);                         // vec3 avec fwidth par composante
+    vec3 smooth = smoothstep(-aa, aa, values);
+    if( fragColorTexture.x>0.0 ) col *=  smooth; 
+
     fragColor = vec4(col,1.0);
 }
