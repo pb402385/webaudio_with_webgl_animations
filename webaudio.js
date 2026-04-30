@@ -439,6 +439,42 @@ function initAudioContext(){
 			cpt++;
 		}
 
+		// Automatic cleaning at the end of tone
+		oscillator.onended = () => {
+			try {
+				safeDisconnect(oscillator);
+			} catch (e) {
+				console.error('Fail to disconnect oscillator: ' + e);
+			}
+		};
+
+		// Automatic cleaning at the end of tone
+		oscillator1.onended = () => {
+			try {
+				safeDisconnect(oscillator1);
+			} catch (e) {
+				console.error('Fail to disconnect oscillator1: ' + e);
+			}
+		};
+
+		// Automatic cleaning at the end of tone
+		oscillator2.onended = () => {
+			try {
+				safeDisconnect(oscillator2);
+			} catch (e) {
+				console.error('Fail to disconnect oscillator2: ' + e);
+			}
+		};
+
+		// Automatic cleaning at the end of tone
+		oscillator0.onended = () => {
+			try {
+				safeDisconnect(oscillator0);
+			} catch (e) {
+				console.error('Fail to disconnect oscillator0: ' + e);
+			}
+		};
+
 		buidGraph();
 		setDefaultValues();
 		
@@ -507,7 +543,13 @@ function play(i,boolEventMouse){
 
 function stop(i,boolEventMouse){
     notePlayed = false;
-	safeDisconnect(oscillator);
+
+	try {
+        safeDisconnect(oscillator);
+    } catch (e) {
+		console.error('Fail to disconnect oscillator (stop method): ' + e);
+	}
+
 	if(boolEventMouse == false){
 		if(i !== 1 && i !== 4 && i !== 6 && i !== 9 && i !== 11 && i !== 13){
 			var id = 'testNoteTD'+i;
@@ -1932,11 +1974,17 @@ function jumpTo(mousePos) {
 	//TODO fix bug souris
     var startTime = (mousePos.x * totalTime) / canvasMP3.getBoundingClientRect().width;
 	elapsedTimeSinceStart = startTime;
-	source.stop();
-	safeDisconnect(source,gainNode);
-	safeDisconnect(source,lBand);
-	safeDisconnect(source,hBand);
-	safeDisconnect(source,mGain);
+	
+	try {
+        source.stop();
+		safeDisconnect(source,gainNode);
+		safeDisconnect(source,lBand);
+		safeDisconnect(source,hBand);
+		safeDisconnect(source,mGain);
+    } catch (e) {
+		console.error('Fail to disconnect source (jumpTo method): ' + e);
+	}
+	
 	source = audioCtx.createBufferSource();
 	source.buffer = mp3Buffer;
 	source.connect(lBand);
@@ -1949,7 +1997,13 @@ function jumpTo(mousePos) {
 let elapsedTimeFromPause = 0;
 
 function pauseMp3(){
-	source.stop();
+
+	try {
+        source.stop();
+    } catch (e) {
+		console.error('Fail to stop source (pauseMp3 method): ' + e);
+	}
+
 	elapsedTimeFromPause = source.context.currentTime;
 	paused = true;
 	restartMp3IconColor();
@@ -2443,11 +2497,27 @@ setTimeout(() => {
     }
 
     function startOsc() {
-      if (osc) osc.stop();
+      if (osc) {
+		try {
+			osc.stop();
+			safeDisconnect(osc);
+		} catch (e) {
+			console.error('Fail to disconnect osc (startOsc Method init): ' + e);
+		}
+	  }
       osc = audioCtx.createOscillator();
       osc.type = 'sine';
       osc.connect(sourceGain);
       osc.start();
+
+	  // Automatic cleaning at the end of tone
+	  osc.onended = () => {
+		try {
+			safeDisconnect(osc);
+		} catch (e) {
+			console.error('Fail to disconnect osc (startOsc Method onended): ' + e);
+		}
+	  };
     }
 
     function playNextStep() {
@@ -2494,7 +2564,14 @@ setTimeout(() => {
     playBtn.addEventListener('click', async () => {
       	if (isPlayingTheremin) {
 			clearInterval(interval);
-			if (osc) osc.stop();
+			if (osc) {
+				try {
+					osc.stop();
+					safeDisconnect(osc);
+				} catch (e) {
+					console.error('Fail to disconnect osc (click event theremin): ' + e);
+				}
+			}
 			playBtn.textContent = 'PLAY';
 			playBtn.classList.remove('active');
 			document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
@@ -2518,7 +2595,14 @@ setTimeout(() => {
 
 function stopTheremin(){
 	clearInterval(interval);
-	if (osc) osc.stop();
+	if (osc) {
+		try {
+			osc.stop();
+			safeDisconnect(osc);
+		} catch (e) {
+			console.error('Fail to disconnect osc (stopTheremin Method): ' + e);
+		}
+	  }
 	let playBtnEl = document.getElementById("play");
 	playBtnEl.textContent = 'PLAY';
 	playBtnEl.classList.remove('active');
@@ -2669,6 +2753,15 @@ function playKick(t) {
     o.type = 'sine'; o.frequency.setValueAtTime(180, t); o.frequency.exponentialRampToValueAtTime(55, t + 0.07);
     g.gain.setValueAtTime(1.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
     o.connect(g); connectWithFX(g); o.start(t); o.stop(t + 0.18);
+	// Automatic cleaning at the end of tone
+	o.onended = () => {
+		try {
+			safeDisconnect(g);
+			safeDisconnect(o);
+		} catch (e) {
+			console.error('Fail to disconnect o (playKick Method): ' + e);
+		}
+	};
 }
 
 function playSnare(t) {
@@ -2677,6 +2770,15 @@ function playSnare(t) {
     n.buffer = b; const g = audioCtx.createGain(); const f = audioCtx.createBiquadFilter();
     f.type='lowpass'; f.frequency.value=2400; g.gain.setValueAtTime(1.0, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
     n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+	n.onended = () => {
+		try {
+			safeDisconnect(g);
+			safeDisconnect(f);
+			safeDisconnect(n);
+		} catch (e) {
+			console.error('Fail to disconnect n (playSnare Method): ' + e);
+		}
+	};
 }
 
 function playHiHat(t, closed=true) {
@@ -2686,6 +2788,15 @@ function playHiHat(t, closed=true) {
     f.type='highpass'; f.frequency.value = closed?8500:4800;
     g.gain.setValueAtTime(closed?0.5:0.7, t); g.gain.exponentialRampToValueAtTime(0.001, t+(closed?0.04:0.10));
     n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+	n.onended = () => {
+		try {
+			safeDisconnect(g);
+			safeDisconnect(f);
+			safeDisconnect(n);
+		} catch (e) {
+			console.error('Fail to disconnect n (playHiHat Method): ' + e);
+		}
+	};
 }
 
 function playClap(t) { playSnare(t); playHiHat(t+0.004,false); playHiHat(t+0.011,false); }
@@ -2695,6 +2806,15 @@ function playTom(t) {
     o.type='sine'; o.frequency.setValueAtTime(130,t); o.frequency.exponentialRampToValueAtTime(70,t+0.14);
     g.gain.setValueAtTime(1.0,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.28);
     o.connect(g); connectWithFX(g); o.start(t); o.stop(t+0.32);
+	// Automatic cleaning at the end of tone
+	o.onended = () => {
+		try {
+			safeDisconnect(g);
+			safeDisconnect(o);
+		} catch (e) {
+			console.error('Fail to disconnect o (playTom Method): ' + e);
+		}
+	};
 }
 
 function playRide(t) {
@@ -2703,6 +2823,15 @@ function playRide(t) {
     n.buffer = b; const g = audioCtx.createGain(); const f = audioCtx.createBiquadFilter();
     f.type='bandpass'; f.frequency.value=6200; f.Q.value=3; g.gain.setValueAtTime(0.4,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.7);
     n.connect(f); f.connect(g); connectWithFX(g); n.start(t);
+	n.onended = () => {
+		try {
+			safeDisconnect(g);
+			safeDisconnect(f);
+			safeDisconnect(n);
+		} catch (e) {
+			console.error('Fail to disconnect n (playRide Method): ' + e);
+		}
+	};
 }
 
 function playCrash(t) { playRide(t); }
@@ -3016,6 +3145,26 @@ function playSynthNote(freq, startTime, duration, type) {
           distortion.connect(filterSeq);
           filterSeq.connect(gainEnv);
           gainEnv.connect(masterGainSeq);
+
+		  // Automatic cleaning at the end of tone
+			osc1.onended = () => {
+				try {
+					safeDisconnect(gainEnv);
+					safeDisconnect(filterSeq);
+					safeDisconnect(distortion);
+					safeDisconnect(osc1);
+				} catch (e) {
+					console.error('Fail to disconnect osc1 (playSynthNote Method case Guitar): ' + e);
+				}
+			};
+			// Automatic cleaning at the end of tone
+			osc2.onended = () => {
+				try {
+					safeDisconnect(osc2);
+				} catch (e) {
+					console.error('Fail to disconnect osc2 (playSynthNote Method case Guitar): ' + e);
+				}
+			};
           break;
 
         case 'bass':
@@ -3035,6 +3184,24 @@ function playSynthNote(freq, startTime, duration, type) {
           osc2.connect(filterSeq);
           filterSeq.connect(gainEnv);
           gainEnv.connect(masterGainSeq);
+		  // Automatic cleaning at the end of tone
+			osc1.onended = () => {
+				try {
+					safeDisconnect(gainEnv);
+					safeDisconnect(filterSeq);
+					safeDisconnect(osc1);
+				} catch (e) {
+					console.error('Fail to disconnect osc1 (playSynthNote Method case Bass): ' + e);
+				}
+			};
+			// Automatic cleaning at the end of tone
+			osc2.onended = () => {
+				try {
+					safeDisconnect(osc2);
+				} catch (e) {
+					console.error('Fail to disconnect osc2 (playSynthNote Method case Bass): ' + e);
+				}
+			};
           break;
 
         case 'trumpet':
@@ -3063,6 +3230,26 @@ function playSynthNote(freq, startTime, duration, type) {
           osc1.connect(filterSeq);
           filterSeq.connect(gainEnv);
           gainEnv.connect(masterGainSeq);
+
+		  // Automatic cleaning at the end of tone
+			osc1.onended = () => {
+				try {
+					safeDisconnect(gainEnv);
+					safeDisconnect(filterSeq);
+					safeDisconnect(osc1);
+				} catch (e) {
+					console.error('Fail to disconnect osc1 (playSynthNote Method case Trumpet): ' + e);
+				}
+			};
+			// Automatic cleaning at the end of tone
+			vibrato.onended = () => {
+				try {
+					safeDisconnect(vibratoGain);
+					safeDisconnect(vibrato);
+				} catch (e) {
+					console.error('Fail to disconnect vibrato (playSynthNote Method case Trumpet): ' + e);
+				}
+			};
           break;
 
         case 'sax':
@@ -3096,6 +3283,26 @@ function playSynthNote(freq, startTime, duration, type) {
           gainEnv.connect(masterGainSeq);
           noise.start(startTime);
           noise.stop(startTime + duration);
+
+		  // Automatic cleaning at the end of tone
+			osc1.onended = () => {
+				try {
+					safeDisconnect(noise);
+					safeDisconnect(gainEnv);
+					safeDisconnect(filterSeq);
+					safeDisconnect(osc1);
+				} catch (e) {
+					console.error('Fail to disconnect osc1 (playSynthNote Method case Sax): ' + e);
+				}
+			};
+			// Automatic cleaning at the end of tone
+			osc2.onended = () => {
+				try {
+					safeDisconnect(osc2);
+				} catch (e) {
+					console.error('Fail to disconnect osc2 (playSynthNote Method case Sax): ' + e);
+				}
+			};
           break;
     }
 
@@ -3106,8 +3313,22 @@ function playSynthNote(freq, startTime, duration, type) {
 
     if (osc1) osc1.start(startTime);
     if (osc2) osc2.start(startTime);
-    if (osc1) osc1.stop(startTime + duration + 0.1);
-    if (osc2) osc2.stop(startTime + duration + 0.1);
+
+	if (osc1) {
+		try {
+			osc1.stop(startTime + duration + 0.1);
+		} catch (e) {
+			console.error('Fail to stop osc1 (playSynthNote Method after switch): ' + e);
+		}
+	}
+	
+	if (osc2) {
+		try {
+			osc2.stop(startTime + duration + 0.1);
+		} catch (e) {
+			console.error('Fail to stop osc2 (playSynthNote Method after switch): ' + e);
+		}
+	}
 }
 
     function schedulerSeq() {
