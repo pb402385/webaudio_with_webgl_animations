@@ -420,60 +420,6 @@ function initAudioContext(){
 		
 		//We create a node to analyze as well as a javascript node
 		analyser = audioCtx.createAnalyser();
-	
-		//Creation of oscillators
-		oscillator = audioCtx.createOscillator();
-		oscillator1 = audioCtx.createOscillator();
-		oscillator2 = audioCtx.createOscillator();
-		oscillator0 = audioCtx.createOscillator();
-		
-		oscillator.start(0);
-		oscillator1.start(0);
-		oscillator2.start(0);
-		oscillator0.start(0);
-		
-		var cpt = 0;
-		for (key in tabKeyNotes) {
-			oscillatorTab[cpt] = audioCtx.createOscillator();
-			oscillatorTab[cpt].start(0);
-			cpt++;
-		}
-
-		// Automatic cleaning at the end of tone
-		oscillator.onended = () => {
-			try {
-				safeDisconnect(oscillator);
-			} catch (e) {
-				console.error('Fail to disconnect oscillator: ' + e);
-			}
-		};
-
-		// Automatic cleaning at the end of tone
-		oscillator1.onended = () => {
-			try {
-				safeDisconnect(oscillator1);
-			} catch (e) {
-				console.error('Fail to disconnect oscillator1: ' + e);
-			}
-		};
-
-		// Automatic cleaning at the end of tone
-		oscillator2.onended = () => {
-			try {
-				safeDisconnect(oscillator2);
-			} catch (e) {
-				console.error('Fail to disconnect oscillator2: ' + e);
-			}
-		};
-
-		// Automatic cleaning at the end of tone
-		oscillator0.onended = () => {
-			try {
-				safeDisconnect(oscillator0);
-			} catch (e) {
-				console.error('Fail to disconnect oscillator0: ' + e);
-			}
-		};
 
 		buidGraph();
 		setDefaultValues();
@@ -545,7 +491,11 @@ function stop(i,boolEventMouse){
     notePlayed = false;
 
 	try {
-        safeDisconnect(oscillator);
+        oscillator.stop();
+		safeDisconnect(oscillator,lBand);
+		safeDisconnect(oscillator,hBand);
+		safeDisconnect(oscillator,mGain);
+		safeDisconnect(oscillator);
     } catch (e) {
 		console.error('Fail to disconnect oscillator (stop method): ' + e);
 	}
@@ -622,7 +572,7 @@ function play2(i){
 		var id = 'testNoteTD'+i;
 		var id2 = 'topPiano'+i;
 		document.getElementById(id).style.backgroundColor = "orange";
-		document.getElementById(id2).style.backgroundColor = "orange";			
+		document.getElementById(id2).style.backgroundColor = "orange";	
     }
 }
 
@@ -632,31 +582,46 @@ function play1(i){
 		var id = 'testNoteTD'+i;
 		var id2 = 'topPiano'+i;
 		document.getElementById(id).style.backgroundColor = "red";
-		document.getElementById(id2).style.backgroundColor = "red";			
+		document.getElementById(id2).style.backgroundColor = "red";
     }
 }
 
 function stop2(i){
     notePlayed2 = false;
-	safeDisconnect(oscillator2);
 	var id = 'testNoteTD'+i;
 	var id2 = 'topPiano'+i;
 	document.getElementById(id).style.backgroundColor = "white";
 	document.getElementById(id2).style.backgroundColor = "white";
+	try {
+        oscillator2.stop();
+		safeDisconnect(oscillator2,lBand);
+		safeDisconnect(oscillator2,hBand);
+		safeDisconnect(oscillator2,mGain);
+		safeDisconnect(oscillator2);
+    } catch (e) {
+		console.error('Fail to disconnect oscillator2 (stop2 method): ' + e);
+	}
 }
 
 function stop1(i){
     notePlayed1 = false;
-	safeDisconnect(oscillator1);
 	var id = 'testNoteTD'+i;
 	var id2 = 'topPiano'+i;
 	document.getElementById(id).style.backgroundColor = "white";
 	document.getElementById(id2).style.backgroundColor = "white";
+	try {
+        oscillator1.stop();
+		safeDisconnect(oscillator1,lBand);
+		safeDisconnect(oscillator1,hBand);
+		safeDisconnect(oscillator1,mGain);
+		safeDisconnect(oscillator1);
+    } catch (e) {
+		console.error('Fail to disconnect oscillator1 (stop1 method): ' + e);
+	}
 }
 
 function stop0(i){
     notePlayed0 = false;
-	safeDisconnect(oscillator0);
 	if(i !== -1){
 		if(i == 4 || i == 6 || i == 9 || i == 11 || i == 13 ){
 			var id = 'testNoteDieseTD'+i;
@@ -667,6 +632,15 @@ function stop0(i){
 			var id2 = 'topPiano'+i;
 			document.getElementById(id2).style.backgroundColor = "white";
 		}
+	}
+	try {
+        oscillator0.stop();
+		safeDisconnect(oscillator0,lBand);
+		safeDisconnect(oscillator0,hBand);
+		safeDisconnect(oscillator0,mGain);
+		safeDisconnect(oscillator0);
+    } catch (e) {
+		console.error('Fail to disconnect oscillator0 (stop0 method): ' + e);
 	}
 }
 
@@ -688,39 +662,47 @@ function play0(i){
 }
 
 function Sound2(frequency, type) {
+	oscillator2 = audioCtx.createOscillator();
     oscillator2.frequency.value = frequency;
     oscillator2.type = type;
 	oscillator2.connect(lBand);
 	oscillator2.connect(hBand);
 	oscillator2.connect(mGain);
+	oscillator2.start(0);
 	notePlayed2 = false; // flag to indicate if sound is playing
 };
 
 function Sound1(frequency, type) {
+	oscillator1 = audioCtx.createOscillator();
     oscillator1.frequency.value = frequency;
     oscillator1.type = type;
 	oscillator1.connect(lBand);
 	oscillator1.connect(hBand);
 	oscillator1.connect(mGain);
+	oscillator1.start(0);
 	notePlayed1 = false; // flag to indicate if sound is playing
 };
 
 function Sound0(frequency, type) {
+	oscillator0 = audioCtx.createOscillator();
     oscillator0.frequency.value = frequency;
     oscillator0.type = type;
 	oscillator0.connect(lBand);
 	oscillator0.connect(hBand);
 	oscillator0.connect(mGain);
+	oscillator0.start(0);
 	notePlayed0 = false; // flag to indicate if sound is playing
 };
 
 
 function Sound(frequency, type) {
+	oscillator = audioCtx.createOscillator();
     oscillator.frequency.value = frequency;
     oscillator.type = type;
 	oscillator.connect(lBand);
 	oscillator.connect(hBand);
 	oscillator.connect(mGain);
+	oscillator.start(0);
 	notePlayed = false; // flag to indicate if sound is playing
 };
 
@@ -1008,7 +990,13 @@ function addEffect(i){
 function safeDisconnect(node, destination = null) {
   try {
     if (node && typeof node.disconnect === 'function') {
-      node.disconnect(destination);
+	  if( destination === null ) {
+			node.disconnect();
+			console.log('node ' + node + ' disconnected!');
+	  } else {
+			node.disconnect(destination);
+			console.log('node ' + node + ' disconnected from destination ' + destination + '!');
+	  }
     }
   } catch (e) {
     // rien à faire – le nœud n’était pas connecté ou déjà déconnecté
@@ -1587,16 +1575,27 @@ function unsetColorKeyboard(j){
 
 var effectAlreadyActive = false;
 function stopK(i){
-	safeDisconnect(oscillatorTab[i]);
 	tabTouchesBool[i] = false;
+
+	try {
+        oscillatorTab[i].stop();
+		safeDisconnect(oscillatorTab[i],lBand);
+		safeDisconnect(oscillatorTab[i],hBand);
+		safeDisconnect(oscillatorTab[i],mGain);
+		safeDisconnect(oscillatorTab[i]);
+    } catch (e) {
+		console.error('Fail to disconnect oscillatorTab['+i+'] (stopK method): ' + e);
+	}
 }
 
 function SoundK(frequency, type, i) {
+	oscillatorTab[i] = audioCtx.createOscillator();
     oscillatorTab[i].frequency.value = frequency;
     oscillatorTab[i].type = type;
     oscillatorTab[i].connect(lBand);
 	oscillatorTab[i].connect(hBand);
 	oscillatorTab[i].connect(mGain);
+	oscillatorTab[i].start(0);
 }
 
 
