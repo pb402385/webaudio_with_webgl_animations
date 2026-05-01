@@ -1756,8 +1756,14 @@ function playBuffer(buffer) {
 
 	// Add ended handler (optional but recommended)
 	source.onended = () => {
-		source.disconnect(); // clean up
-		source.buffer = null; // aide le garbage collector
+		try {
+			source.stop();
+			source.buffer = null; // aide le garbage collector
+			source.disconnect(); // clean up
+			mp3Buffer = null;
+		} catch (e) {
+			console.error('Fail to disconnect source (playBuffer Method): ' + e);
+		}
 	};
 }
 
@@ -1977,6 +1983,7 @@ function jumpTo(mousePos) {
 	
 	try {
         source.stop();
+		source.buffer = null;
 		safeDisconnect(source,gainNode);
 		safeDisconnect(source,lBand);
 		safeDisconnect(source,hBand);
@@ -1992,6 +1999,18 @@ function jumpTo(mousePos) {
 	source.connect(mGain);
 	source.connect(gainNode);
 	source.start(0,startTime);
+
+	// Add ended handler (optional but recommended)
+	source.onended = () => {
+		try {
+			source.stop();
+			source.buffer = null; // aide le garbage collector
+			source.disconnect(); // clean up
+			mp3Buffer = null;
+		} catch (e) {
+			console.error('Fail to disconnect source (jumpTo Method): ' + e);
+		}
+	};
 }
 
 let elapsedTimeFromPause = 0;
@@ -2033,6 +2052,18 @@ function restartMp3(buffer){
 		source.connect(mGain);
 		source.connect(gainNode);
 		source.start(0,elapsedTimeFromPause);
+
+		// Add ended handler (optional but recommended)
+		source.onended = () => {
+			try {
+				source.stop();
+				source.buffer = null; // aide le garbage collector
+				source.disconnect(); // clean up
+				mp3Buffer = null;
+			} catch (e) {
+				console.error('Fail to disconnect source (restartMp3 Method): ' + e);
+			}
+		};
 	}
 }
 
@@ -2774,6 +2805,7 @@ function playSnare(t) {
 		try {
 			safeDisconnect(g);
 			safeDisconnect(f);
+			n.buffer = null;
 			safeDisconnect(n);
 		} catch (e) {
 			console.error('Fail to disconnect n (playSnare Method): ' + e);
@@ -2792,6 +2824,7 @@ function playHiHat(t, closed=true) {
 		try {
 			safeDisconnect(g);
 			safeDisconnect(f);
+			n.buffer = null;
 			safeDisconnect(n);
 		} catch (e) {
 			console.error('Fail to disconnect n (playHiHat Method): ' + e);
@@ -2827,6 +2860,7 @@ function playRide(t) {
 		try {
 			safeDisconnect(g);
 			safeDisconnect(f);
+			n.buffer = null;
 			safeDisconnect(n);
 		} catch (e) {
 			console.error('Fail to disconnect n (playRide Method): ' + e);
@@ -3284,25 +3318,33 @@ function playSynthNote(freq, startTime, duration, type) {
           noise.start(startTime);
           noise.stop(startTime + duration);
 
+		  // Add ended handler (optional but recommended)
+		  noise.onended = () => {
+			try {
+				noise.buffer = null; // aide le garbage collector
+				safeDisconnect(noise); // clean up
+			} catch (e) {
+				console.error('Fail to disconnect noise (playSynthNote Method case Sax): ' + e);
+			}
+		  };
 		  // Automatic cleaning at the end of tone
-			osc1.onended = () => {
+		  osc1.onended = () => {
 				try {
-					safeDisconnect(noise);
 					safeDisconnect(gainEnv);
 					safeDisconnect(filterSeq);
 					safeDisconnect(osc1);
 				} catch (e) {
 					console.error('Fail to disconnect osc1 (playSynthNote Method case Sax): ' + e);
 				}
-			};
-			// Automatic cleaning at the end of tone
-			osc2.onended = () => {
+		  };
+		  // Automatic cleaning at the end of tone
+		  osc2.onended = () => {
 				try {
 					safeDisconnect(osc2);
 				} catch (e) {
 					console.error('Fail to disconnect osc2 (playSynthNote Method case Sax): ' + e);
 				}
-			};
+		  };
           break;
     }
 
