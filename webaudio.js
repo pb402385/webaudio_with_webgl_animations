@@ -118,10 +118,6 @@ async function initAudio() {
 	  await audioCtx.audioWorklet.addModule('./effect/fft-fx.js');
 	  console.log("Processor (fft-fx) loaded successfully");
 
-      // Only now is it safe to create the node
-      analyserNode = new AudioWorkletNode(audioCtx, 'my-audio-processor');
-      console.log("AudioWorkletNode created and connected (my-audio-processor)");
-
     } catch (err) {
       console.error("Failed to load AudioWorklet module:", err);
       // This is where you’ll see the real error (syntax, 404, CORS, etc.)
@@ -487,6 +483,8 @@ function buidGraph(){
 
 		/** END PARAM EGALISEUR **/
 		gainNode.connect(filter);
+
+		analyserNode = audioCtx.createAnalyser();
 		
 		filter.connect(analyserNode);	
 		analyserNode.connect(analyser);
