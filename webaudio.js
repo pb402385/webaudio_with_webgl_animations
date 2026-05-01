@@ -1790,9 +1790,6 @@ function playBuffer(buffer) {
 	elapsedTimeSinceStart = 0;
 	animateTime();
 
-	// Optional: configure
-	source.loop = true;
-
 	// Add ended handler (optional but recommended)
 	source.onended = () => {
 		try {
@@ -1971,8 +1968,22 @@ var paused = true;
 
 function animateTime() {
     if (!paused) {
+
+		if(forcePlayBarDuration !== null){
+			elapsedTimeSinceStart = forcePlayBarDuration;
+			/* hack for one iteration, we cheat delta value to force pause value */
+			currentTime = audioCtx.currentTime;
+			lastTime = audioCtx.currentTime;
+			forcePlayBarCurrentTime = null;
+			forcePlayBarDuration = null;
+		} else {
+			currentTime = audioCtx.currentTime;
+		}
+
+		// We force value at 0 when mp3 loop
+		if(elapsedTimeSinceStart > mp3Buffer.duration) elapsedTimeSinceStart = 0;
+
         // Draw the time on the front canvas
-        currentTime = audioCtx.currentTime;
         var delta = currentTime - lastTime;
 
         var totalTime;
@@ -2036,21 +2047,10 @@ function jumpTo(mousePos) {
 	source.connect(hBand);
 	source.connect(mGain);
 	source.connect(gainNode);
+	source.loop = true;
 	source.start(0,startTime);
-
-	// Add ended handler (optional but recommended)
-	source.onended = () => {
-		try {
-			source.stop();
-			source.buffer = null; // aide le garbage collector
-			source.disconnect(); // clean up
-		} catch (e) {
-			console.error('Fail to disconnect source (jumpTo Method): ' + e);
-		}
-	};
 }
 
-let elapsedTimeFromPause = 0;
 
 function pauseMp3(){
 
@@ -2060,7 +2060,6 @@ function pauseMp3(){
 		console.error('Fail to stop source (pauseMp3 method): ' + e);
 	}
 
-	elapsedTimeFromPause = source.context.currentTime;
 	paused = true;
 	restartMp3IconColor();
 }
@@ -2074,6 +2073,8 @@ function restartMp3IconColor() {
 	}
 }
 
+let forcePlayBarDuration = null;
+let forcePlayBarCurrentTime = null;
 function restartMp3(buffer){
 	if( mp3Buffer !== undefined ){
 		paused = false;
@@ -2083,23 +2084,15 @@ function restartMp3(buffer){
 		safeDisconnect(source,hBand);
 		safeDisconnect(source,mGain);
 		source = audioCtx.createBufferSource();
+		source.loop = true;
 		source.buffer = mp3Buffer;
 		source.connect(lBand);
 		source.connect(hBand);
 		source.connect(mGain);
 		source.connect(gainNode);
-		source.start(0,elapsedTimeFromPause);
-
-		// Add ended handler (optional but recommended)
-		source.onended = () => {
-			try {
-				source.stop();
-				source.buffer = null; // aide le garbage collector
-				source.disconnect(); // clean up
-			} catch (e) {
-				console.error('Fail to disconnect source (restartMp3 Method): ' + e);
-			}
-		};
+		forcePlayBarDuration = elapsedTimeSinceStart;
+		forcePlayBarCurrentTime	= currentTime;
+		source.start(0,elapsedTimeSinceStart);
 	}
 }
 
