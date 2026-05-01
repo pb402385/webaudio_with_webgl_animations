@@ -44,7 +44,7 @@ class PinkNoiseWithFilterProcessor extends AudioWorkletProcessor {
       }
       this.z = z;
     }
-    return true;
+    return false;
   }
 }
 

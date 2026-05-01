@@ -51,7 +51,7 @@ class SimpleLowpassProcessor extends AudioWorkletProcessor {
       this._z[ch] = z; // save state for the next block
     }
 
-    return true; // keep the node alive
+    return false; // keep the node alive
   }
 }
 

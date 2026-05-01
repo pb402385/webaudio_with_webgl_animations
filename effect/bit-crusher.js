@@ -78,7 +78,7 @@ class BitCrusherProcessor extends AudioWorkletProcessor {
       this.phase = phase < 1.0 ? phase : 0; // avoids infinite accumulation
     }
 
-    return true;
+    return false;
   }
 }
 

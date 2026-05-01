@@ -122,75 +122,6 @@ async function initAudio() {
       analyserNode = new AudioWorkletNode(audioCtx, 'my-audio-processor');
       console.log("AudioWorkletNode created and connected (my-audio-processor)");
 
-
-	  // effects
-	  simplePassEffectNode = new AudioWorkletNode(audioCtx, 'simple-lowpass', {
-		parameterData: { cutoff: 800 }
-	  });
-	  console.log("AudioWorkletNode created and connected (simple-lowpass-effect-processor)");
-
-	  bitCrusherEffectNode = new AudioWorkletNode(audioCtx, 'bitcrusher', {
-		outputChannelCount: [2]
-	  });
-
-	  bitCrusherEffectNode.parameters.get('bitDepth').setValueAtTime(16, audioCtx.currentTime);
-	  bitCrusherEffectNode.parameters.get('bitDepth').linearRampToValueAtTime(4, audioCtx.currentTime + 2);
-	  console.log("AudioWorkletNode created and connected (bit-crusher-effect-processor)");
-
-	  pinkEffectNode = new AudioWorkletNode(audioCtx, 'pink-noise-filtered');
-	  pinkEffectNode.parameters.get('cutoff').linearRampToValueAtTime(200, audioCtx.currentTime + 5);
-	  console.log("AudioWorkletNode created and connected (pink-effect-processor)");
-
-	  pitchEffectNode = new AudioWorkletNode(audioCtx, 'pitch');
-	  pitchEffectNode.parameters.get('pitch').setValueAtTime(2, audioCtx.currentTime);
-
-	  console.log("AudioWorkletNode created and connected (pitch-effect-processor)");
-
-	  noiseEffectNode = new AudioWorkletNode(audioCtx, 'noise');
-	  noiseEffectNode.parameters.get('type').setValueAtTime(1, 0);        // pink
-	  console.log("AudioWorkletNode created and connected (noise-effect-processor)");
-
-	  compressorEffectNode = new AudioWorkletNode(audioCtx, 'compressor', {
-		processorOptions: { channelCount: 2 }
-	  });
-
-	  compressorEffectNode.parameters.get('threshold').value = -24;
-	  compressorEffectNode.parameters.get('ratio').value = 4;
-	  compressorEffectNode.parameters.get('attack').value = 8;
-	  compressorEffectNode.parameters.get('release').value = 120;
-	  compressorEffectNode.parameters.get('makeup').value = 6;
-	  compressorEffectNode.parameters.get('mix').value = 100;
-	  console.log("AudioWorkletNode created and connected (compressor-effect-processor)");
-
-	  reverbEffectNode = new AudioWorkletNode(audioCtx, 'reverb', {
-		outputChannelCount: [2]
-	  });
-
-	  // Exemple de contrôle
-  	  reverbEffectNode.parameters.get('roomSize').setValueAtTime(0.85, audioCtx.currentTime);
-  	  reverbEffectNode.parameters.get('damping').setValueAtTime(0.3, audioCtx.currentTime);
-  	  reverbEffectNode.parameters.get('wet').setValueAtTime(0.4, audioCtx.currentTime);
-  	  reverbEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 5); // freeze après 5s
-	  console.log("AudioWorkletNode created and connected (reverb-effect-processor)");
-
-	  tremoloEffectNode = new AudioWorkletNode(audioCtx, 'tremolo', {
-		  outputChannelCount: [2],           // mandatory
-		  channelCount: 2,                   // force 2 channels output
-		  channelCountMode: 'explicit',
-		  channelInterpretation: 'speakers'
-	  });
-
-	  // 3. Carré 8 Hz ultra-nerveux (style dub/techno)
-	  tremoloEffectNode.parameters.get('rate').setValueAtTime(8, audioCtx.currentTime);
-	  tremoloEffectNode.parameters.get('shape').setValueAtTime(2, audioCtx.currentTime);
-	  tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.7, audioCtx.currentTime); // adoucit le carré
-	  console.log("AudioWorkletNode created and connected (tremolo-effect-processor)");
-
-	fftFxEffectNode = new AudioWorkletNode(audioCtx, 'fft-fx');
-	fftFxEffectNode.parameters.get('mode').setValueAtTime(0, audioCtx.currentTime);
-	fftFxEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 2); // pad infini !
-
-console.log("AudioWorkletNode created and connected (fft-fx-effect-processor)");
     } catch (err) {
       console.error("Failed to load AudioWorklet module:", err);
       // This is where you’ll see the real error (syntax, 404, CORS, etc.)
@@ -198,145 +129,163 @@ console.log("AudioWorkletNode created and connected (fft-fx-effect-processor)");
 }
 
 function setNoiseParams(val) {
-	if( val === '0' ) {
-		noiseEffectNode.parameters.get('type').setValueAtTime(0, 0);
-	}
-	if( val === '1' ) {
-		noiseEffectNode.parameters.get('type').setValueAtTime(1, 0);
-	}
-	if( val === '2' ) {
-		noiseEffectNode.parameters.get('type').setValueAtTime(2, 0);
-	}
-	if( val === '3' ) {
-		noiseEffectNode.parameters.get('type').setValueAtTime(3, 0);
-	}
-	if( val === '4' ) {
-		noiseEffectNode.parameters.get('type').setValueAtTime(4, 0);
+	// check if noiseEffectNode exist because we can change effect only if effect is running for reduce RAM consumption
+	if (noiseEffectNode) {
+		if( val === '0' ) {
+			noiseEffectNode.parameters.get('type').setValueAtTime(0, 0);
+		}
+		if( val === '1' ) {
+			noiseEffectNode.parameters.get('type').setValueAtTime(1, 0);
+		}
+		if( val === '2' ) {
+			noiseEffectNode.parameters.get('type').setValueAtTime(2, 0);
+		}
+		if( val === '3' ) {
+			noiseEffectNode.parameters.get('type').setValueAtTime(3, 0);
+		}
+		if( val === '4' ) {
+			noiseEffectNode.parameters.get('type').setValueAtTime(4, 0);
+		}
 	}
 }
 
 function setBitCrusherParams(val) {
-	if( val === '0' ) {
-		// Super smooth automation without zippering
-		bitCrusherEffectNode.parameters.get('frequencyReduction').setValueAtTime(0.0, audioCtx.currentTime);
-	}
-	if( val === '1' ) {
-		// Extreme lo-fi effect
-		bitCrusherEffectNode.parameters.get('frequencyReduction').setValueAtTime(0.9, audioCtx.currentTime);
+	// check if bitCrusherEffectNode exist because we can change effect only if effect is running for reduce RAM consumption
+	if (bitCrusherEffectNode) {
+		if( val === '0' ) {
+			// Super smooth automation without zippering
+			bitCrusherEffectNode.parameters.get('frequencyReduction').setValueAtTime(0.0, audioCtx.currentTime);
+		}
+		if( val === '1' ) {
+			// Extreme lo-fi effect
+			bitCrusherEffectNode.parameters.get('frequencyReduction').setValueAtTime(0.9, audioCtx.currentTime);
+		}
 	}
 }
 
 function setFftFxParams(val) {
-	if( val === '0' ) {
-		// Spectral Freeze
-		fftFxEffectNode.parameters.get('mode').setValueAtTime(0, audioCtx.currentTime);
-		fftFxEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 2); // pad infini !
-		fftFxEffectNode.parameters.get('amount').setValueAtTime(0.5, audioCtx.currentTime);
-		fftFxEffectNode.parameters.get('pitch').exponentialRampToValueAtTime(1, audioCtx.currentTime);
-	}
-	if( val === '1' ) {
-		// Shimmer / Spectral Blur
-		fftFxEffectNode.parameters.get('mode').setValueAtTime(1, audioCtx.currentTime);
-		fftFxEffectNode.parameters.get('amount').setValueAtTime(0.8, audioCtx.currentTime);
-		fftFxEffectNode.parameters.get('pitch').exponentialRampToValueAtTime(1, audioCtx.currentTime);
-		fftFxEffectNode.parameters.get('freeze').setValueAtTime(0, audioCtx.currentTime);
-	}
-	if( val === '2' ) {
-		// Pitch shifter ±2 octaves formant-preserving
-		fftFxEffectNode.parameters.get('mode').setValueAtTime(3, audioCtx.currentTime);
-		fftFxEffectNode.parameters.get('pitch').exponentialRampToValueAtTime(4, audioCtx.currentTime + 5); // +2 octaves
-		fftFxEffectNode.parameters.get('amount').setValueAtTime(0.5, audioCtx.currentTime);
-		fftFxEffectNode.parameters.get('freeze').setValueAtTime(0, audioCtx.currentTime);
+	// check if fftFxEffectNode exist because we can change effect only if effect is running for reduce RAM consumption
+	if (fftFxEffectNode) {
+		if( val === '0' ) {
+			// Spectral Freeze
+			fftFxEffectNode.parameters.get('mode').setValueAtTime(0, audioCtx.currentTime);
+			fftFxEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 2); // pad infini !
+			fftFxEffectNode.parameters.get('amount').setValueAtTime(0.5, audioCtx.currentTime);
+			fftFxEffectNode.parameters.get('pitch').exponentialRampToValueAtTime(1, audioCtx.currentTime);
+		}
+		if( val === '1' ) {
+			// Shimmer / Spectral Blur
+			fftFxEffectNode.parameters.get('mode').setValueAtTime(1, audioCtx.currentTime);
+			fftFxEffectNode.parameters.get('amount').setValueAtTime(0.8, audioCtx.currentTime);
+			fftFxEffectNode.parameters.get('pitch').exponentialRampToValueAtTime(1, audioCtx.currentTime);
+			fftFxEffectNode.parameters.get('freeze').setValueAtTime(0, audioCtx.currentTime);
+		}
+		if( val === '2' ) {
+			// Pitch shifter ±2 octaves formant-preserving
+			fftFxEffectNode.parameters.get('mode').setValueAtTime(3, audioCtx.currentTime);
+			fftFxEffectNode.parameters.get('pitch').exponentialRampToValueAtTime(4, audioCtx.currentTime + 5); // +2 octaves
+			fftFxEffectNode.parameters.get('amount').setValueAtTime(0.5, audioCtx.currentTime);
+			fftFxEffectNode.parameters.get('freeze').setValueAtTime(0, audioCtx.currentTime);
+		}
 	}
 }
 
 function setPitchParams(val) {
-	if( val === '0' ) {
-		// Octave up
-	    pitchEffectNode.parameters.get('pitch').setValueAtTime(2, audioCtx.currentTime);
-		pitchEffectNode.parameters.get('wet').setValueAtTime(0.5, audioCtx.currentTime);
-	}
-	if( val === '1' ) {
-		// Octave down
-	    pitchEffectNode.parameters.get('pitch').setValueAtTime(0.5, audioCtx.currentTime);
-		pitchEffectNode.parameters.get('wet').setValueAtTime(0.5, audioCtx.currentTime);
-	}
-	if( val === '2' ) {
-		// Démon / robot
-	    pitchEffectNode.parameters.get('pitch').setValueAtTime(0.7, audioCtx.currentTime);
-	    pitchEffectNode.parameters.get('wet').setValueAtTime(0.9, audioCtx.currentTime);
-	}
-	if( val === '3' ) {
-		// Chorus léger
-	    pitchEffectNode.parameters.get('pitch').setValueAtTime(1.02, audioCtx.currentTime);
-	    pitchEffectNode.parameters.get('wet').setValueAtTime(0.4, audioCtx.currentTime);
+	// check if pitchEffectNode exist because we can change effect only if effect is running for reduce RAM consumption
+	if (pitchEffectNode) {
+		if( val === '0' ) {
+			// Octave up
+			pitchEffectNode.parameters.get('pitch').setValueAtTime(2, audioCtx.currentTime);
+			pitchEffectNode.parameters.get('wet').setValueAtTime(0.5, audioCtx.currentTime);
+		}
+		if( val === '1' ) {
+			// Octave down
+			pitchEffectNode.parameters.get('pitch').setValueAtTime(0.5, audioCtx.currentTime);
+			pitchEffectNode.parameters.get('wet').setValueAtTime(0.5, audioCtx.currentTime);
+		}
+		if( val === '2' ) {
+			// Démon / robot
+			pitchEffectNode.parameters.get('pitch').setValueAtTime(0.7, audioCtx.currentTime);
+			pitchEffectNode.parameters.get('wet').setValueAtTime(0.9, audioCtx.currentTime);
+		}
+		if( val === '3' ) {
+			// Chorus léger
+			pitchEffectNode.parameters.get('pitch').setValueAtTime(1.02, audioCtx.currentTime);
+			pitchEffectNode.parameters.get('wet').setValueAtTime(0.4, audioCtx.currentTime);
+		}
 	}
 }
 
 function setCompressorParams(val) {
-	if( val === '0' ) {
-		compressorEffectNode.parameters.get('threshold').value = -24;
-	    compressorEffectNode.parameters.get('ratio').value = 4;
-	    compressorEffectNode.parameters.get('attack').value = 8;
-	    compressorEffectNode.parameters.get('release').value = 120;
-	    compressorEffectNode.parameters.get('makeup').value = 6;
-		compressorEffectNode.parameters.get('knee').value = 6;
-	}
-	if( val === '1' ) {
-		compressorEffectNode.parameters.get('threshold').value = -18;
-	    compressorEffectNode.parameters.get('ratio').value = 2;
-	    compressorEffectNode.parameters.get('attack').value = 10;
-	    compressorEffectNode.parameters.get('release').value = 150;
-	    compressorEffectNode.parameters.get('knee').value = 12;
-		compressorEffectNode.parameters.get('makeup').value = 6;
-	}
-	if( val === '2' ) {
-		compressorEffectNode.parameters.get('threshold').value = -24;
-	    compressorEffectNode.parameters.get('ratio').value = 4;
-	    compressorEffectNode.parameters.get('attack').value = 5;
-	    compressorEffectNode.parameters.get('release').value = 100;
-	    compressorEffectNode.parameters.get('knee').value = 10;
-		compressorEffectNode.parameters.get('makeup').value = 4;
-	}
-	if( val === '3' ) {
-		compressorEffectNode.parameters.get('threshold').value = -30;
-	    compressorEffectNode.parameters.get('ratio').value = 10;
-	    compressorEffectNode.parameters.get('attack').value = 2;
-	    compressorEffectNode.parameters.get('release').value = 80;
-	    compressorEffectNode.parameters.get('knee').value = 6;
-		compressorEffectNode.parameters.get('makeup').value = 10;
-	}
-	if( val === '4' ) {
-		compressorEffectNode.parameters.get('threshold').value = -6;
-	    compressorEffectNode.parameters.get('ratio').value = 20;
-	    compressorEffectNode.parameters.get('attack').value = 0.5;
-	    compressorEffectNode.parameters.get('release').value = 50;
-	    compressorEffectNode.parameters.get('knee').value = 2;
-		compressorEffectNode.parameters.get('makeup').value = 5;
+	// check if compressorEffectNode exist because we can change effect only if effect is running for reduce RAM consumption
+	if (compressorEffectNode) {
+		if( val === '0' ) {
+			compressorEffectNode.parameters.get('threshold').value = -24;
+			compressorEffectNode.parameters.get('ratio').value = 4;
+			compressorEffectNode.parameters.get('attack').value = 8;
+			compressorEffectNode.parameters.get('release').value = 120;
+			compressorEffectNode.parameters.get('makeup').value = 6;
+			compressorEffectNode.parameters.get('knee').value = 6;
+		}
+		if( val === '1' ) {
+			compressorEffectNode.parameters.get('threshold').value = -18;
+			compressorEffectNode.parameters.get('ratio').value = 2;
+			compressorEffectNode.parameters.get('attack').value = 10;
+			compressorEffectNode.parameters.get('release').value = 150;
+			compressorEffectNode.parameters.get('knee').value = 12;
+			compressorEffectNode.parameters.get('makeup').value = 6;
+		}
+		if( val === '2' ) {
+			compressorEffectNode.parameters.get('threshold').value = -24;
+			compressorEffectNode.parameters.get('ratio').value = 4;
+			compressorEffectNode.parameters.get('attack').value = 5;
+			compressorEffectNode.parameters.get('release').value = 100;
+			compressorEffectNode.parameters.get('knee').value = 10;
+			compressorEffectNode.parameters.get('makeup').value = 4;
+		}
+		if( val === '3' ) {
+			compressorEffectNode.parameters.get('threshold').value = -30;
+			compressorEffectNode.parameters.get('ratio').value = 10;
+			compressorEffectNode.parameters.get('attack').value = 2;
+			compressorEffectNode.parameters.get('release').value = 80;
+			compressorEffectNode.parameters.get('knee').value = 6;
+			compressorEffectNode.parameters.get('makeup').value = 10;
+		}
+		if( val === '4' ) {
+			compressorEffectNode.parameters.get('threshold').value = -6;
+			compressorEffectNode.parameters.get('ratio').value = 20;
+			compressorEffectNode.parameters.get('attack').value = 0.5;
+			compressorEffectNode.parameters.get('release').value = 50;
+			compressorEffectNode.parameters.get('knee').value = 2;
+			compressorEffectNode.parameters.get('makeup').value = 5;
+		}
 	}
 }
 
 function setTremoloParams(val) {
-	if( val === '0' ) {
-		// Examples of quick checks
-	    tremoloEffectNode.parameters.get('rate').setValueAtTime(4, audioCtx.currentTime);
-	    tremoloEffectNode.parameters.get('depth').setValueAtTime(0.6, audioCtx.currentTime);
-	    tremoloEffectNode.parameters.get('shape').setValueAtTime(0, audioCtx.currentTime); // sinus
-		tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.9, audioCtx.currentTime);
-	}
-	if( val === '1' ) {
-		// Wide, slow auto-pan (0.33 Hz)
-		tremoloEffectNode.parameters.get('rate').setValueAtTime(0.33, audioCtx.currentTime);
-		tremoloEffectNode.parameters.get('depth').setValueAtTime(1, audioCtx.currentTime);
-		tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.9, audioCtx.currentTime);
-		tremoloEffectNode.parameters.get('shape').setValueAtTime(0, audioCtx.currentTime);
-	}
-	if( val === '2' ) {
-	  // Ultra-nervous 8 Hz square wave (dub/techno style)
-	  tremoloEffectNode.parameters.get('rate').setValueAtTime(8, audioCtx.currentTime);
-	  tremoloEffectNode.parameters.get('shape').setValueAtTime(2, audioCtx.currentTime);
-	  tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.7, audioCtx.currentTime); // adoucit le carré
-	  tremoloEffectNode.parameters.get('depth').setValueAtTime(0.5, audioCtx.currentTime);
+	// check if tremoloEffectNode exist because we can change effect only if effect is running for reduce RAM consumption
+	if (tremoloEffectNode) {
+		if( val === '0' ) {
+			// Examples of quick checks
+			tremoloEffectNode.parameters.get('rate').setValueAtTime(4, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('depth').setValueAtTime(0.6, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('shape').setValueAtTime(0, audioCtx.currentTime); // sinus
+			tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.9, audioCtx.currentTime);
+		}
+		if( val === '1' ) {
+			// Wide, slow auto-pan (0.33 Hz)
+			tremoloEffectNode.parameters.get('rate').setValueAtTime(0.33, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('depth').setValueAtTime(1, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.9, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('shape').setValueAtTime(0, audioCtx.currentTime);
+		}
+		if( val === '2' ) {
+			// Ultra-nervous 8 Hz square wave (dub/techno style)
+			tremoloEffectNode.parameters.get('rate').setValueAtTime(8, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('shape').setValueAtTime(2, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.7, audioCtx.currentTime); // adoucit le carré
+			tremoloEffectNode.parameters.get('depth').setValueAtTime(0.5, audioCtx.currentTime);
+		}
 	}
 }
 
@@ -888,59 +837,131 @@ function addEffect(i){
 		oscillatorEffectTab = [false,false,false,false,false,false,false,false,false];
 		oscillatorEffectTab[i] = true;
 
-		safeDisconnect(filter,pitchEffectNode);
-		safeDisconnect(filter,noiseEffectNode);
-		safeDisconnect(filter,pinkEffectNode);
-		safeDisconnect(filter,bitCrusherEffectNode);
-		safeDisconnect(filter,simplePassEffectNode);
-		safeDisconnect(filter,compressorEffectNode);
-		safeDisconnect(filter,reverbEffectNode);
-		safeDisconnect(filter,tremoloEffectNode);
-		safeDisconnect(filter,fftFxEffectNode);
+		if(pitchEffectNode) pitchEffectNode.disconnect();
+		if(noiseEffectNode) noiseEffectNode.disconnect();
+		if(pinkEffectNode) pinkEffectNode.disconnect();
+		if(bitCrusherEffectNode) bitCrusherEffectNode.disconnect();
+		if(simplePassEffectNode) simplePassEffectNode.disconnect();
+		if(compressorEffectNode) compressorEffectNode.disconnect();
+		if(reverbEffectNode) reverbEffectNode.disconnect();
+		if(tremoloEffectNode) tremoloEffectNode.disconnect();
+		if(fftFxEffectNode) fftFxEffectNode.disconnect();
 
-		safeDisconnect(pitchEffectNode,analyserNode);
-		safeDisconnect(noiseEffectNode,analyserNode);
-		safeDisconnect(pinkEffectNode,analyserNode);
-		safeDisconnect(bitCrusherEffectNode,analyserNode);
-		safeDisconnect(simplePassEffectNode,analyserNode);
-		safeDisconnect(reverbEffectNode,analyserNode);
-		safeDisconnect(tremoloEffectNode,analyserNode);
-		safeDisconnect(tremoloEffectNode,fftFxEffectNode);
+		pitchEffectNode = null;
+		noiseEffectNode = null;
+		pinkEffectNode = null;
+		bitCrusherEffectNode = null;
+		simplePassEffectNode = null;
+		compressorEffectNode = null;
+		reverbEffectNode = null;
+		tremoloEffectNode = null;
+		fftFxEffectNode = null;
 
 		if( i == 0 ){
 			safeDisconnect(filter,analyserNode);
-			filter.connect(pitchEffectNode);
-			pitchEffectNode.connect(analyserNode);
+
+			pinkEffectNode = new AudioWorkletNode(audioCtx, 'pink-noise-filtered');
+	  		pinkEffectNode.parameters.get('cutoff').linearRampToValueAtTime(200, audioCtx.currentTime + 5);
+			console.log("AudioWorkletNode created and connected (pink-effect-processor)");
+
+			filter.connect(pinkEffectNode);
+			pinkEffectNode.connect(analyserNode);
 		}else if( i == 1 ){
 			safeDisconnect(filter,analyserNode);
+
+			noiseEffectNode = new AudioWorkletNode(audioCtx, 'noise');
+	  		noiseEffectNode.parameters.get('type').setValueAtTime(1, 0);        // pink
+	  		console.log("AudioWorkletNode created and connected (noise-effect-processor)");
+
 			filter.connect(noiseEffectNode);
 			noiseEffectNode.connect(analyserNode);
 		}else if( i == 2 ){
 			safeDisconnect(filter,analyserNode);
-			filter.connect(pinkEffectNode);
-			pinkEffectNode.connect(analyserNode);
+
+			pitchEffectNode = new AudioWorkletNode(audioCtx, 'pitch');
+			pitchEffectNode.parameters.get('pitch').setValueAtTime(2, audioCtx.currentTime);
+	  		console.log("AudioWorkletNode created and connected (pitch-effect-processor)");
+
+			filter.connect(pitchEffectNode);
+			pitchEffectNode.connect(analyserNode);
 		}else if( i == 3 ){
 			safeDisconnect(filter,analyserNode);
+
+			bitCrusherEffectNode = new AudioWorkletNode(audioCtx, 'bitcrusher', {
+				outputChannelCount: [2]
+			});
+			bitCrusherEffectNode.parameters.get('bitDepth').setValueAtTime(16, audioCtx.currentTime);
+			bitCrusherEffectNode.parameters.get('bitDepth').linearRampToValueAtTime(4, audioCtx.currentTime + 2);
+			console.log("AudioWorkletNode created and connected (bit-crusher-effect-processor)");
+
 			filter.connect(bitCrusherEffectNode);
 			bitCrusherEffectNode.connect(analyserNode);
 		}else if( i == 4 ){
 			safeDisconnect(filter,analyserNode);
+
+			simplePassEffectNode = new AudioWorkletNode(audioCtx, 'simple-lowpass', {
+				parameterData: { cutoff: 800 }
+			});
+			console.log("AudioWorkletNode created and connected (simple-lowpass-effect-processor)");
+
 			filter.connect(simplePassEffectNode);
 			simplePassEffectNode.connect(analyserNode);
 		} else if ( i == 5 ){
 			safeDisconnect(filter,analyserNode);
+
+			compressorEffectNode = new AudioWorkletNode(audioCtx, 'compressor', {
+				processorOptions: { channelCount: 2 }
+			});
+			compressorEffectNode.parameters.get('threshold').value = -24;
+			compressorEffectNode.parameters.get('ratio').value = 4;
+			compressorEffectNode.parameters.get('attack').value = 8;
+			compressorEffectNode.parameters.get('release').value = 120;
+			compressorEffectNode.parameters.get('makeup').value = 6;
+			compressorEffectNode.parameters.get('mix').value = 100;
+			console.log("AudioWorkletNode created and connected (compressor-effect-processor)");
+
 			filter.connect(compressorEffectNode);
 			compressorEffectNode.connect(analyserNode);
 		} else if ( i == 6 ){
 			safeDisconnect(filter,analyserNode);
+
+			reverbEffectNode = new AudioWorkletNode(audioCtx, 'reverb', {
+				outputChannelCount: [2]
+			});
+			// Exemple de contrôle
+			reverbEffectNode.parameters.get('roomSize').setValueAtTime(0.85, audioCtx.currentTime);
+			reverbEffectNode.parameters.get('damping').setValueAtTime(0.3, audioCtx.currentTime);
+			reverbEffectNode.parameters.get('wet').setValueAtTime(0.4, audioCtx.currentTime);
+			reverbEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 5); // freeze après 5s
+			console.log("AudioWorkletNode created and connected (reverb-effect-processor)");
+
 			filter.connect(reverbEffectNode);
 			reverbEffectNode.connect(analyserNode);
 		} else if ( i == 7 ){
 			safeDisconnect(filter,analyserNode);
+
+			tremoloEffectNode = new AudioWorkletNode(audioCtx, 'tremolo', {
+				outputChannelCount: [2],           // mandatory
+				channelCount: 2,                   // force 2 channels output
+				channelCountMode: 'explicit',
+				channelInterpretation: 'speakers'
+			});
+			// 3. Carré 8 Hz ultra-nerveux (style dub/techno)
+			tremoloEffectNode.parameters.get('rate').setValueAtTime(8, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('shape').setValueAtTime(2, audioCtx.currentTime);
+			tremoloEffectNode.parameters.get('smooth').setValueAtTime(0.7, audioCtx.currentTime); // adoucit le carré
+			console.log("AudioWorkletNode created and connected (tremolo-effect-processor)");
+
 			filter.connect(tremoloEffectNode);
 			tremoloEffectNode.connect(analyserNode);
 		} else if ( i == 8 ){
 			safeDisconnect(filter,analyserNode);
+
+			fftFxEffectNode = new AudioWorkletNode(audioCtx, 'fft-fx');
+			fftFxEffectNode.parameters.get('mode').setValueAtTime(0, audioCtx.currentTime);
+			fftFxEffectNode.parameters.get('freeze').setValueAtTime(1, audioCtx.currentTime + 2); // pad infini !
+			console.log("AudioWorkletNode created and connected (fft-fx-effect-processor)");
+
 			filter.connect(fftFxEffectNode);
 			fftFxEffectNode.connect(analyserNode);
 		}
@@ -948,41 +969,59 @@ function addEffect(i){
 	}else if(oscillatorEffectTab[i] == true){
 		//we update the table
 		if( i == 0 ){
-			safeDisconnect(filter,pitchEffectNode);
-			safeDisconnect(pitchEffectNode,analyserNode);
+			safeDisconnect(filter,pinkEffectNode);
+			safeDisconnect(pinkEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			pinkEffectNode.disconnect();
+			pinkEffectNode = null;
 		}else if( i == 1 ){
 			safeDisconnect(filter,noiseEffectNode);
 			safeDisconnect(noiseEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			noiseEffectNode.disconnect();
+			noiseEffectNode = null;
 		}else if( i == 2 ){
-			safeDisconnect(filter,pinkEffectNode);
-			safeDisconnect(pinkEffectNode,analyserNode);
+			safeDisconnect(filter,pitchEffectNode);
+			safeDisconnect(pitchEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			pitchEffectNode.disconnect();
+			pitchEffectNode = null;
 		}else if( i == 3 ){
 			safeDisconnect(filter,bitCrusherEffectNode);
 			safeDisconnect(bitCrusherEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			bitCrusherEffectNode.disconnect();
+			bitCrusherEffectNode = null;
 		}else if( i == 4 ){
 			safeDisconnect(filter,simplePassEffectNode);
 			safeDisconnect(simplePassEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			simplePassEffectNode.disconnect();
+			simplePassEffectNode = null;
 		}else if( i == 5 ){
 			safeDisconnect(filter,compressorEffectNode);
 			safeDisconnect(compressorEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			compressorEffectNode.disconnect();
+			compressorEffectNode = null;
 		}else if( i == 6 ){
 			safeDisconnect(filter,reverbEffectNode);
 			safeDisconnect(reverbEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			reverbEffectNode.disconnect();
+			reverbEffectNode = null;
 		}else if( i == 7 ){
 			safeDisconnect(filter,tremoloEffectNode);
 			safeDisconnect(tremoloEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			tremoloEffectNode.disconnect();
+			tremoloEffectNode = null;
 		}else if( i == 8 ){
 			safeDisconnect(filter,fftFxEffectNode);
 			safeDisconnect(fftFxEffectNode,analyserNode);
 			filter.connect(analyserNode);
+			fftFxEffectNode.disconnect();
+			fftFxEffectNode = null;
 		}
 		oscillatorEffectTab = [false,false,false,false,false,false,false,false,false];
 		selectEffectCSS(i,false);
@@ -2516,7 +2555,6 @@ setTimeout(() => {
 			const oldmarkerrect = step.firstChild.getBoundingClientRect();
 			const oldmarker = step.firstChild;
 			console.log('offsetTop =' + oldmarker.offsetTop + 'offsetLeft =' + oldmarker.offsetLeft);
-			//debugger;
 			const oldx = oldmarkerrect.left;
         	const oldy = oldmarkerrect.top;
 			updateResize(oldx, oldy, oldrect);

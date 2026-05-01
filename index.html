@@ -642,6 +642,63 @@
 						<option value="2">Pitch shifter ±2 octaves formant-preserving</option>					
 					</select>
 				</div>
+
+				<script>
+					const selectEffectNoiseType = document.getElementById('effectNoiseType');
+					const selectEffectPitchType = document.getElementById('effectPitchType');
+					const selectEffectbitCrusherType = document.getElementById('effectbitCrusherType');
+					const selectEffectCompressorType = document.getElementById('effectCompressorType');
+					const selectEffectTremoloType = document.getElementById('effectTremoloType');
+					const selectEffectFftFxType = document.getElementById('effectFftFxType');
+
+					selectEffectNoiseType.addEventListener('mouseover', (event) => {
+						if(noiseEffectNode == null){
+							selectEffectNoiseType.disabled = true;
+						} else {
+							selectEffectNoiseType.disabled = false;
+						}
+					});
+
+					selectEffectPitchType.addEventListener('mouseover', (event) => {
+						if(pitchEffectNode == null){
+							selectEffectPitchType.disabled = true;
+						} else {
+							selectEffectPitchType.disabled = false;
+						}
+					});
+
+					selectEffectbitCrusherType.addEventListener('mouseover', (event) => {
+						if(bitCrusherEffectNode == null){
+							selectEffectbitCrusherType.disabled = true;
+						} else {
+							selectEffectbitCrusherType.disabled = false;
+						}
+					});
+
+					selectEffectCompressorType.addEventListener('mouseover', (event) => {
+						if(compressorEffectNode == null){
+							selectEffectCompressorType.disabled = true;
+						} else {
+							selectEffectCompressorType.disabled = false;
+						}
+					});
+
+					selectEffectTremoloType.addEventListener('mouseover', (event) => {
+						if(tremoloEffectNode == null){
+							selectEffectTremoloType.disabled = true;
+						} else {
+							selectEffectTremoloType.disabled = false;
+						}
+					});
+
+					selectEffectFftFxType.addEventListener('mouseover', (event) => {
+						if(fftFxEffectNode == null){
+							selectEffectFftFxType.disabled = true;
+						} else {
+							selectEffectFftFxType.disabled = false;
+						}
+					});
+				</script>
 				
 			</div>
 

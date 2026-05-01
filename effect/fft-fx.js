@@ -157,7 +157,7 @@ class FFTFxProcessor extends AudioWorkletProcessor {
       this.outputBuf[this.outputPos + i] = 0;
     }
 
-    return true;
+    return false;
   }
 
   // Fast real FFT (in place) – bit-reversal + butterfly version

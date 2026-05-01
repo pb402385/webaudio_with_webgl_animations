@@ -88,7 +88,7 @@ class TremoloAutopanProcessor extends AudioWorkletProcessor {
     }
 
     this.phase = phase;
-    return true;
+    return false;
   }
 }
 

@@ -75,7 +75,7 @@ class CompressorProcessor extends AudioWorkletProcessor {
         out[i] = dry * (1 - mx) + wet * mx;
       }
     }
-    return true;
+    return false;
   }
 }
 

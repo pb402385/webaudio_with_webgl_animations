@@ -114,7 +114,7 @@ class NoiseProcessor extends AudioWorkletProcessor {
       }
     }
 
-    return true;
+    return false;
   }
 }
 

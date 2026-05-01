@@ -68,7 +68,7 @@ class SimplePitchShifterProcessor extends AudioWorkletProcessor {
         output[ch][i] = dry * (1 - wet) + wetSample * wet;
       }
     }
-    return true;
+    return false;
   }
 }
 

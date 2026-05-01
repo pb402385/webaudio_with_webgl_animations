@@ -173,7 +173,7 @@ class AlgorithmicReverbProcessor extends AudioWorkletProcessor {
       this.writePos.outR = (this.writePos.outR + 1) % this.delayLengths.outR;
     }
 
-    return true;
+    return false;
   }
 }
 
