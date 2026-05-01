@@ -403,7 +403,7 @@ var boolEventMouse = false;
 
 function initAudioContext(){
 	try{		
-		debugger;
+
 		//We connect the sound's node
 		gainNode = audioCtx.createGain();
 		gainNode.gain.value = (20/100) * (20/100);
@@ -496,6 +496,7 @@ function stop(i,boolEventMouse){
 		safeDisconnect(oscillator,hBand);
 		safeDisconnect(oscillator,mGain);
 		safeDisconnect(oscillator);
+		oscillator = null;
     } catch (e) {
 		console.error('Fail to disconnect oscillator (stop method): ' + e);
 	}
@@ -598,6 +599,7 @@ function stop2(i){
 		safeDisconnect(oscillator2,hBand);
 		safeDisconnect(oscillator2,mGain);
 		safeDisconnect(oscillator2);
+		oscillator2 = null;
     } catch (e) {
 		console.error('Fail to disconnect oscillator2 (stop2 method): ' + e);
 	}
@@ -615,6 +617,7 @@ function stop1(i){
 		safeDisconnect(oscillator1,hBand);
 		safeDisconnect(oscillator1,mGain);
 		safeDisconnect(oscillator1);
+		oscillator1 = null;
     } catch (e) {
 		console.error('Fail to disconnect oscillator1 (stop1 method): ' + e);
 	}
@@ -639,6 +642,7 @@ function stop0(i){
 		safeDisconnect(oscillator0,hBand);
 		safeDisconnect(oscillator0,mGain);
 		safeDisconnect(oscillator0);
+		oscillator0 = null;
     } catch (e) {
 		console.error('Fail to disconnect oscillator0 (stop0 method): ' + e);
 	}
@@ -1583,6 +1587,7 @@ function stopK(i){
 		safeDisconnect(oscillatorTab[i],hBand);
 		safeDisconnect(oscillatorTab[i],mGain);
 		safeDisconnect(oscillatorTab[i]);
+		oscillatorTab[i] = null;
     } catch (e) {
 		console.error('Fail to disconnect oscillatorTab['+i+'] (stopK method): ' + e);
 	}
