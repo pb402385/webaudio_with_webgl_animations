@@ -88,8 +88,6 @@ async function initAudio() {
     try {
       // This MUST be awaited and inside try/catch
       console.log("Loading processor...");
-      await audioCtx.audioWorklet.addModule('./audio-worklet-processor.js');
-      console.log("Processor (my-audio-processor) loaded successfully");
 
 	  await audioCtx.audioWorklet.addModule('./effect/simple-lowpass.js');
 	  console.log("Processor (simple-lowpass-effect) loaded successfully");
@@ -1801,7 +1799,6 @@ function playBuffer(buffer) {
 			source.stop();
 			source.buffer = null; // aide le garbage collector
 			source.disconnect(); // clean up
-			mp3Buffer = null;
 		} catch (e) {
 			console.error('Fail to disconnect source (playBuffer Method): ' + e);
 		}
@@ -2047,7 +2044,6 @@ function jumpTo(mousePos) {
 			source.stop();
 			source.buffer = null; // aide le garbage collector
 			source.disconnect(); // clean up
-			mp3Buffer = null;
 		} catch (e) {
 			console.error('Fail to disconnect source (jumpTo Method): ' + e);
 		}
@@ -2100,7 +2096,6 @@ function restartMp3(buffer){
 				source.stop();
 				source.buffer = null; // aide le garbage collector
 				source.disconnect(); // clean up
-				mp3Buffer = null;
 			} catch (e) {
 				console.error('Fail to disconnect source (restartMp3 Method): ' + e);
 			}
