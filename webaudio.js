@@ -3177,228 +3177,258 @@ function nextNote() {
 }
 
 function playSynthNote(freq, startTime, duration, type) {
-    let osc1, osc2, gainEnv, filterSeq, distortion;
+    const now = audioCtx.currentTime;
+    const endTime = startTime + duration;
 
-    const masterGainSeq = audioCtx.createGain();
-    masterGainSeq.gain.setValueAtTime(volumeSeq/100, startTime);
+    const noteGain = audioCtx.createGain();
+    noteGain.gain.setValueAtTime(0.001, startTime);
+    noteGain.gain.linearRampToValueAtTime(0.9, startTime + 0.01);
+    noteGain.gain.exponentialRampToValueAtTime(0.001, endTime);
+
+    noteGain.connect(lBand);
+    noteGain.connect(hBand);
+    noteGain.connect(mGain);
+
+    let osc1 = null, osc2 = null;
 
     switch (type) {
         case 'guitar':
-          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
-          osc2 = audioCtx.createOscillator(); osc2.type = 'square'; osc2.frequency.value = freq * 0.99; // léger detune
-          gainEnv = audioCtx.createGain();
-          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
-          gainEnv.gain.linearRampToValueAtTime(0.8, startTime + 0.005); // fast attack
-          gainEnv.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
-
-          filterSeq = audioCtx.createBiquadFilter();
-          filterSeq.type = 'bandpass';
-          filterSeq.frequency.value = freq * 3;
-          filterSeq.Q.value = 2;
-
-          distortion = audioCtx.createWaveShaper();
-          distortion.curve = new Float32Array(65536).map((_, i) => {
-            const x = (i - 32768) / 32768;
-            return Math.tanh(x * 3); // soft clip
-          });
-
-          osc1.connect(distortion);
-          osc2.connect(distortion);
-          distortion.connect(filterSeq);
-          filterSeq.connect(gainEnv);
-          gainEnv.connect(masterGainSeq);
-
-		  // Automatic cleaning at the end of tone
-			osc1.onended = () => {
-				try {
-					safeDisconnect(gainEnv);
-					safeDisconnect(filterSeq);
-					safeDisconnect(distortion);
-					safeDisconnect(osc1);
-				} catch (e) {
-					console.error('Fail to disconnect osc1 (playSynthNote Method case Guitar): ' + e);
-				}
-			};
-			// Automatic cleaning at the end of tone
-			osc2.onended = () => {
-				try {
-					safeDisconnect(osc2);
-				} catch (e) {
-					console.error('Fail to disconnect osc2 (playSynthNote Method case Guitar): ' + e);
-				}
-			};
-          break;
+            osc1 = createOscWithCleanupGuitar('sawtooth', freq, startTime, endTime, noteGain, 0.99);
+            osc2 = createOscWithCleanupGuitar('square', freq, startTime, endTime, noteGain);
+            break;
 
         case 'bass':
-          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
-          osc2 = audioCtx.createOscillator(); osc2.type = 'square'; osc2.frequency.value = freq;
-          gainEnv = audioCtx.createGain();
-          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
-          gainEnv.gain.linearRampToValueAtTime(1.0, startTime + 0.01);
-          gainEnv.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.6);
-
-          filterSeq = audioCtx.createBiquadFilter();
-          filterSeq.type = 'lowpass';
-          filterSeq.frequency.value = freq * 4;
-          filterSeq.Q.value = 1;
-
-          osc1.connect(filterSeq);
-          osc2.connect(filterSeq);
-          filterSeq.connect(gainEnv);
-          gainEnv.connect(masterGainSeq);
-		  // Automatic cleaning at the end of tone
-			osc1.onended = () => {
-				try {
-					safeDisconnect(gainEnv);
-					safeDisconnect(filterSeq);
-					safeDisconnect(osc1);
-				} catch (e) {
-					console.error('Fail to disconnect osc1 (playSynthNote Method case Bass): ' + e);
-				}
-			};
-			// Automatic cleaning at the end of tone
-			osc2.onended = () => {
-				try {
-					safeDisconnect(osc2);
-				} catch (e) {
-					console.error('Fail to disconnect osc2 (playSynthNote Method case Bass): ' + e);
-				}
-			};
-          break;
+            osc1 = createOscWithCleanupBass('sawtooth', freq, startTime, endTime, noteGain);
+            osc2 = createOscWithCleanupBass('square', freq, startTime, endTime, noteGain);
+            break;
 
         case 'trumpet':
-          osc1 = audioCtx.createOscillator(); osc1.type = 'sawtooth'; osc1.frequency.value = freq;
-          gainEnv = audioCtx.createGain();
-          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
-          gainEnv.gain.linearRampToValueAtTime(0.9, startTime + 0.03);
-          gainEnv.gain.linearRampToValueAtTime(0.6, startTime + 0.15);
-          gainEnv.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
-
-          filterSeq = audioCtx.createBiquadFilter();
-          filterSeq.type = 'peaking';
-          filterSeq.frequency.value = freq * 2.5;
-          filterSeq.gain.value = 8;
-          filterSeq.Q.value = 3;
-
-          const vibrato = audioCtx.createOscillator();
-          vibrato.type = 'sine';
-          vibrato.frequency.value = 5;
-          const vibratoGain = audioCtx.createGain();
-          vibratoGain.gain.value = 8;
-          vibrato.connect(vibratoGain);
-          vibratoGain.connect(osc1.frequency);
-          vibrato.start(startTime);
-
-          osc1.connect(filterSeq);
-          filterSeq.connect(gainEnv);
-          gainEnv.connect(masterGainSeq);
-
-		  // Automatic cleaning at the end of tone
-			osc1.onended = () => {
-				try {
-					safeDisconnect(gainEnv);
-					safeDisconnect(filterSeq);
-					safeDisconnect(osc1);
-				} catch (e) {
-					console.error('Fail to disconnect osc1 (playSynthNote Method case Trumpet): ' + e);
-				}
-			};
-			// Automatic cleaning at the end of tone
-			vibrato.onended = () => {
-				try {
-					safeDisconnect(vibratoGain);
-					safeDisconnect(vibrato);
-				} catch (e) {
-					console.error('Fail to disconnect vibrato (playSynthNote Method case Trumpet): ' + e);
-				}
-			};
-          break;
+            osc1 = createOscWithCleanupTrumpet('sawtooth', freq, startTime, endTime, noteGain);
+            addVibrato(osc1, startTime, endTime);
+            break;
 
         case 'sax':
-          osc1 = audioCtx.createOscillator(); osc1.type = 'triangle'; osc1.frequency.value = freq;
-          osc2 = audioCtx.createOscillator(); osc2.type = 'sawtooth'; osc2.frequency.value = freq; osc2.detune.value = -20;
-          gainEnv = audioCtx.createGain();
-          gainEnv.gain.setValueAtTime(volumeSeq/100, startTime);
-          gainEnv.gain.linearRampToValueAtTime(0.7, startTime + 0.08);
-          gainEnv.gain.linearRampToValueAtTime(0.4, startTime + 0.3);
-          gainEnv.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-
-          filterSeq = audioCtx.createBiquadFilter();
-          filterSeq.type = 'bandpass';
-          filterSeq.frequency.value = freq * 1.8;
-          filterSeq.Q.value = 4;
-
-          // Breath noise
-          const noise = audioCtx.createBufferSource();
-          const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
-          const data = noiseBuffer.getChannelData(0);
-          for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-          noise.buffer = noiseBuffer;
-          const noiseGain = audioCtx.createGain();
-          noiseGain.gain.value = 0.08;
-          noise.connect(noiseGain);
-          noiseGain.connect(filterSeq);
-
-          osc1.connect(filterSeq);
-          osc2.connect(filterSeq);
-          filterSeq.connect(gainEnv);
-          gainEnv.connect(masterGainSeq);
-          noise.start(startTime);
-          noise.stop(startTime + duration);
-
-		  // Add ended handler (optional but recommended)
-		  noise.onended = () => {
-			try {
-				noise.buffer = null; // aide le garbage collector
-				safeDisconnect(noise); // clean up
-			} catch (e) {
-				console.error('Fail to disconnect noise (playSynthNote Method case Sax): ' + e);
-			}
-		  };
-		  // Automatic cleaning at the end of tone
-		  osc1.onended = () => {
-				try {
-					safeDisconnect(gainEnv);
-					safeDisconnect(filterSeq);
-					safeDisconnect(osc1);
-				} catch (e) {
-					console.error('Fail to disconnect osc1 (playSynthNote Method case Sax): ' + e);
-				}
-		  };
-		  // Automatic cleaning at the end of tone
-		  osc2.onended = () => {
-				try {
-					safeDisconnect(osc2);
-				} catch (e) {
-					console.error('Fail to disconnect osc2 (playSynthNote Method case Sax): ' + e);
-				}
-		  };
-          break;
+            osc1 = createOscWithCleanupSax('triangle', freq, startTime, endTime, noteGain);
+            osc2 = createOscWithCleanupSax('sawtooth', freq, startTime, endTime, noteGain, -20);
+            addBreathNoise(noteGain, startTime, endTime);   // version optimisée
+            break;
     }
+}
 
-    //masterGain.connect(audioCtx.destination);
-	masterGainSeq.connect(lBand);
-	masterGainSeq.connect(hBand);
-	masterGainSeq.connect(mGain);
 
-    if (osc1) osc1.start(startTime);
-    if (osc2) osc2.start(startTime);
+function createOscWithCleanupGuitar(type, frequency, startTime, endTime, destination, detune = 0) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
 
-	if (osc1) {
-		try {
-			osc1.stop(startTime + duration + 0.1);
-		} catch (e) {
-			console.error('Fail to stop osc1 (playSynthNote Method after switch): ' + e);
-		}
-	}
-	
-	if (osc2) {
-		try {
-			osc2.stop(startTime + duration + 0.1);
-		} catch (e) {
-			console.error('Fail to stop osc2 (playSynthNote Method after switch): ' + e);
-		}
-	}
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, startTime);
+    if (detune !== 0) osc.detune.setValueAtTime(detune, startTime);
+
+    gain.gain.setValueAtTime(0.001, startTime);
+    gain.gain.linearRampToValueAtTime(0.8, startTime + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, endTime + 0.02);
+
+	const filterSeq = audioCtx.createBiquadFilter();
+    filterSeq.type = 'bandpass';
+    filterSeq.frequency.value = frequency * 3;
+    filterSeq.Q.value = 2;
+
+    //const distortion = audioCtx.createWaveShaper();
+    //distortion.curve = new Float32Array(65536).map((_, i) => {
+    //    const x = (i - 32768) / 32768;
+    //    return Math.tanh(x * 3); // soft clip
+    //});
+
+	//osc.connect(distortion);
+	//distortion.connect(filterSeq);
+	osc.connect(filterSeq);
+    filterSeq.connect(gain);
+    gain.connect(destination);
+
+    osc.start(startTime);
+    osc.stop(endTime + 0.05);
+
+    // Cleaning
+    osc.onended = () => {
+        try {
+			gain.disconnect();
+			filterSeq.disconnect();
+            //distortion.disconnect();
+            osc.disconnect();
+        } catch (e) {}
+    };
+
+    return osc;
+}
+
+function createOscWithCleanupBass(type, frequency, startTime, endTime, destination, detune = 0) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, startTime);
+    if (detune !== 0) osc.detune.setValueAtTime(detune, startTime);
+
+    gain.gain.setValueAtTime(volumeSeq/100, startTime);
+    gain.gain.linearRampToValueAtTime(0.95, startTime + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.001, endTime + 0.02);
+
+	const filterSeq = audioCtx.createBiquadFilter();
+	filterSeq.type = 'lowpass';
+    filterSeq.frequency.value = frequency * 4;
+    filterSeq.Q.value = 1;
+
+    osc.connect(filterSeq);
+	filterSeq.connect(gain);
+    gain.connect(destination);
+
+    osc.start(startTime);
+    osc.stop(endTime + 0.05);
+
+    // Cleaning
+    osc.onended = () => {
+        try {
+            gain.disconnect();
+			filterSeq.disconnect();
+            osc.disconnect();
+        } catch (e) {}
+    };
+
+    return osc;
+}
+
+function createOscWithCleanupTrumpet(type, frequency, startTime, endTime, destination, detune = 0) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, startTime);
+    if (detune !== 0) osc.detune.setValueAtTime(detune, startTime);
+
+    gain.gain.setValueAtTime(volumeSeq/100, startTime);
+    gain.gain.linearRampToValueAtTime(0.9, startTime + 0.03);
+	gain.gain.linearRampToValueAtTime(0.6, startTime + 0.15);
+    gain.gain.exponentialRampToValueAtTime(0.001, endTime + 0.02);
+
+    const filterSeq = audioCtx.createBiquadFilter();
+    filterSeq.type = 'peaking';
+    filterSeq.frequency.value = frequency * 2.5;
+    filterSeq.gain.value = 8;
+    filterSeq.Q.value = 3;
+
+    osc.connect(filterSeq);
+	filterSeq.connect(gain);
+    gain.connect(destination);
+
+    osc.start(startTime);
+    osc.stop(endTime + 0.05);
+
+    // Cleaning
+    osc.onended = () => {
+        try {
+            gain.disconnect();
+			filterSeq.disconnect();
+            osc.disconnect();
+        } catch (e) {}
+    };
+
+    return osc;
+}
+
+function createOscWithCleanupSax(type, frequency, startTime, endTime, destination, detune = 0) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, startTime);
+    if (detune !== 0) osc.detune.setValueAtTime(detune, startTime);
+
+    gain.gain.setValueAtTime(volumeSeq/100, startTime);
+    gain.gain.linearRampToValueAtTime(0.7, startTime + 0.08);
+    gain.gain.linearRampToValueAtTime(0.4, startTime + 0.3);
+    gain.gain.exponentialRampToValueAtTime(0.001, endTime + 0.02);
+
+    const filterSeq = audioCtx.createBiquadFilter();
+    filterSeq.type = 'bandpass';
+    filterSeq.frequency.value = frequency * 1.8;
+    filterSeq.Q.value = 4;
+
+    osc.connect(filterSeq);
+	filterSeq.connect(gain);
+    gain.connect(destination);
+
+    osc.start(startTime);
+    osc.stop(endTime + 0.05);
+
+    // Cleaning
+    osc.onended = () => {
+        try {
+            gain.disconnect();
+			filterSeq.disconnect();
+            osc.disconnect();
+        } catch (e) {}
+    };
+
+    return osc;
+}
+
+function addVibrato(osc, startTime, endTime) {
+    const vibrato = audioCtx.createOscillator();
+    const vibratoGain = audioCtx.createGain();
+
+    vibrato.type = 'sine';
+    vibrato.frequency.setValueAtTime(5.5, startTime);   // ~5.5 Hz
+    vibratoGain.gain.setValueAtTime(12, startTime);     // vibrato's depth
+
+    vibrato.connect(vibratoGain);
+    vibratoGain.connect(osc.frequency);
+
+    vibrato.start(startTime);
+    vibrato.stop(endTime + 0.1);
+
+    vibrato.onended = () => {
+        try {
+            vibratoGain.disconnect();
+            vibrato.disconnect();
+        } catch (e) {}
+    };
+}
+
+function addBreathNoise(destination, startTime, endTime) {
+    const noise = audioCtx.createBufferSource();
+    const noiseGain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    // Noise Buffer
+    const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 1.5, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+    noise.buffer = buffer;
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1800, startTime);
+    filter.Q.setValueAtTime(0.8, startTime);
+
+    noiseGain.gain.setValueAtTime(0.09, startTime);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, endTime + 0.1);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(destination);
+
+    noise.start(startTime);
+    noise.stop(endTime + 0.15);
+
+    noise.onended = () => {
+        try {
+            noise.buffer = null;   // aide le GC
+            noiseGain.disconnect();
+            filter.disconnect();
+            noise.disconnect();
+        } catch (e) {}
+    };
 }
 
     function schedulerSeq() {
