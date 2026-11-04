@@ -11,7 +11,9 @@
   <p align="center">
     MP3/MP4 player with animations (JavaScript and WebGL) and web audio piano
     <br />
+	  <!--
     <a href="https://github.com/pb402385/webaudio_with_webgl_animations">See Demo</a>
+	  -->
   </p>
 </div>
 
