@@ -11,7 +11,9 @@
   <p align="center">
     Chargeur MP3/MP4 avec animations (javascript et webGl) et piano en web audio
     <br />
+	  <!--
     <a href="https://github.com/pb402385/webaudio_with_webgl_animations">Voir Demo</a>
+	  -->
   </p>
 </div>
 
