@@ -86,10 +86,10 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
-<img src="screenshots/image_intro_application_en.jpeg" alt="image_intro_application_en.jpeg" />
-
 ## About project
 <a id="a-propos-du-projet"></a>
+
+<img src="screenshots/image_intro_application_en.jpeg" alt="image_intro_application_en.jpeg" />
 
 This project is an **MP3/MP4 audio player** featuring spectacular **animated visualizations**, built with JavaScript and **GLSL** shaders (WebGL).
 

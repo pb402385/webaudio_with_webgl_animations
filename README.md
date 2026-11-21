@@ -86,10 +86,10 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
-<img src="screenshots/image_intro_application_fr.jpeg" alt="image_intro_application_fr.jpeg" />
-
 ## A propos du projet
 <a id="a-propos-du-projet"></a>
+
+<img src="screenshots/image_intro_application_fr.jpeg" alt="image_intro_application_fr.jpeg" />
 
 Ce projet est un **lecteur audio MP3/MP4** avec des **visualisations animées** spectaculaires, codées en JavaScript et en shaders **GLSL** (WebGL). 
 
