@@ -86,6 +86,8 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
+<img src="screenshots/image_intro_application_en.jpeg" alt="image_intro_application_en.jpeg" />
+
 ## About project
 <a id="a-propos-du-projet"></a>
 
